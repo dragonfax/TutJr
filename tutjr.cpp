@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <curses.h>
 #include <signal.h>
+#include <stdbool.h>
 
 char *level[] = { 
   "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
@@ -91,16 +92,35 @@ void loop() {
   drawPlayer();
 
   int c = getch();
-  player_x_old = player_x;
-  player_y_old = player_y;
+
+  int player_x_new = player_x;
+  int player_y_new = player_y;
   if ( c == KEY_LEFT ) {
-    player_x -= 1;
+    player_x_new -= 1;
   } else if ( c == KEY_RIGHT ) {
-    player_x += 1;
+    player_x_new += 1;
   } else if ( c == KEY_UP ) {
-    player_y -= 1;
+    player_y_new -= 1;
   } else if ( c == KEY_DOWN ) {
-    player_y += 1;
+    player_y_new += 1;
+  }
+
+  // check for collision
+  int i, j;
+  bool collision = false;
+  for ( i = 0; i <= 1; i++ ) {
+    for ( j = 0; j <= 1; j++ ) {
+      if ( level[player_y_new + i][player_x_new + j] != ' ' ) {
+        collision = true;
+      }
+    }
+  }
+
+  if ( ! collision ) {
+    player_x_old = player_x;
+    player_y_old = player_y;
+    player_x = player_x_new;
+    player_y = player_y_new;
   }
 }
 
