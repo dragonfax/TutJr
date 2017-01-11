@@ -9,8 +9,14 @@ int player_x_old = player_x;
 int player_y_old = player_y;
 
 void drawPlayer() {
-  mvaddch(player_y_old, player_x_old, ' ');
-  mvaddch(player_y, player_x, 'P');
+  int i;
+  int j;
+  for ( i = 0; i <= 1; i++ ) {
+    for ( j = 0; j <= 1; j++ ) {
+      mvaddch(player_y_old + j, player_x_old + i, ' ');
+      mvaddch(player_y + j, player_x + i, 'P');
+    }
+  }
   refresh();
 }
 
