@@ -3,6 +3,8 @@
 #include <curses.h>
 #include <signal.h>
 #include <stdbool.h>
+#include <unistd.h>
+#include <time.h>
 
 char *level[] = { 
   "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
@@ -24,17 +26,17 @@ char *level[] = {
   "W                                      W",
   "W                                      W",
   "W                                      W",
+  "W                            CDD       W",
+  "W                            D         W",
+  "W                            D         W",
   "W                                      W",
   "W                                      W",
   "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
+  "W            D                         W",
+  "W            D                         W",
+  "W            C         DDCDD           W",
+  "W            D                         W",
+  "W            D                         W",
   "W                                      W",
   "W                                      W",
   "W                                      W",
@@ -76,6 +78,8 @@ void drawPlayer() {
 
 static void finish(int sig);
 
+uint64_t frame_start;
+
 void setup() {
 
   signal(SIGINT, finish);
@@ -85,6 +89,8 @@ void setup() {
   curs_set(0);
   keypad(stdscr, 1);
   nodelay(stdscr,1);
+
+  frame_start =  clock_gettime_nsec_np(CLOCK_MONOTONIC) / 1000;
 }
 
 void loop() {
@@ -124,10 +130,22 @@ void loop() {
   }
 }
 
+const int FRAMES_PER_SECOND = 60;
+const float MILL_PER_FRAME = 1000.0f / FRAMES_PER_SECOND;
+const uint64_t MICRO_PER_FRAME =  MILL_PER_FRAME * 1000;
+
 int main() {
     setup();
     for ( ;; ) {
       loop();
+
+      uint64_t now =  clock_gettime_nsec_np(CLOCK_MONOTONIC) / 1000;
+      uint64_t frame_length =  now - frame_start;
+      uint64_t frame_left =  MICRO_PER_FRAME - frame_length;
+
+      usleep(frame_left);
+      frame_start = clock_gettime_nsec_np(CLOCK_MONOTONIC) / 1000;
+
     }
     finish(0);
 }
