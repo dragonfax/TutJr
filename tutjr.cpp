@@ -6,6 +6,14 @@
 #include <unistd.h>
 #include <time.h>
 
+class Pos {
+  public:
+  int x, y;
+  Pos();
+  Pos( int i, int j);
+};
+
+
 const char *level_data[] = { 
   "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
   "W  W                                   W",
@@ -56,6 +64,7 @@ class Level {
     const char **data;
     void drawLevel();
     Level(int w, int h, const char **d);
+    bool collides_with(Pos position);
 };
 
 Level::Level(int w, int h, const char **d) {
@@ -76,12 +85,19 @@ void Level::drawLevel() {
   }
 }
 
-class Pos {
-  public:
-  int x, y;
-  Pos();
-  Pos( int i, int j);
-};
+bool Level::collides_with(Pos position) {
+  int i, j;
+  bool collision = false;
+  for ( i = 0; i <= 1; i++ ) {
+    for ( j = 0; j <= 1; j++ ) {
+      if ( level.data[position.y + i][position.x + j] != ' ' ) {
+        collision = true;
+      }
+    }
+  }
+  return collision;
+}
+
 
 Pos::Pos() {
   x = 0;
@@ -154,18 +170,7 @@ void loop() {
     player_position_new.y += 1;
   }
 
-  // check for collision
-  int i, j;
-  bool collision = false;
-  for ( i = 0; i <= 1; i++ ) {
-    for ( j = 0; j <= 1; j++ ) {
-      if ( level.data[player_position_new.y + i][player_position_new.x + j] != ' ' ) {
-        collision = true;
-      }
-    }
-  }
-
-  if ( ! collision ) {
+  if ( ! level.collides_with(player_position_new) ) {
     player.old_position = player.position;
     player.position = player_position_new;
   }
