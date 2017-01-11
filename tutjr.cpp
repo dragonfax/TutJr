@@ -49,10 +49,37 @@ char *level[] = {
   "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW@W"
 };
 
-int player_x = 20;
-int player_y = 20;
-int player_x_old = player_x;
-int player_y_old = player_y;
+class Pos {
+  public:
+  int x, y;
+  Pos();
+  Pos( int i, int j);
+};
+
+Pos::Pos() {
+  x = 0;
+  y = 0;
+}
+
+Pos::Pos(int i, int j) {
+  x = i;
+  y = j;
+}
+
+class Player {
+  public:
+  Pos position;
+  Pos old_position;
+  Player(int i, int j);
+  void drawPlayer();
+};
+
+Player::Player(int i, int j) {
+  position = Pos(i, j);
+  old_position = Pos(i, j);
+}
+
+Player player = Player(20, 20);
 
 void drawLevel() {
   int i;
@@ -64,13 +91,13 @@ void drawLevel() {
   }
 }
 
-void drawPlayer() {
+void Player::drawPlayer() {
   int i;
   int j;
   for ( i = 0; i <= 1; i++ ) {
     for ( j = 0; j <= 1; j++ ) {
-      mvaddch(player_y_old + j, player_x_old + i, ' ');
-      mvaddch(player_y + j, player_x + i, 'P');
+      mvaddch(old_position.y + j, old_position.x + i, ' ');
+      mvaddch(position.y + j, position.x + i, 'P');
     }
   }
   refresh();
@@ -95,20 +122,19 @@ void setup() {
 
 void loop() {
   drawLevel();
-  drawPlayer();
+  player.drawPlayer();
 
   int c = getch();
 
-  int player_x_new = player_x;
-  int player_y_new = player_y;
+  Pos player_position_new = player.position;
   if ( c == KEY_LEFT ) {
-    player_x_new -= 1;
+    player_position_new.x -= 1;
   } else if ( c == KEY_RIGHT ) {
-    player_x_new += 1;
+    player_position_new.x += 1;
   } else if ( c == KEY_UP ) {
-    player_y_new -= 1;
+    player_position_new.y -= 1;
   } else if ( c == KEY_DOWN ) {
-    player_y_new += 1;
+    player_position_new.y += 1;
   }
 
   // check for collision
@@ -116,17 +142,15 @@ void loop() {
   bool collision = false;
   for ( i = 0; i <= 1; i++ ) {
     for ( j = 0; j <= 1; j++ ) {
-      if ( level[player_y_new + i][player_x_new + j] != ' ' ) {
+      if ( level[player_position_new.y + i][player_position_new.x + j] != ' ' ) {
         collision = true;
       }
     }
   }
 
   if ( ! collision ) {
-    player_x_old = player_x;
-    player_y_old = player_y;
-    player_x = player_x_new;
-    player_y = player_y_new;
+    player.old_position = player.position;
+    player.position = player_position_new;
   }
 }
 
