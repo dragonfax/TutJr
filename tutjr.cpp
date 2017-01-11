@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <time.h>
 
-char *level[] = { 
+const char *level[] = { 
   "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
   "W  W                                   W",
   "W  W                                   W",
