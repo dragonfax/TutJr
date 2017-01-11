@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <time.h>
 
-const char *level[] = { 
+const char *level_data[] = { 
   "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
   "W  W                                   W",
   "W  W                                   W",
@@ -49,6 +49,33 @@ const char *level[] = {
   "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW@W"
 };
 
+class Level {
+  public:
+    int width;
+    int height;
+    const char **data;
+    void drawLevel();
+    Level(int w, int h, const char **d);
+};
+
+Level::Level(int w, int h, const char **d) {
+  width = w;
+  height = w;
+  data = d;
+}
+
+Level level = Level(40, 40, level_data);
+
+void Level::drawLevel() {
+  int i;
+  int j;
+  for ( i = 0; i < width; i++ ) {
+    for ( j = 0; j < height; j++ ) {
+      mvaddch(j,i, data[j][i]);
+    }
+  }
+}
+
 class Pos {
   public:
   int x, y;
@@ -81,16 +108,6 @@ Player::Player(int i, int j) {
 
 Player player = Player(20, 20);
 
-void drawLevel() {
-  int i;
-  int j;
-  for ( i = 0; i < 40; i++ ) {
-    for ( j = 0; j < 40; j++ ) {
-      mvaddch(j,i, level[j][i]);
-    }
-  }
-}
-
 void Player::drawPlayer() {
   int i;
   int j;
@@ -121,7 +138,7 @@ void setup() {
 }
 
 void loop() {
-  drawLevel();
+  level.drawLevel();
   player.drawPlayer();
 
   int c = getch();
@@ -142,7 +159,7 @@ void loop() {
   bool collision = false;
   for ( i = 0; i <= 1; i++ ) {
     for ( j = 0; j <= 1; j++ ) {
-      if ( level[player_position_new.y + i][player_position_new.x + j] != ' ' ) {
+      if ( level.data[player_position_new.y + i][player_position_new.x + j] != ' ' ) {
         collision = true;
       }
     }
