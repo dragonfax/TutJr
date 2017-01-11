@@ -3,10 +3,63 @@
 #include <curses.h>
 #include <signal.h>
 
+char *level[] = { 
+  "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW@W"
+};
+
 int player_x = 20;
 int player_y = 20;
 int player_x_old = player_x;
 int player_y_old = player_y;
+
+void drawLevel() {
+  int i;
+  int j;
+  for ( i = 0; i < 40; i++ ) {
+    for ( j = 0; j < 40; j++ ) {
+      mvaddch(j,i, level[j][i]);
+    }
+  }
+}
 
 void drawPlayer() {
   int i;
@@ -34,6 +87,7 @@ void setup() {
 }
 
 void loop() {
+  drawLevel();
   drawPlayer();
 
   int c = getch();
