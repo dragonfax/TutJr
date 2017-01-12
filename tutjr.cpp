@@ -11,6 +11,8 @@ class Pos {
   int x, y;
   Pos();
   Pos( int i, int j);
+  bool operator==(const Pos &other );
+  Pos operator+(const Pos &other );
 };
 
 
@@ -34,17 +36,17 @@ const char *level_data[] = {
   "W                                      W",
   "W                                      W",
   "W                                      W",
-  "W                            CDD       W",
-  "W                            D         W",
-  "W                            D         W",
   "W                                      W",
   "W                                      W",
   "W                                      W",
-  "W            D                         W",
-  "W            D                         W",
-  "W            C         DDCDD           W",
-  "W            D                         W",
-  "W            D                         W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
+  "W                                      W",
   "W                                      W",
   "W                                      W",
   "W                                      W",
@@ -64,7 +66,7 @@ class Level {
     const char **data;
     void drawLevel();
     Level(int w, int h, const char **d);
-    bool collides_with(Pos position);
+    bool collides_with(Pos position, int size);
 };
 
 Level::Level(int w, int h, const char **d) {
@@ -85,11 +87,11 @@ void Level::drawLevel() {
   }
 }
 
-bool Level::collides_with(Pos position) {
+bool Level::collides_with(Pos position, int size) {
   int i, j;
   bool collision = false;
-  for ( i = 0; i <= 1; i++ ) {
-    for ( j = 0; j <= 1; j++ ) {
+  for ( i = 0; i < size; i++ ) {
+    for ( j = 0; j < size; j++ ) {
       if ( level.data[position.y + i][position.x + j] != ' ' ) {
         collision = true;
       }
@@ -107,6 +109,14 @@ Pos::Pos() {
 Pos::Pos(int i, int j) {
   x = i;
   y = j;
+}
+
+bool Pos::operator==(const Pos &other ) {
+  return x == other.x && y == other.y ;
+}
+
+Pos Pos::operator+(const Pos &other ) {
+  return Pos(x + other.x, y + other.y);
 }
 
 class Player {
@@ -136,6 +146,128 @@ void Player::drawPlayer() {
   refresh();
 }
 
+
+class Door {
+  public:
+    Pos center;
+    bool up;
+    bool down;
+    bool left;
+    bool right;
+    Door(int x, int y, bool u, bool d, bool l, bool r);
+    bool collides_with(Pos position, int size);
+    void draw();
+};
+
+Door::Door(int x, int y, bool u, bool d, bool l, bool r) {
+  center = Pos(x, y);
+  up = u;
+  down = d;
+  left = l;
+  right = r;
+}
+
+bool collision(Pos p1, int s1, Pos p2, int s2) {
+
+  int i1;
+  int j1;
+  for ( i1 = 0; i1 < s1; i1++ ) {
+    for ( j1 = 0; j1 < s1; j1++ ) {
+      int i2;
+      int j2;
+      for ( i2 = 0; i2 < s2; i2++ ) {
+        for ( j2 = 0; j2 < s2; j2++ ) {
+          Pos np1 = p1 + Pos(i1, j1);
+          Pos np2 = p2 + Pos(i2, j2);
+          if ( np1 == np2 ) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+
+  return false;
+}
+
+bool Door::collides_with(Pos position, int size) {
+
+  if ( collision(position, size, center, 1) ) {
+    return true;
+  }
+
+  // doors are the only thing that is 2x1, so we give them special handling for collision.
+  // rather than expand the collision system to arbitrary shapes.
+
+  // how to check the other door segments. including rotation.
+  if ( up )  {
+    if ( collision(position, size, center + Pos(0, -1), 1) ) {
+      return true;
+    }
+    if ( collision(position, size, center + Pos(0, -2), 1) ) {
+      return true;
+    }
+  }
+
+  if ( down )  {
+    if ( collision(position, size, center + Pos(0, 1), 1) ) {
+      return true;
+    }
+    if ( collision(position, size, center + Pos(0, 2), 1) ) {
+      return true;
+    }
+  }
+
+  if ( left )  {
+    if ( collision(position, size, center + Pos(-1, 0), 1) ) {
+      return true;
+    }
+    if ( collision(position, size, center + Pos(-2, 0), 1) ) {
+      return true;
+    }
+  }
+   
+  if ( right )  {
+    if ( collision(position, size, center + Pos(1, 0), 1) ) {
+      return true;
+    }
+    if ( collision(position, size, center + Pos(2, 0), 1) ) {
+      return true;
+    }
+  }
+   
+  return false;
+}
+
+void Door::draw() {
+  mvaddch(center.y, center.x, 'C');
+
+  // how to draw each segment to the rotation.
+
+  if ( up ) {
+    mvaddch(center.y - 1, center.x, 'D');
+    mvaddch(center.y - 2, center.x, 'D');
+  }
+
+  if ( down ) {
+    mvaddch(center.y + 1, center.x, 'D');
+    mvaddch(center.y + 2, center.x, 'D');
+  }
+
+  if ( left ) {
+    mvaddch(center.y, center.x - 1, 'D');
+    mvaddch(center.y, center.x - 2, 'D');
+  }
+
+  if ( right ) {
+    mvaddch(center.y, center.x + 1, 'D');
+    mvaddch(center.y, center.x + 2, 'D');
+  }
+}
+
+const int NUM_DOORS = 1;
+Door doors[NUM_DOORS] = { Door(30, 30, true, false, true, false) };
+
 static void finish(int sig);
 
 uint64_t frame_start;
@@ -153,9 +285,16 @@ void setup() {
   frame_start =  clock_gettime_nsec_np(CLOCK_MONOTONIC) / 1000;
 }
 
+const int PLAYER_SIZE = 2;
+
 void loop() {
   level.drawLevel();
   player.drawPlayer();
+
+  int i;
+  for ( i = 0; i < NUM_DOORS; i++ ) {
+    doors[i].draw();
+  }
 
   int c = getch();
 
@@ -170,7 +309,13 @@ void loop() {
     player_position_new.y += 1;
   }
 
-  if ( ! level.collides_with(player_position_new) ) {
+  bool collides_with_level = level.collides_with(player_position_new, PLAYER_SIZE);
+  bool collides_with_door = false;
+  for ( i = 0; i < NUM_DOORS; i++ ) {
+    collides_with_door = doors[i].collides_with(player_position_new, PLAYER_SIZE);
+  }
+
+  if ( ! collides_with_level && ! collides_with_door ) {
     player.old_position = player.position;
     player.position = player_position_new;
   }
