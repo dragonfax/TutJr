@@ -58,6 +58,10 @@ Pos Pos::operator+(const Pos &other ) {
   return Pos(x + other.x, y + other.y);
 }
 
+Pos Pos::operator-(const Pos &other) {
+  return Pos(x - other.x, y - other.y);
+}
+
 Player::Player(int i, int j) {
   position = Pos(i, j);
   old_position = Pos(i, j);
@@ -75,6 +79,27 @@ void Player::drawPlayer() {
     }
   }
   refresh();
+}
+
+void Player::rotateAroundDoor(Pos center) {
+  Pos relPos = position - center;
+  Pos newRelPos = Pos(relPos.y, relPos.x);
+
+  if ( relPos.x > 0 ) {
+    if (relPos.y > 0 ) {
+      // quatdrant 1
+      // flip the y sign
+      newRelPos.y = -1 * newRelPos.y;
+    } else {
+      newRelPos.x = -1 * newRelPos.x;
+    }
+  } else if ( relPos.x < 0 ) {
+    if ( relPos.y < 0 ) {
+      newRelPos.y = -1 * newRelPos.y;
+    } else {
+      newRelPos.x = -1 * newRelPos.y;
+    }
+  }
 }
 
 
