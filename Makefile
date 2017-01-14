@@ -1,3 +1,3 @@
 
 all:
-	gcc tutjr.cpp -l curses && ./a.out
+	gcc -o tutjr *.cpp -lcurses -lstdc++

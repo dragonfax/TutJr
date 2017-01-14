@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 class Pos {
   public:
   int x, y;
@@ -8,49 +10,7 @@ class Pos {
   Pos operator-(const Pos &other );
 };
 
-
-const char *level_data[] = { 
-  "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
-  "W  W                                   W",
-  "W  W                                   W",
-  "W  W  W  WWWWWWWWWW                    W",
-  "W  W  W  W        W                    W",
-  "W  W  W  W        W                    W",
-  "W  WWWWWWW        WWWW                 W",
-  "W                                      W",
-  "W                                      W",
-  "W  WWWWWWW        WWWW                 W",
-  "W        W        W  W                 W",
-  "W        W        W  W                 W",
-  "W        WWWW  WWWW  W                 W",
-  "W           W  W     W                 W",
-  "W           W  W     W                 W",
-  "W           W  W     W                 W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "W                                      W",
-  "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW@W"
-};
+extern const char *level_data[];
 
 class Level {
   public:
@@ -60,7 +20,12 @@ class Level {
     void drawLevel();
     Level(int w, int h, const char **d);
     bool collides_with(Pos position, int size);
+    Level();
 };
+
+extern Level level;
+
+class Door;
 
 class Player {
   public:
@@ -69,7 +34,13 @@ class Player {
   Player(int i, int j);
   void drawPlayer();
   void rotateAroundDoor(Pos center);
+  Player();
+  void move(Level level, Door doors[]);
 };
+
+extern Player player;
+
+void finish(int i);
 
 
 class Door {
@@ -91,16 +62,10 @@ class Door {
 };
 
 const int NUM_DOORS = 1;
-Door doors[NUM_DOORS] = { Door(30, 30, true, false, true, false) };
+extern Door doors[NUM_DOORS];
 
-static void finish(int sig);
-
-uint64_t frame_start;
 
 const int PLAYER_SIZE = 2;
 
-const int FRAMES_PER_SECOND = 60;
-const float MILL_PER_FRAME = 1000.0f / FRAMES_PER_SECOND;
-const uint64_t MICRO_PER_FRAME =  MILL_PER_FRAME * 1000;
 
 
