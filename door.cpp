@@ -88,29 +88,65 @@ byte fourBitShiftRight(byte i) {
 // true for clockwise, false for counterclockwise
 void Door::rotate(bool direction) {
   if ( direction ) {
-    doors = fourBitShiftRight(doors);
-  } else {
     doors = fourBitShiftLeft(doors);
+  } else {
+    doors = fourBitShiftRight(doors);
   }
 }
 
 void Door::check_and_rotate() {
 
   bool rotateClockwise = false;
+  bool rotateCounter = false;
 
-  if ( doors & DOOR_UP ) {
+  if ( collidedDoors & DOOR_UP ) {
     /*
     check if the player collides with any cell on the left or the right of the door.
-    if so. thats where they collided from. and we rotate everything in that direction.
+    if so. thats where they collided from. and we rotate everything in the opposite direction.
     */
     if ( enclosure(center + Pos(-1, -2), 1, 2, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
       // upper left
+      rotateClockwise = true;
+    }
+    else if ( enclosure(center + Pos(1, -2), 1, 2, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+      rotateCounter = true;
+    }
+  }
+
+  if ( collidedDoors & DOOR_DOWN ) {
+    if ( enclosure(center + Pos(1, 1), 1, 2, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+      rotateClockwise = true;
+    }
+    else if ( enclosure(center + Pos(-1, 1), 1, 2, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+      rotateCounter = true;
+    }
+  }
+
+  if ( collidedDoors & DOOR_LEFT ) {
+    if ( enclosure(center + Pos(-2, -1), 2, 1, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+      rotateCounter = true;
+    }
+    else if ( enclosure(center + Pos(-2, 1), 2, 1, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+      rotateClockwise = true;
+    }
+  }
+
+  if ( collidedDoors & DOOR_RIGHT ) {
+    if ( enclosure(center + Pos(1, 1), 2, 1, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+      rotateCounter = true;
+    }
+    else if ( enclosure(center + Pos(1, -1), 2, 1, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
       rotateClockwise = true;
     }
   }
 
   if ( rotateClockwise) {
     rotate(true);
+    player.rotateAroundDoor(center);
+  } else if ( rotateCounter ) {
+    rotate(false);
+    player.rotateAroundDoor(center);
+    player.rotateAroundDoor(center);
     player.rotateAroundDoor(center);
   }
 }

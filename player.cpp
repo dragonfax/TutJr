@@ -1,12 +1,10 @@
 #include "headers.h"
 #include <curses.h>
 
-
 Player::Player(int i, int j) {
   position = Pos(i, j);
   old_position = Pos(i, j);
 }
-
 
 void Player::drawPlayer() {
   int i;
@@ -24,22 +22,19 @@ Player::Player(){}
 
 void Player::rotateAroundDoor(Pos center) {
   Pos relPos = position - center;
-  Pos newRelPos = Pos(relPos.y, relPos.x);
 
-  if ( relPos.x > 0 ) {
-    if (relPos.y > 0 ) {
-      // quatdrant 1
-      // flip the y sign
-      newRelPos.x = -1 * newRelPos.x;
-    } else {
-      newRelPos.y = -1 * newRelPos.y;
-    }
-  } else if ( relPos.x < 0 ) {
-    if ( relPos.y < 0 ) {
-      newRelPos.x = -1 * newRelPos.x;
-    } else {
-      newRelPos.y = -1 * newRelPos.y;
-    }
+  Pos newRelPos;
+
+  if ( relPos == Pos(1,-2) ) {
+    newRelPos = Pos(1, 1);
+  } else if ( relPos == Pos(1, 1) ) {
+    newRelPos = Pos(-2, 1);
+  } else if ( relPos == Pos(-2, 1) ) {
+    newRelPos = Pos(-2, -2);
+  } else if ( relPos == Pos(-2, -2) ) {
+    newRelPos = Pos(1, -2);
+  } else {
+    // known situation. just ignore it.
   }
 
   position = center + newRelPos;

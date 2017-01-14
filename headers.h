@@ -55,11 +55,6 @@ const byte DOOR_RIGHT = 2;
 const byte DOOR_DOWN = 4;
 const byte DOOR_LEFT = 8;
 
-const byte DOOR_UP_MASK = 14;
-const byte DOOR_RIGHT_MASK = 13;
-const byte DOOR_DOWN_MASK = 10;
-const byte DOOR_LEFT_MASK = 7;
-
 class Door {
   public:
     Pos center;

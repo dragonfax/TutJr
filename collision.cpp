@@ -20,6 +20,6 @@ bool enclosure(Pos pa, int wa, int ha, Pos pb, int wb, int hb) {
   Pos la = pa + Pos(wa - 1, ha - 1);
   Pos lb = pb + Pos(wb - 1, hb - 1);
 
-  return pa.x >= pb.x && pa.y >= pb.y && la.x <= lb.x && la.y <= lb.x;
+  return pa.x >= pb.x && pa.y >= pb.y && la.x <= lb.x && la.y <= lb.y;
 }
 

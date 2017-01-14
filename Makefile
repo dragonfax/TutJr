@@ -1,3 +1,3 @@
 
 all:
-	gcc -o tutjr *.cpp -lcurses -lstdc++
+	gcc -o tutjr *.cpp -lcurses
