@@ -55,8 +55,8 @@ bool Door::collides_with(Pos position, int w, int h) {
 
 void Door::draw() {
   // mvaddch(center.y, center.x, 'C');
-  // arduboy.drawRect(center.y * CELL_SIZE, center.x * CELL_SIZE, CELL_SIZE, CELL_SIZE, 1);
-  arduboy.drawPixel(center.y * CELL_SIZE + 1, center.x * CELL_SIZE + 1, 1);
+  arduboy.drawRect(center.y * CELL_SIZE, center.x * CELL_SIZE, CELL_SIZE, CELL_SIZE, 1);
+  // arduboy.drawPixel(center.y * CELL_SIZE + 1, center.x * CELL_SIZE + 1, 1);
 
 
   // how to draw each segment to the rotation.

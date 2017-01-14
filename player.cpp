@@ -1,5 +1,16 @@
 #include "headers.h"
 
+static const unsigned char PROGMEM hero[] = { 
+  B00111000,
+  B00111000,
+  B11111110,
+  B10111010,
+  B10101010,
+  B00101000,
+  B00101000,
+  B00101000
+  };
+
 Player::Player(int i, int j) {
   position = Pos(i, j);
   old_position = Pos(i, j);
@@ -8,7 +19,8 @@ Player::Player(int i, int j) {
 void Player::drawPlayer() {
 
       // mvaddch(old_position.y + j, old_position.x + i, ' ');
-      mvaddch(position.x * CELL_SIZE, position.y * CELL_SIZE, 'P');
+      // mvaddch(position.x * CELL_SIZE, position.y * CELL_SIZE, 'P');
+      arduboy.drawBitmap(position.x * CELL_SIZE, position.y * CELL_SIZE, hero, 8, 8, 1);
 
 }
 
