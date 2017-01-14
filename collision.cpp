@@ -1,27 +1,25 @@
 #include "headers.h"
 
 // simple AABB
-bool collision(Pos p1, int w1, int h1, Pos p2, int w2, int h2) {
 
-  int i1;
-  int j1;
-  for ( i1 = 0; i1 < s1; i1++ ) {
-    for ( j1 = 0; j1 < s1; j1++ ) {
-      int i2;
-      int j2;
-      for ( i2 = 0; i2 < s2; i2++ ) {
-        for ( j2 = 0; j2 < s2; j2++ ) {
-          Pos np1 = p1 + Pos(i1, j1);
-          Pos np2 = p2 + Pos(i2, j2);
-          if ( np1 == np2 ) {
-            return true;
-          }
-        }
-      }
-    }
-  }
+// does shapes collide at all?
+bool collision(Pos pa, int wa, int ha, Pos pb, int wb, int hb) {
 
-  return false;
+  Pos la = pa + Pos(wa - 1, ha - 1);
+  Pos lb = pb + Pos(wb - 1, hb - 1);
+
+  return ! ( pa.x > lb.x || pa.y > lb.y || pb.x > la.x || pb.y > la.y );
 }
 
+// does shape a completely lie within shape b.
+bool enclosure(Pos pa, int wa, int ha, Pos pb, int wb, int hb) {
+
+  // while pa is the upper left of the shape, 
+  // we need the lower right (la).
+  
+  Pos la = pa + Pos(wa - 1, ha - 1);
+  Pos lb = pb + Pos(wb - 1, hb - 1);
+
+  return pa.x >= pb.x && pa.y >= pb.y && la.x <= lb.x && la.y <= lb.x;
+}
 

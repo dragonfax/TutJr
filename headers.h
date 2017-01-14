@@ -1,5 +1,10 @@
 #include <stdbool.h>
 
+class Pos;
+
+bool collision(Pos pa, int wa, int ha, Pos pb, int wb, int hb);
+bool enclosure(Pos pa, int wa, int ha, Pos pb, int wb, int hb);
+
 class Pos {
   public:
   int x, y;
@@ -19,7 +24,7 @@ class Level {
     const char **data;
     void drawLevel();
     Level(int w, int h, const char **d);
-    bool collides_with(Pos position, int size);
+    bool collides_with(Pos position, int w, int h);
     Level();
 };
 
@@ -55,7 +60,7 @@ class Door {
     bool right;
     bool flagRight;
     Door(int x, int y, bool u, bool d, bool l, bool r);
-    bool collides_with(Pos position, int size);
+    bool collides_with(Pos position, int w, int h);
     void draw();
     void rotate(bool direction);
     void check_and_rotate();
@@ -64,8 +69,5 @@ class Door {
 const int NUM_DOORS = 1;
 extern Door doors[NUM_DOORS];
 
-
-const int PLAYER_SIZE = 2;
-
-
-
+const int PLAYER_WIDTH = 2;
+const int PLAYER_HEIGHT = 2;

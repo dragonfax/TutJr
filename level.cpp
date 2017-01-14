@@ -63,17 +63,18 @@ void Level::drawLevel() {
   }
 }
 
-bool Level::collides_with(Pos position, int size) {
+bool Level::collides_with(Pos position, int w, int h) {
+
   int i, j;
   bool collision = false;
-  for ( i = 0; i < size; i++ ) {
-    for ( j = 0; j < size; j++ ) {
+  for ( i = 0; i < h; i++ ) {
+    for ( j = 0; j < w; j++ ) {
       if ( level.data[position.y + i][position.x + j] != ' ' ) {
-        collision = true;
+        return true;
       }
     }
   }
-  return collision;
+  return false;
 }
 
 

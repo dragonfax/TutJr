@@ -61,11 +61,11 @@ void Player::move(Level level, Door doors[]) {
     finish(0);
   }
 
-  bool collides_with_level = level.collides_with(player_position_new, PLAYER_SIZE);
+  bool collides_with_level = level.collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT);
   bool collides_with_door = false;
   int i;
   for ( i = 0; i < NUM_DOORS; i++ ) {
-    if ( doors[i].collides_with(player_position_new, PLAYER_SIZE) ) {
+    if ( doors[i].collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT) ) {
       collides_with_door = true;
     }
   }

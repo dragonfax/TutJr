@@ -11,60 +11,41 @@ Door::Door(int x, int y, bool u, bool d, bool l, bool r) {
   right = r;
 }
 
-bool Door::collides_with(Pos position, int size) {
-
-  if ( collision(position, size, center, 1) ) {
-    return true;
-  }
+bool Door::collides_with(Pos position, int w, int h) {
 
   flagUp = false;
   flagDown = false;
   flagLeft = false;
   flagRight = false;
 
-  // doors are the only thing that is 2x1, so we give them special handling for collision.
-  // rather than expand the collision system to arbitrary shapes.
+  if ( collision(position, w, h, center, 1, 1) ) {
+    return true;
+  }
 
   // how to check the other door segments. including rotation.
   if ( up )  {
-    if ( collision(position, size, center + Pos(0, -1), 1) ) {
-      flagUp = true;
-      return true;
-    }
-    if ( collision(position, size, center + Pos(0, -2), 1) ) {
+    if ( collision(position, w, h, center + Pos(0, -2), 1, 2) ) {
       flagUp = true;
       return true;
     }
   }
 
   if ( down )  {
-    if ( collision(position, size, center + Pos(0, 1), 1) ) {
-      flagDown = true;
-      return true;
-    }
-    if ( collision(position, size, center + Pos(0, 2), 1) ) {
+    if ( collision(position, w, h, center + Pos(0, 1), 1, 2) ) {
       flagDown = true;
       return true;
     }
   }
 
   if ( left )  {
-    if ( collision(position, size, center + Pos(-1, 0), 1) ) {
-      flagLeft = true;
-      return true;
-    }
-    if ( collision(position, size, center + Pos(-2, 0), 1) ) {
+    if ( collision(position, w, h, center + Pos(-2, 0), 2, 1) ) {
       flagLeft = true;
       return true;
     }
   }
    
   if ( right )  {
-    if ( collision(position, size, center + Pos(1, 0), 1) ) {
-      flagRight = true;
-      return true;
-    }
-    if ( collision(position, size, center + Pos(2, 0), 1) ) {
+    if ( collision(position, w, h, center + Pos(1, 0), 2, 1) ) {
       flagRight = true;
       return true;
     }
@@ -146,7 +127,7 @@ void Door::check_and_rotate() {
     check if the player collides with any cell on the left or the right of the door.
     if so. thats where they collided from. and we rotate everything in that direction.
     */
-    if ( collision(player.position, 2, center + Pos(-1, -2), 1 ) || collision(player.position, 2, center + Pos(-1, -2),1 ) ) {
+    if ( enclosure(center + Pos(-1, -2), 1, 2, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
       // upper left
       rotateClockwise = true;
     }
