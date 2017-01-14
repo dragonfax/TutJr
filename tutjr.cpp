@@ -281,6 +281,8 @@ void loop() {
     player_position_new.y -= 1;
   } else if ( c == KEY_DOWN ) {
     player_position_new.y += 1;
+  } else if ( c == 'q' ) {
+    finish(0);
   }
 
   bool collides_with_level = level.collides_with(player_position_new, PLAYER_SIZE);
