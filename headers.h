@@ -25,6 +25,9 @@ class Pos {
 
 extern const char *level_data[];
 
+const int LEVEL_WIDTH = 32;
+const int LEVEL_HEIGHT = 16;
+
 class Level {
   public:
     int width;
@@ -72,7 +75,7 @@ class Door {
     void check_and_rotate();
 };
 
-const int NUM_DOORS = 6;
+const int NUM_DOORS = 2;
 extern Door doors[NUM_DOORS];
 
 const int PLAYER_WIDTH = 2;

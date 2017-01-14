@@ -1,12 +1,8 @@
 #include "headers.h"
 
 Door doors[NUM_DOORS] = { 
-  Door(30, 30, 3) ,
   Door(3, 12, 1) ,
-  Door(9, 9, 1) ,
-  Door(36, 21, 10) ,
-  Door(30, 10, 7) ,
-  Door(9, 30, 5) 
+  Door(9, 9, 1)
 };
 
 Door::Door(int x, int y, byte ds) {
