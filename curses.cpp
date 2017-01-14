@@ -1,8 +1,8 @@
 #include "headers.h"
 
 
-void mvaddch(int y, int x, char c) {
-      arduboy.drawChar(y * 4,x * 4, c, 1, 0, 1);
+void mvaddch(int x, int y, char c) {
+      arduboy.drawChar(x,y, c, 1, 0, 1);
 }
 
 void refresh() {

@@ -10,16 +10,8 @@ Monster::Monster(int x, int y) {
 }
 
 void Monster::draw() {
-  int i, j;
-  for ( i = 0; i < MONSTER_WIDTH; i++ ) {
-    for ( j = 0; j < MONSTER_HEIGHT; j++ ) {
+      mvaddch(position.x * 4, position.y * 4, 'M');
 
-      // TODO only do ths when actually taking a step.
-      mvaddch(old_position.y + j, old_position.x + i, ' ');
-
-      mvaddch(position.y + j, position.x + i, 'M');
-    }
-  }
 }
 
 const int MOVES_PER_SECOND = 3;

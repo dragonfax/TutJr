@@ -54,28 +54,33 @@ bool Door::collides_with(Pos position, int w, int h) {
 }
 
 void Door::draw() {
-  mvaddch(center.y, center.x, 'C');
+  // mvaddch(center.y, center.x, 'C');
+  arduboy.drawRect(center.y * 4, center.x * 4, 4, 4, 1);
 
   // how to draw each segment to the rotation.
 
   if ( doors & DOOR_UP ) {
-    mvaddch(center.y - 1, center.x, 'D');
-    mvaddch(center.y - 2, center.x, 'D');
+    // mvaddch(center.y - 1, center.x, 'D');
+    // mvaddch(center.y - 2, center.x, 'D');
+    arduboy.drawFastVLine( (center.x) * 4 + 2, (center.y - 2)* 4, 8, 1);
   }
 
   if ( doors & DOOR_DOWN ) {
-    mvaddch(center.y + 1, center.x, 'D');
-    mvaddch(center.y + 2, center.x, 'D');
+    // mvaddch(center.y + 1, center.x, 'D');
+    // mvaddch(center.y + 2, center.x, 'D');
+    arduboy.drawFastVLine( (center.x) * 4 + 2, (center.y + 1)* 4, 8, 1);
   }
 
   if ( doors & DOOR_LEFT ) {
-    mvaddch(center.y, center.x - 1, 'D');
-    mvaddch(center.y, center.x - 2, 'D');
+    // mvaddch(center.y, center.x - 1, 'D');
+    // mvaddch(center.y, center.x - 2, 'D');
+    arduboy.drawFastHLine( (center.x - 2) * 4, (center.y)* 4 + 2, 8, 1);
   }
 
   if ( doors & DOOR_RIGHT ) {
-    mvaddch(center.y, center.x + 1, 'D');
-    mvaddch(center.y, center.x + 2, 'D');
+    // mvaddch(center.y, center.x + 1, 'D');
+    // mvaddch(center.y, center.x + 2, 'D');
+    arduboy.drawFastHLine( (center.x + 1) * 4, (center.y)* 4 + 2, 8, 1);
   }
 }
 

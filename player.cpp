@@ -6,15 +6,10 @@ Player::Player(int i, int j) {
 }
 
 void Player::drawPlayer() {
-  int i;
-  int j;
-  for ( i = 0; i <= 1; i++ ) {
-    for ( j = 0; j <= 1; j++ ) {
-      mvaddch(old_position.y + j, old_position.x + i, ' ');
-      mvaddch(position.y + j, position.x + i, 'P');
-    }
-  }
-  refresh();
+
+      // mvaddch(old_position.y + j, old_position.x + i, ' ');
+      mvaddch(position.x * 4, position.y * 4, 'P');
+
 }
 
 Player::Player(){}
