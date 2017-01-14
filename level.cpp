@@ -42,19 +42,23 @@ void Level::drawLevel() {
 
 void Level::drawCellWalls(int y, int x) {
 
-  if ( data[y - 1][x] != 'W' ) {
+  // north wall
+  if ( y == 0 || data[y - 1][x] != 'W' ) {
     arduboy.drawFastHLine(x * 4, y * 4, 4, 1);
   }
 
-  if ( data[y][x - 1] != 'W' ) {
+  // west wall
+  if ( x == 0 || data[y][x - 1] != 'W' ) {
     arduboy.drawFastVLine(x * 4, y * 4, 4, 1);
   }
 
-  if ( data[y + 1][x] != 'W' ) {
+  // south wall
+  if ( y == 128 || data[y + 1][x] != 'W' ) {
     arduboy.drawFastHLine( x * 4, y * 4 + 3, 4, 1);
   }
 
-  if ( data[y][x + 1] != 'W' ) {
+  // east wall
+  if ( x == 32 || data[y][x + 1] != 'W' ) {
     arduboy.drawFastVLine( x * 4 + 3, y * 4, 4, 1 );
   }
 
