@@ -57,7 +57,7 @@ void Door::draw() {
   // mvaddch(center.y, center.x, 'C');
   // arduboy.drawRect(center.y * CELL_SIZE, center.x * CELL_SIZE, CELL_SIZE, CELL_SIZE, 1);
   // arduboy.drawPixel(center.y * CELL_SIZE + 1, center.x * CELL_SIZE + 1, 1);
-    arduboy.fillRect(center.x * CELL_SIZE, center.y * CELL_SIZE, CELL_SIZE, CELL_SIZE, 1);
+    arduboy.fillRect(center.x * CELL_SIZE + 1, center.y * CELL_SIZE + 1, CELL_SIZE - 2, CELL_SIZE - 2, 1);
 
 
 

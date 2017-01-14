@@ -39,6 +39,8 @@ class Level {
     Level(int w, int h, const char **d);
     bool collides_with(Pos position, int w, int h);
     Level();
+    void drawCellWalls(int x, int y);
+
 };
 
 extern Level level;

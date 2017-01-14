@@ -34,10 +34,31 @@ void Level::drawLevel() {
   for ( i = 0; i < width; i++ ) {
     for ( j = 0; j < height; j++ ) {
       if ( data[j][i] == 'W' ) {
-        arduboy.drawRect(i * CELL_SIZE, j * CELL_SIZE, CELL_SIZE, CELL_SIZE, 1);
+        drawCellWalls(j,i);
       }
     }
   }
+}
+
+void Level::drawCellWalls(int y, int x) {
+
+  if ( data[y - 1][x] != 'W' ) {
+    arduboy.drawFastHLine(x * 4, y * 4, 4, 1);
+  }
+
+  if ( data[y][x - 1] != 'W' ) {
+    arduboy.drawFastVLine(x * 4, y * 4, 4, 1);
+  }
+
+  if ( data[y + 1][x] != 'W' ) {
+    arduboy.drawFastHLine( x * 4, y * 4 + 3, 4, 1);
+  }
+
+  if ( data[y][x + 1] != 'W' ) {
+    arduboy.drawFastVLine( x * 4 + 3, y * 4, 4, 1 );
+  }
+
+
 }
 
 bool Level::collides_with(Pos position, int w, int h) {
