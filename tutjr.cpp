@@ -89,17 +89,19 @@ void Player::rotateAroundDoor(Pos center) {
     if (relPos.y > 0 ) {
       // quatdrant 1
       // flip the y sign
-      newRelPos.y = -1 * newRelPos.y;
-    } else {
       newRelPos.x = -1 * newRelPos.x;
+    } else {
+      newRelPos.y = -1 * newRelPos.y;
     }
   } else if ( relPos.x < 0 ) {
     if ( relPos.y < 0 ) {
-      newRelPos.y = -1 * newRelPos.y;
+      newRelPos.x = -1 * newRelPos.x;
     } else {
-      newRelPos.x = -1 * newRelPos.y;
+      newRelPos.y = -1 * newRelPos.y;
     }
   }
+
+  position = center + newRelPos;
 }
 
 
