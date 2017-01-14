@@ -10,7 +10,7 @@ Monster::Monster(int x, int y) {
 }
 
 void Monster::draw() {
-      mvaddch(position.x * 4, position.y * 4, 'M');
+      mvaddch(position.x * CELL_SIZE, position.y * CELL_SIZE, 'M');
 
 }
 

@@ -8,7 +8,7 @@ Player::Player(int i, int j) {
 void Player::drawPlayer() {
 
       // mvaddch(old_position.y + j, old_position.x + i, ' ');
-      mvaddch(position.x * 4, position.y * 4, 'P');
+      mvaddch(position.x * CELL_SIZE, position.y * CELL_SIZE, 'P');
 
 }
 
@@ -35,6 +35,9 @@ void Player::rotateAroundDoor(Pos center) {
 }
 
 void Player::move(Level level, Door doors[]) {
+
+  if ( ! arduboy.everyXFrames(5) )
+    return;
 
   Pos player_position_new = position;
   if ( arduboy.pressed(LEFT_BUTTON) ) {

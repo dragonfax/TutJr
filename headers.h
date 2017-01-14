@@ -3,6 +3,8 @@
 
 extern Arduboy arduboy;
 
+const int CELL_SIZE = 3;
+
 void mvaddch(int y, int x, char c);
 void refresh() ;
 

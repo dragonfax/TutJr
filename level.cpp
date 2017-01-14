@@ -34,7 +34,7 @@ void Level::drawLevel() {
   for ( i = 0; i < width; i++ ) {
     for ( j = 0; j < height; j++ ) {
       if ( data[j][i] == 'W' ) {
-        arduboy.fillRect(i * 4, j * 4, 4, 4, 1);
+        arduboy.fillRect(i * CELL_SIZE, j * CELL_SIZE, CELL_SIZE, CELL_SIZE, 1);
       }
     }
   }
