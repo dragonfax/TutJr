@@ -39,7 +39,15 @@ void loop() {
     doors[i].draw();
   }
 
+  for ( i = 0; i < NUM_MONSTERS; i++ ) {
+    monsters[i].draw();
+  }
+
   player.move(level, doors);
+
+  for ( i = 0; i < NUM_MONSTERS; i++ ) {
+    monsters[i].move();
+  }
 }
 
 int main() {

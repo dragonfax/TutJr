@@ -65,7 +65,14 @@ void Player::move(Level level, Door doors[]) {
     }
   }
 
-  if ( ! collides_with_level && ! collides_with_door ) {
+  bool collides_with_monster = false;
+  for ( i = 0; i < NUM_MONSTERS; i++ ) {
+    if ( monsters[i].collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT) ) {
+      collides_with_monster = true;
+    }
+  }
+
+  if ( ! collides_with_level && ! collides_with_door && ! collides_with_monster) {
     old_position = position;
     position = player_position_new;
   }

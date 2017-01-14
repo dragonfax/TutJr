@@ -72,3 +72,23 @@ extern Door doors[NUM_DOORS];
 
 const int PLAYER_WIDTH = 2;
 const int PLAYER_HEIGHT = 2;
+
+class Monster {
+  public:
+    Pos position;
+    Pos old_position;
+    byte direction;
+    Monster();
+    Monster(int x, int y);
+    void move();
+    void draw();
+    bool collides_with(Pos position, int w, int h);
+};
+
+const int MONSTER_WIDTH = 2;
+const int MONSTER_HEIGHT = 2;
+
+
+
+const int NUM_MONSTERS = 1;
+extern Monster monsters[NUM_MONSTERS];
