@@ -1,5 +1,16 @@
 #include "headers.h"
 
+static const byte PROGMEM mon[] = { 
+  B11100110,
+  B01000001,
+  B01111110,
+  B01111000,
+  B01111100,
+  B00101000,
+  B00101001,
+  B11100110
+  };
+
 Monster monsters[NUM_MONSTERS] = { Monster(13,7) };
 
 Monster::Monster() {}
@@ -10,7 +21,7 @@ Monster::Monster(byte x, byte y) {
 }
 
 void Monster::draw() {
-  arduboy.drawChar(position.x * CELL_SIZE, position.y * CELL_SIZE, 'M', 1, 0, 1);
+  arduboy.drawBitmap(position.x * CELL_SIZE, position.y * CELL_SIZE, mon, 8, 8, 1);
 }
 
 const byte MOVES_PER_SECOND = 3;
