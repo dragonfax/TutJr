@@ -2,7 +2,12 @@
 
 const byte PLAYER_ANIM_FRAMES = 4;
 
+const byte PLAYER_ANIM_DOWN = 0;
+const byte PLAYER_ANIM_RIGHT = 4 * 8;
+
 static const byte PROGMEM hero[] = { 
+
+  // moving down animation
   B00011000,
   B00111100,
   B00011000,
@@ -38,6 +43,45 @@ static const byte PROGMEM hero[] = {
   B10100101,
   B00100100,
   B00100100,
+
+  // moving right, animation
+
+  B00011000,
+  B00011100,
+  B00011000,
+  B00111110,
+  B00111100,
+  B00111000,
+  B00111000,
+  B00001100,
+
+  B00011000,
+  B00011100,
+  B00011000,
+  B00111110,
+  B00111100,
+  B00111000,
+  B00101100,
+  B00110000,
+
+  B00011000,
+  B00011100,
+  B00011000,
+  B00111110,
+  B00111100,
+  B01111100,
+  B01000110,
+  B01100000,
+
+  B00011000,
+  B00011100,
+  B00011000,
+  B00111110,
+  B00111100,
+  B01111000,
+  B01100100,
+  B00000110,
+
 };
 
 Player::Player(byte i, byte j) {
