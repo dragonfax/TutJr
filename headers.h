@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <time.h>
 
 typedef unsigned char byte;
 
@@ -73,6 +74,8 @@ extern Door doors[NUM_DOORS];
 const int PLAYER_WIDTH = 2;
 const int PLAYER_HEIGHT = 2;
 
+extern timespec monster_frame_start;
+
 class Monster {
   public:
     Pos position;
@@ -83,6 +86,7 @@ class Monster {
     void move();
     void draw();
     bool collides_with(Pos position, int w, int h);
+    void setup();
 };
 
 const int MONSTER_WIDTH = 2;

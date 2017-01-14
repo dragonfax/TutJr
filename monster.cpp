@@ -1,5 +1,6 @@
 #include "headers.h"
 #include <curses.h>
+#include <time.h>
 
 Monster monsters[NUM_MONSTERS] = { Monster(13,7) };
 
@@ -23,7 +24,31 @@ void Monster::draw() {
   }
 }
 
+const int MOVES_PER_SECOND = 3;
+const unsigned long NANOS_PER_MOVE = ( 1000 * 1000 * 1000 ) / 3;
+
+timespec monster_frame_start;
+
 void Monster::move() {
+
+  timespec now;
+  clock_gettime(CLOCK_MONOTONIC, &now);
+
+  timespec duration = { now.tv_sec - monster_frame_start.tv_sec, now.tv_nsec - monster_frame_start.tv_nsec};
+  unsigned long duration_nanos = duration.tv_sec * ( 10^9 ) + duration.tv_nsec;
+
+  if ( duration_nanos > NANOS_PER_MOVE) {
+    // move
+
+    Pos new_position = position + Pos(1, 0);
+
+    if ( ! level.collides_with(position, 2, 2) ) {
+      old_position = position;
+      position = new_position;
+    }
+
+    monster_frame_start = now;
+  }
 }
 
 bool Monster::collides_with(Pos p, int w, int h) {

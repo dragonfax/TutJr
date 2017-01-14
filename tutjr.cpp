@@ -23,6 +23,8 @@ void setup() {
   nodelay(stdscr,1);
 
   frame_start =  clock_gettime_nsec_np(CLOCK_MONOTONIC) / 1000;
+
+  clock_gettime(CLOCK_MONOTONIC, &monster_frame_start);
 }
 
 Level level = Level(40, 40, level_data);
