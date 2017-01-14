@@ -67,7 +67,7 @@ class Door {
     void check_and_rotate();
 };
 
-const int NUM_DOORS = 1;
+const int NUM_DOORS = 6;
 extern Door doors[NUM_DOORS];
 
 const int PLAYER_WIDTH = 2;
