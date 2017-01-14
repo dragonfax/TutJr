@@ -1,5 +1,4 @@
 #include "headers.h"
-#include <curses.h>
 
 Player::Player(int i, int j) {
   position = Pos(i, j);
@@ -41,19 +40,16 @@ void Player::rotateAroundDoor(Pos center) {
 }
 
 void Player::move(Level level, Door doors[]) {
-  int c = getch();
 
   Pos player_position_new = position;
-  if ( c == KEY_LEFT ) {
+  if ( arduboy.pressed(LEFT_BUTTON) ) {
     player_position_new.x -= 1;
-  } else if ( c == KEY_RIGHT ) {
+  } else if ( arduboy.pressed(RIGHT_BUTTON) ) {
     player_position_new.x += 1;
-  } else if ( c == KEY_UP ) {
+  } else if ( arduboy.pressed(UP_BUTTON) ) {
     player_position_new.y -= 1;
-  } else if ( c == KEY_DOWN ) {
+  } else if ( arduboy.pressed(DOWN_BUTTON) ) {
     player_position_new.y += 1;
-  } else if ( c == 'q' ) {
-    finish(0);
   }
 
   bool collides_with_level = level.collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT);

@@ -1,5 +1,10 @@
 #include <stdbool.h>
-#include <time.h>
+#include "Arduboy.h"
+
+extern Arduboy arduboy;
+
+void mvaddch(int y, int x, char c);
+void refresh() ;
 
 typedef unsigned char byte;
 
@@ -48,7 +53,6 @@ class Player {
 
 extern Player player;
 
-void finish(int i);
 
 
 const byte DOOR_UP = 1;
@@ -74,7 +78,6 @@ extern Door doors[NUM_DOORS];
 const int PLAYER_WIDTH = 2;
 const int PLAYER_HEIGHT = 2;
 
-extern timespec monster_frame_start;
 
 class Monster {
   public:

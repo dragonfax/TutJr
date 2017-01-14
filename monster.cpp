@@ -1,6 +1,4 @@
 #include "headers.h"
-#include <curses.h>
-#include <time.h>
 
 Monster monsters[NUM_MONSTERS] = { Monster(13,7) };
 
@@ -25,19 +23,11 @@ void Monster::draw() {
 }
 
 const int MOVES_PER_SECOND = 3;
-const unsigned long NANOS_PER_MOVE = ( 1000 * 1000 * 1000 ) / 3;
-
-timespec monster_frame_start;
+const int FRAMES_PER_MOVE = 60 / MOVES_PER_SECOND;
 
 void Monster::move() {
 
-  timespec now;
-  clock_gettime(CLOCK_MONOTONIC, &now);
-
-  timespec duration = { now.tv_sec - monster_frame_start.tv_sec, now.tv_nsec - monster_frame_start.tv_nsec};
-  unsigned long duration_nanos = duration.tv_sec * ( 10^9 ) + duration.tv_nsec;
-
-  if ( duration_nanos > NANOS_PER_MOVE) {
+  if ( arduboy.everyXFrames(FRAMES_PER_MOVE) ) {
     // move
 
     Pos new_position = position + Pos(1, 0);
@@ -47,7 +37,6 @@ void Monster::move() {
       position = new_position;
     }
 
-    monster_frame_start = now;
   }
 }
 

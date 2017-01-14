@@ -1,5 +1,4 @@
 #include "headers.h"
-#include <curses.h>
 
 Door doors[NUM_DOORS] = { 
   Door(30, 30, 3) ,

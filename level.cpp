@@ -1,5 +1,4 @@
 #include "headers.h"
-#include <curses.h>
 
 const char *level_data[] = { 
   "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
