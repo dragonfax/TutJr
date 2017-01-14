@@ -26,7 +26,7 @@ void loop() {
 
   player.drawPlayer();
 
-  int i;
+  byte i;
   for ( i = 0; i < NUM_DOORS; i++ ) {
     doors[i].draw();
   }
@@ -35,7 +35,7 @@ void loop() {
     monsters[i].draw();
   }
 
-  refresh();
+  arduboy.display();
 
   player.move(level, doors);
 

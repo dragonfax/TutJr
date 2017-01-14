@@ -3,7 +3,7 @@
 // simple AABB
 
 // does shapes collide at all?
-bool collision(Pos pa, int wa, int ha, Pos pb, int wb, int hb) {
+bool collision(Pos pa, byte wa, byte ha, Pos pb, byte wb, byte hb) {
 
   Pos la = pa + Pos(wa - 1, ha - 1);
   Pos lb = pb + Pos(wb - 1, hb - 1);
@@ -12,7 +12,7 @@ bool collision(Pos pa, int wa, int ha, Pos pb, int wb, int hb) {
 }
 
 // does shape a completely lie within shape b.
-bool enclosure(Pos pa, int wa, int ha, Pos pb, int wb, int hb) {
+bool enclosure(Pos pa, byte wa, byte ha, Pos pb, byte wb, byte hb) {
 
   // while pa is the upper left of the shape, 
   // we need the lower right (la).

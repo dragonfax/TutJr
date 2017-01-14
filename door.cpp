@@ -5,13 +5,13 @@ Door doors[NUM_DOORS] = {
   Door(9, 9, 1)
 };
 
-Door::Door(int x, int y, byte ds) {
+Door::Door(byte x, byte y, byte ds) {
   center = Pos(x, y);
   doors = ds;
   collidedDoors = 0;
 }
 
-bool Door::collides_with(Pos position, int w, int h) {
+bool Door::collides_with(Pos position, byte w, byte h) {
 
   collidedDoors = 0;
 
@@ -54,9 +54,7 @@ bool Door::collides_with(Pos position, int w, int h) {
 }
 
 void Door::draw() {
-  // mvaddch(center.y, center.x, 'C');
-  // arduboy.drawRect(center.y * CELL_SIZE, center.x * CELL_SIZE, CELL_SIZE, CELL_SIZE, 1);
-  // arduboy.drawPixel(center.y * CELL_SIZE + 1, center.x * CELL_SIZE + 1, 1);
+
     arduboy.fillRect(center.x * CELL_SIZE + 1, center.y * CELL_SIZE + 1, CELL_SIZE - 2, CELL_SIZE - 2, 1);
 
 
@@ -64,32 +62,28 @@ void Door::draw() {
   // how to draw each segment to the rotation.
 
   if ( doors & DOOR_UP ) {
-    // mvaddch(center.y - 1, center.x, 'D');
-    // mvaddch(center.y - 2, center.x, 'D');
+
     arduboy.drawFastVLine( (center.x) * CELL_SIZE + 1, (center.y - 2)* CELL_SIZE, CELL_SIZE * 2, 1);
     arduboy.drawFastVLine( (center.x) * CELL_SIZE + 2, (center.y - 2)* CELL_SIZE, CELL_SIZE * 2, 1);
 
   }
 
   if ( doors & DOOR_DOWN ) {
-    // mvaddch(center.y + 1, center.x, 'D');
-    // mvaddch(center.y + 2, center.x, 'D');
+ 
     arduboy.drawFastVLine( (center.x) * CELL_SIZE + 1, (center.y + 1)* CELL_SIZE, CELL_SIZE * 2, 1);
     arduboy.drawFastVLine( (center.x) * CELL_SIZE + 2, (center.y + 1)* CELL_SIZE, CELL_SIZE * 2, 1);
 
   }
 
   if ( doors & DOOR_LEFT ) {
-    // mvaddch(center.y, center.x - 1, 'D');
-    // mvaddch(center.y, center.x - 2, 'D');
+
     arduboy.drawFastHLine( (center.x - 2) * CELL_SIZE, (center.y)* CELL_SIZE + 1, CELL_SIZE * 2, 1);
     arduboy.drawFastHLine( (center.x - 2) * CELL_SIZE, (center.y)* CELL_SIZE + 2, CELL_SIZE * 2, 1);
 
   }
 
   if ( doors & DOOR_RIGHT ) {
-    // mvaddch(center.y, center.x + 1, 'D');
-    // mvaddch(center.y, center.x + 2, 'D');
+
     arduboy.drawFastHLine( (center.x + 1) * CELL_SIZE, (center.y)* CELL_SIZE + 1, CELL_SIZE * 2, 1);
     arduboy.drawFastHLine( (center.x + 1) * CELL_SIZE, (center.y)* CELL_SIZE + 2, CELL_SIZE * 2, 1);
 

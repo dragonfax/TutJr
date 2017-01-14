@@ -4,18 +4,17 @@ Monster monsters[NUM_MONSTERS] = { Monster(13,7) };
 
 Monster::Monster() {}
 
-Monster::Monster(int x, int y) {
+Monster::Monster(byte x, byte y) {
   position = Pos(x, y);
   old_position = position;
 }
 
 void Monster::draw() {
-      mvaddch(position.x * CELL_SIZE, position.y * CELL_SIZE, 'M');
-
+  arduboy.drawChar(position.x * CELL_SIZE, position.y * CELL_SIZE, 'M', 1, 0, 1);
 }
 
-const int MOVES_PER_SECOND = 3;
-const int FRAMES_PER_MOVE = 60 / MOVES_PER_SECOND;
+const byte MOVES_PER_SECOND = 3;
+const uint FRAMES_PER_MOVE = 60 / MOVES_PER_SECOND;
 
 void Monster::move() {
 
@@ -32,6 +31,6 @@ void Monster::move() {
   }
 }
 
-bool Monster::collides_with(Pos p, int w, int h) {
+bool Monster::collides_with(Pos p, byte w, byte h) {
   return collision(p, w, h, position, MONSTER_WIDTH, MONSTER_HEIGHT);
 }

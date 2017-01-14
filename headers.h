@@ -3,23 +3,22 @@
 
 extern Arduboy arduboy;
 
-const int CELL_SIZE = 4;
-
-void mvaddch(int y, int x, char c);
-void refresh() ;
+const byte CELL_SIZE = 4;
 
 typedef unsigned char byte;
 
+typedef unsigned int uint;
+
 class Pos;
 
-bool collision(Pos pa, int wa, int ha, Pos pb, int wb, int hb);
-bool enclosure(Pos pa, int wa, int ha, Pos pb, int wb, int hb);
+bool collision(Pos pa, byte wa, byte ha, Pos pb, byte wb, byte hb);
+bool enclosure(Pos pa, byte wa, byte ha, Pos pb, byte wb, byte hb);
 
 class Pos {
   public:
-  int x, y;
+  char x, y;
   Pos();
-  Pos( int i, int j);
+  Pos( char i, char j);
   bool operator==(const Pos &other );
   Pos operator+(const Pos &other );
   Pos operator-(const Pos &other );
@@ -27,19 +26,19 @@ class Pos {
 
 extern const char *level_data[];
 
-const int LEVEL_WIDTH = 32;
-const int LEVEL_HEIGHT = 16;
+const byte LEVEL_WIDTH = 32;
+const byte LEVEL_HEIGHT = 16;
 
 class Level {
   public:
-    int width;
-    int height;
+    byte width;
+    byte height;
     const char **data;
     void drawLevel();
-    Level(int w, int h, const char **d);
-    bool collides_with(Pos position, int w, int h);
+    Level(byte w, byte h, const char **d);
+    bool collides_with(Pos position, byte w, byte h);
     Level();
-    void drawCellWalls(int x, int y);
+    void drawCellWalls(byte x, byte y);
 
 };
 
@@ -51,7 +50,7 @@ class Player {
   public:
   Pos position;
   Pos old_position;
-  Player(int i, int j);
+  Player(byte i, byte j);
   void drawPlayer();
   void rotateAroundDoor(Pos center);
   Player();
@@ -72,18 +71,18 @@ class Door {
     Pos center;
     byte doors;
     byte collidedDoors;
-    Door(int x, int y, byte ds);
-    bool collides_with(Pos position, int w, int h);
+    Door(byte x, byte y, byte ds);
+    bool collides_with(Pos position, byte w, byte h);
     void draw();
     void rotate(bool direction);
     void check_and_rotate();
 };
 
-const int NUM_DOORS = 2;
+const byte NUM_DOORS = 2;
 extern Door doors[NUM_DOORS];
 
-const int PLAYER_WIDTH = 2;
-const int PLAYER_HEIGHT = 2;
+const byte PLAYER_WIDTH = 2;
+const byte PLAYER_HEIGHT = 2;
 
 
 class Monster {
@@ -92,17 +91,17 @@ class Monster {
     Pos old_position;
     byte direction;
     Monster();
-    Monster(int x, int y);
+    Monster(byte x, byte y);
     void move();
     void draw();
-    bool collides_with(Pos position, int w, int h);
+    bool collides_with(Pos position, byte w, byte h);
     void setup();
 };
 
-const int MONSTER_WIDTH = 2;
-const int MONSTER_HEIGHT = 2;
+const byte MONSTER_WIDTH = 2;
+const byte MONSTER_HEIGHT = 2;
 
 
 
-const int NUM_MONSTERS = 1;
+const byte NUM_MONSTERS = 1;
 extern Monster monsters[NUM_MONSTERS];

@@ -20,7 +20,7 @@ const char *level_data[] = {
 };
 
 
-Level::Level(int w, int h, const char **d) {
+Level::Level(byte w, byte h, const char **d) {
   width = w;
   height = w;
   data = d;
@@ -29,8 +29,8 @@ Level::Level(int w, int h, const char **d) {
 Level::Level(){}
 
 void Level::drawLevel() {
-  int i;
-  int j;
+  byte i;
+  byte j;
   for ( i = 0; i < width; i++ ) {
     for ( j = 0; j < height; j++ ) {
       if ( data[j][i] == 'W' ) {
@@ -40,7 +40,7 @@ void Level::drawLevel() {
   }
 }
 
-void Level::drawCellWalls(int y, int x) {
+void Level::drawCellWalls(byte y, byte x) {
 
   // north wall
   if ( y == 0 || data[y - 1][x] != 'W' ) {
@@ -65,9 +65,9 @@ void Level::drawCellWalls(int y, int x) {
 
 }
 
-bool Level::collides_with(Pos position, int w, int h) {
+bool Level::collides_with(Pos position, byte w, byte h) {
 
-  int i, j;
+  byte i, j;
   bool collision = false;
   for ( i = 0; i < h; i++ ) {
     for ( j = 0; j < w; j++ ) {

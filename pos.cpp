@@ -5,7 +5,7 @@ Pos::Pos() {
   y = 0;
 }
 
-Pos::Pos(int i, int j) {
+Pos::Pos(char i, char j) {
   x = i;
   y = j;
 }

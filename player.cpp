@@ -1,6 +1,6 @@
 #include "headers.h"
 
-static const unsigned char PROGMEM hero[] = { 
+static const byte PROGMEM hero[] = { 
   B00111000,
   B00111000,
   B11111110,
@@ -11,17 +11,13 @@ static const unsigned char PROGMEM hero[] = {
   B00101000
   };
 
-Player::Player(int i, int j) {
+Player::Player(byte i, byte j) {
   position = Pos(i, j);
   old_position = Pos(i, j);
 }
 
 void Player::drawPlayer() {
-
-      // mvaddch(old_position.y + j, old_position.x + i, ' ');
-      // mvaddch(position.x * CELL_SIZE, position.y * CELL_SIZE, 'P');
       arduboy.drawBitmap(position.x * CELL_SIZE, position.y * CELL_SIZE, hero, 8, 8, 1);
-
 }
 
 Player::Player(){}
@@ -64,7 +60,7 @@ void Player::move(Level level, Door doors[]) {
 
   bool collides_with_level = level.collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT);
   bool collides_with_door = false;
-  int i;
+  byte i;
   for ( i = 0; i < NUM_DOORS; i++ ) {
     if ( doors[i].collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT) ) {
       collides_with_door = true;
