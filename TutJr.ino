@@ -11,7 +11,7 @@ void setup() {
 
 }
 
-Level level = Level(LEVEL_WIDTH, LEVEL_HEIGHT, level_data);
+Level level = Level(LEVEL_WIDTH, LEVEL_HEIGHT);
 Player player = Player(10, 5);
 
 

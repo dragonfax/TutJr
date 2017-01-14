@@ -24,22 +24,19 @@ class Pos {
   Pos operator-(const Pos &other );
 };
 
-extern const char *level_data[];
-
-const byte LEVEL_WIDTH = 32;
-const byte LEVEL_HEIGHT = 16;
+extern const byte LEVEL_WIDTH;
+extern const byte LEVEL_HEIGHT;
 
 class Level {
   public:
     byte width;
     byte height;
-    const char **data;
     void drawLevel();
-    Level(byte w, byte h, const char **d);
+    Level(byte w, byte h);
     bool collides_with(Pos position, byte w, byte h);
     Level();
     void drawCellWalls(byte x, byte y);
-
+    bool getData(byte x, byte y);
 };
 
 extern Level level;
