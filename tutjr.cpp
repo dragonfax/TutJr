@@ -140,42 +140,55 @@ bool Door::collides_with(Pos position, int size) {
     return true;
   }
 
+  flagUp = false;
+  flagDown = false;
+  flagLeft = false;
+  flagRight = false;
+
   // doors are the only thing that is 2x1, so we give them special handling for collision.
   // rather than expand the collision system to arbitrary shapes.
 
   // how to check the other door segments. including rotation.
   if ( up )  {
     if ( collision(position, size, center + Pos(0, -1), 1) ) {
+      flagUp = true;
       return true;
     }
     if ( collision(position, size, center + Pos(0, -2), 1) ) {
+      flagUp = true;
       return true;
     }
   }
 
   if ( down )  {
     if ( collision(position, size, center + Pos(0, 1), 1) ) {
+      flagDown = true;
       return true;
     }
     if ( collision(position, size, center + Pos(0, 2), 1) ) {
+      flagDown = true;
       return true;
     }
   }
 
   if ( left )  {
     if ( collision(position, size, center + Pos(-1, 0), 1) ) {
+      flagLeft = true;
       return true;
     }
     if ( collision(position, size, center + Pos(-2, 0), 1) ) {
+      flagLeft = true;
       return true;
     }
   }
    
   if ( right )  {
     if ( collision(position, size, center + Pos(1, 0), 1) ) {
+      flagRight = true;
       return true;
     }
     if ( collision(position, size, center + Pos(2, 0), 1) ) {
+      flagRight = true;
       return true;
     }
   }
@@ -247,6 +260,27 @@ void Door::rotate(bool direction) {
   right = r;
 }
 
+void Door::check_and_rotate() {
+
+  bool rotateClockwise = false;
+
+  if ( flagUp ) {
+    /*
+    check if the player collides with any cell on the left or the right of the door.
+    if so. thats where they collided from. and we rotate everything in that direction.
+    */
+    if ( collision(player.position, 2, center + Pos(-1, -2), 1 ) || collision(player.position, 2, center + Pos(-1, -2),1 ) ) {
+      // upper left
+      rotateClockwise = true;
+    }
+  }
+
+  if ( rotateClockwise) {
+    rotate(true);
+    player.rotateAroundDoor(center);
+  }
+}
+
 void setup() {
 
   signal(SIGINT, finish);
@@ -288,12 +322,21 @@ void loop() {
   bool collides_with_level = level.collides_with(player_position_new, PLAYER_SIZE);
   bool collides_with_door = false;
   for ( i = 0; i < NUM_DOORS; i++ ) {
-    collides_with_door = doors[i].collides_with(player_position_new, PLAYER_SIZE);
+    if ( doors[i].collides_with(player_position_new, PLAYER_SIZE) ) {
+      collides_with_door = true;
+    }
   }
 
   if ( ! collides_with_level && ! collides_with_door ) {
     player.old_position = player.position;
     player.position = player_position_new;
+  }
+
+  if ( collides_with_door ) {
+    // give each door a chance to rotate.
+    for ( i = 0; i < NUM_DOORS; i++ ) {
+      doors[i].check_and_rotate();
+    }
   }
 }
 

@@ -76,13 +76,18 @@ class Door {
   public:
     Pos center;
     bool up;
+    bool flagUp;
     bool down;
+    bool flagDown;
     bool left;
+    bool flagLeft;
     bool right;
+    bool flagRight;
     Door(int x, int y, bool u, bool d, bool l, bool r);
     bool collides_with(Pos position, int size);
     void draw();
     void rotate(bool direction);
+    void check_and_rotate();
 };
 
 const int NUM_DOORS = 1;
