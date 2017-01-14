@@ -1,52 +1,49 @@
 #include "headers.h"
 #include <curses.h>
 
-Door doors[NUM_DOORS] = { Door(30, 30, true, false, true, false) };
+Door doors[NUM_DOORS] = { Door(30, 30, 3) };
 
-Door::Door(int x, int y, bool u, bool d, bool l, bool r) {
+Door::Door(int x, int y, byte ds) {
   center = Pos(x, y);
-  up = u;
-  down = d;
-  left = l;
-  right = r;
+  doors = ds;
+  collidedDoors = 0;
 }
 
 bool Door::collides_with(Pos position, int w, int h) {
 
-  flagUp = false;
-  flagDown = false;
-  flagLeft = false;
-  flagRight = false;
+  collidedDoors = 0;
 
   if ( collision(position, w, h, center, 1, 1) ) {
     return true;
   }
 
+  // doors segments are 2 squares by 1 square
+
   // how to check the other door segments. including rotation.
-  if ( up )  {
+  if ( doors & DOOR_UP )  {
     if ( collision(position, w, h, center + Pos(0, -2), 1, 2) ) {
-      flagUp = true;
+      collidedDoors |= DOOR_UP;
       return true;
     }
   }
 
-  if ( down )  {
+  if ( doors & DOOR_DOWN )  {
     if ( collision(position, w, h, center + Pos(0, 1), 1, 2) ) {
-      flagDown = true;
+      collidedDoors |= DOOR_DOWN;
       return true;
     }
   }
 
-  if ( left )  {
+  if ( doors & DOOR_LEFT )  {
     if ( collision(position, w, h, center + Pos(-2, 0), 2, 1) ) {
-      flagLeft = true;
+      collidedDoors |= DOOR_LEFT;
       return true;
     }
   }
    
-  if ( right )  {
+  if ( doors & DOOR_RIGHT )  {
     if ( collision(position, w, h, center + Pos(1, 0), 2, 1) ) {
-      flagRight = true;
+      collidedDoors |= DOOR_RIGHT;
       return true;
     }
   }
@@ -59,70 +56,49 @@ void Door::draw() {
 
   // how to draw each segment to the rotation.
 
-  if ( up ) {
+  if ( doors & DOOR_UP ) {
     mvaddch(center.y - 1, center.x, 'D');
     mvaddch(center.y - 2, center.x, 'D');
   }
 
-  if ( down ) {
+  if ( doors & DOOR_DOWN ) {
     mvaddch(center.y + 1, center.x, 'D');
     mvaddch(center.y + 2, center.x, 'D');
   }
 
-  if ( left ) {
+  if ( doors & DOOR_LEFT ) {
     mvaddch(center.y, center.x - 1, 'D');
     mvaddch(center.y, center.x - 2, 'D');
   }
 
-  if ( right ) {
+  if ( doors & DOOR_RIGHT ) {
     mvaddch(center.y, center.x + 1, 'D');
     mvaddch(center.y, center.x + 2, 'D');
   }
 }
 
+byte fourBitShiftLeft(byte i) {
+  return ((i << 1) & 15) | (i >> 3);
+}
+
+byte fourBitShiftRight(byte i) {
+  return (i >> 1) | ((i << 3) & 15);
+}
+
 // true for clockwise, false for counterclockwise
 void Door::rotate(bool direction) {
-  bool u, d, l, r = false;
-
-  if (direction) {
-    if(up) {
-      r = true;
-    }
-    if(right) {
-      d = true;
-    }
-    if(down) {
-      l = true;
-    }
-    if ( left) {
-      u = true;
-    }
+  if ( direction ) {
+    doors = fourBitShiftRight(doors);
   } else {
-    if(up) {
-      l = true;
-    }
-    if(right) {
-      u = true;
-    }
-    if ( down) {
-      r = true;
-    }
-    if ( left) {
-      d = true;
-    }
+    doors = fourBitShiftLeft(doors);
   }
-
-  up = u;
-  down = d;
-  left = l;
-  right = r;
 }
 
 void Door::check_and_rotate() {
 
   bool rotateClockwise = false;
 
-  if ( flagUp ) {
+  if ( doors & DOOR_UP ) {
     /*
     check if the player collides with any cell on the left or the right of the door.
     if so. thats where they collided from. and we rotate everything in that direction.

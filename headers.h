@@ -1,5 +1,7 @@
 #include <stdbool.h>
 
+typedef unsigned char byte;
+
 class Pos;
 
 bool collision(Pos pa, int wa, int ha, Pos pb, int wb, int hb);
@@ -48,18 +50,22 @@ extern Player player;
 void finish(int i);
 
 
+const byte DOOR_UP = 1;
+const byte DOOR_RIGHT = 2;
+const byte DOOR_DOWN = 4;
+const byte DOOR_LEFT = 8;
+
+const byte DOOR_UP_MASK = 14;
+const byte DOOR_RIGHT_MASK = 13;
+const byte DOOR_DOWN_MASK = 10;
+const byte DOOR_LEFT_MASK = 7;
+
 class Door {
   public:
     Pos center;
-    bool up;
-    bool flagUp;
-    bool down;
-    bool flagDown;
-    bool left;
-    bool flagLeft;
-    bool right;
-    bool flagRight;
-    Door(int x, int y, bool u, bool d, bool l, bool r);
+    byte doors;
+    byte collidedDoors;
+    Door(int x, int y, byte ds);
     bool collides_with(Pos position, int w, int h);
     void draw();
     void rotate(bool direction);
