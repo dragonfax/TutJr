@@ -1,7 +1,5 @@
-Building a small game for the Arduboy. A clone of Lady Tut.
+Small maze game for the Arduboy (Arduino Mobile Game Device).
 
-The first step is building in C++ for curses. As the Arduboy has no official emulator.
-
-Nothing to write home about yet.
+Unfinished but operable.
 
 ![screenshot](screenshot.png)
