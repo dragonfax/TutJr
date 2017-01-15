@@ -2,6 +2,8 @@
 
 
 void drawString(byte x, byte y, const char* str);
+void end(const char *str) ;
+
 
 Player player = Player(10, 5);
 
@@ -163,6 +165,10 @@ void Player::move() {
       player.anim_frame = ( player.anim_frame + 1 ) % PLAYER_ANIM_FRAMES;
       }
     }
+
+    if ( collides_with_monster ) {
+      end("You Lose");
+    }
   
     if ( collides_with_door ) {
       // give each door a chance to rotate.
@@ -172,16 +178,21 @@ void Player::move() {
     }
 
     if ( exitSpace.collides_with(position, PLAYER_WIDTH, PLAYER_HEIGHT) ) {
-      arduboy.clear();
-      drawString(10, 10, "You Win!");
-      arduboy.display();
-      delay( 3 * 1000);
-      exit(0);
+      end("You Win!");
+
     }
 
   }
 }
 
+void end(const char *str) {
+  arduboy.clear();
+  drawString(10, 10, str);
+  arduboy.display();
+  delay( 3 * 1000);
+  exit(0);
+}
+      
 void drawString(byte x, byte y, const char* str){
   byte offset;
   byte i;
