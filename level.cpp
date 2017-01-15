@@ -28,6 +28,7 @@ Level::Level(){}
 
 bool Level::getWall(byte cell_x, byte cell_y) {
 
+  // calculate bit that represents this wall.
   byte by = cell_y * 4;
   byte xb = cell_x / 8;
   byte xm = 7 - cell_x % 8;
@@ -85,14 +86,14 @@ bool Level::collides_with(Pos position, byte w, byte h) {
   // check each for a wall segment
 
   Pos ul = position; // upper left
-  Pos lr = position + Pos(w, h); // lower right
+  Pos lr = position + Pos(w - 1, h - 1); // lower right
 
   Pos cell_ul = screen_to_cell(ul);
   Pos cell_lr = screen_to_cell(lr);
 
   byte i, j;
   for ( i = cell_ul.x; i <= cell_lr.x; i++ ) {
-    for ( j = cell_ul.y; j < cell_lr.y; j++ ) {
+    for ( j = cell_ul.y; j <= cell_lr.y; j++ ) {
       if ( getWall(i,j) ) {
         return true;
       }

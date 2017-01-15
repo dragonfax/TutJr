@@ -162,7 +162,7 @@ void Player::move() {
       position = player_position_new;
   
       if ( arduboy.everyXFrames(10) ) {
-      player.anim_frame = ( player.anim_frame + 1 ) % PLAYER_ANIM_FRAMES;
+        player.anim_frame = ( player.anim_frame + 1 ) % PLAYER_ANIM_FRAMES;
       }
     }
 

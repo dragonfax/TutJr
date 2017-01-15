@@ -63,18 +63,14 @@ void Monster::draw() {
 const byte MOVES_PER_SECOND = 10;
 const uint FRAMES_PER_MOVE = 60 / MOVES_PER_SECOND;
 
-const byte MONSTER_UP = 0;
-const byte MONSTER_LEFT = 1;
-const byte MONSTER_DOWN = 2;
-const byte MONSTER_RIGHT = 3;
-
-const Pos MONSTER_MOVES[] = { Pos(0,-1), Pos(-1,0), Pos(1,0), Pos(1,0) };
+const Pos MONSTER_MOVES[] = { Pos(0,-1), Pos(-1,0), Pos(1,0), Pos(0,1) };
 
 void Monster::move() {
 
   if ( arduboy.everyXFrames(FRAMES_PER_MOVE) ) {
     // move
 
+    // try last direction first
     byte direction = last_direction;
 
     byte tries;
@@ -98,7 +94,7 @@ void Monster::move() {
         break;
       }
 
-      direction = random(0,5);
+      direction = random(0,4);
     }
   }
 }
