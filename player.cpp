@@ -1,5 +1,7 @@
 #include "headers.h"
 
+Player player = Player(10, 5);
+
 const byte PLAYER_ANIM_FRAMES = 4;
 
 const byte PLAYER_ANIM_DOWN = 0;
@@ -84,38 +86,18 @@ static const byte PROGMEM hero[] = {
 
 };
 
-Player::Player(byte i, byte j) {
-  position = Pos(i, j);
-  old_position = Pos(i, j);
+Player::Player(byte cell_x, byte cell_y) {
+  position = cell_to_screen(Pos(cell_x, cell_y));
+  old_position = position;
 }
 
-void Player::drawPlayer() {
-      arduboy.drawBitmap(position.x * CELL_SIZE, position.y * CELL_SIZE, hero, 8, 8, 1);
+void Player::draw() {
+  arduboy.drawBitmap(position.x, position.y, hero, PLAYER_WIDTH, PLAYER_HEIGHT, 1);
 }
 
 Player::Player(){}
 
-void Player::rotateAroundDoor(Pos center) {
-  Pos relPos = position - center;
-
-  Pos newRelPos;
-
-  if ( relPos == Pos(1,-2) ) {
-    newRelPos = Pos(1, 1);
-  } else if ( relPos == Pos(1, 1) ) {
-    newRelPos = Pos(-2, 1);
-  } else if ( relPos == Pos(-2, 1) ) {
-    newRelPos = Pos(-2, -2);
-  } else if ( relPos == Pos(-2, -2) ) {
-    newRelPos = Pos(1, -2);
-  } else {
-    // known situation. just ignore it.
-  }
-
-  position = center + newRelPos;
-}
-
-void Player::move(Level level, Door doors[]) {
+void Player::move() {
 
   if ( ! arduboy.everyXFrames(5) )
     return;

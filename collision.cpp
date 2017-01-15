@@ -23,3 +23,10 @@ bool enclosure(Pos pa, byte wa, byte ha, Pos pb, byte wb, byte hb) {
   return pa.x >= pb.x && pa.y >= pb.y && la.x <= lb.x && la.y <= lb.y;
 }
 
+Pos cell_to_screen(Pos cell) {
+  return Pos(cell.x * CELL, cell.y * CELL);
+}
+
+Pos screen_to_cell(Pos position) {
+  return Pos(position.x / CELL, position.y / CELL);
+}

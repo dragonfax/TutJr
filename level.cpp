@@ -1,5 +1,6 @@
 #include "headers.h"
 
+Level level = Level();
 
 const byte LEVEL_WIDTH = 32;
 const byte LEVEL_HEIGHT = 16;
@@ -23,18 +24,13 @@ static const byte PROGMEM data[] = {
   B11111111,B11111111,B11111111,B11111111
 };
 
-Level::Level(byte w, byte h) {
-  width = w;
-  height = w;
-}
-
 Level::Level(){}
 
-bool Level::getData(byte x, byte y) {
+bool Level::getWall(byte cell_x, byte cell_y) {
 
-  byte by = y * 4;
-  byte xb = x / 8;
-  byte xm = 7 - x % 8;
+  byte by = cell_y * 4;
+  byte xb = cell_x / 8;
+  byte xm = 7 - cell_x % 8;
   
   byte b = pgm_read_byte_near(data + (by + xb));
   byte mask = 1 << xm;
@@ -42,38 +38,42 @@ bool Level::getData(byte x, byte y) {
   return ( b & mask ) > 0;
 }
 
-void Level::drawLevel() {
+void Level::draw() {
   byte i;
   byte j;
-  for ( i = 0; i < width; i++ ) {
-    for ( j = 0; j < height; j++ ) {
-      if ( getData(i,j) ) {
-        drawCellWalls(j,i);
+  for ( i = 0; i < LEVEL_WIDTH; i++ ) {
+    for ( j = 0; j < LEVEL_HEIGHT; j++ ) {
+      if ( getWall(i,j) ) {
+        drawWallOutline(i,j);
       }
     }
   }
 }
 
-void Level::drawCellWalls(byte y, byte x) {
+const byte WALL_SIZE = CELL;
+
+void Level::drawWallOutline(byte cell_x, byte cell_y) {
+
+  Pos pos = cell_to_screen(Pos(cell_x, cell_y));
 
   // north wall
-  if ( y == 0 || !getData(x, y - 1) ) {
-    arduboy.drawFastHLine(x * 4, y * 4, 4, 1);
+  if ( cell_y == 0 || !getWall(cell_x, cell_y - 1) ) {
+    arduboy.drawFastHLine(pos.x, pos.y, WALL_SIZE, WHITE);
   }
 
   // west wall
-  if ( x == 0 || !getData(x - 1,y) ) {
-    arduboy.drawFastVLine(x * 4, y * 4, 4, 1);
+  if ( cell_x == 0 || !getWall(cell_x - 1,cell_y) ) {
+    arduboy.drawFastVLine(pos.x, pos.y, WALL_SIZE, WHITE);
   }
 
   // south wall
-  if ( y == 128 || !getData(x,y + 1) ) {
-    arduboy.drawFastHLine( x * 4, y * 4 + 3, 4, 1);
+  if ( cell_y == 128 || !getWall(cell_x,cell_y + 1) ) {
+    arduboy.drawFastHLine( pos.x, pos.y + (WALL_SIZE - 1), WALL_SIZE, WHITE);
   }
 
   // east wall
-  if ( x == 32 || !getData(x + 1,y) ) {
-    arduboy.drawFastVLine( x * 4 + 3, y * 4, 4, 1 );
+  if ( cell_x == 32 || !getWall(cell_x + 1,cell_y) ) {
+    arduboy.drawFastVLine( pos.x + (WALL_SIZE - 1), pos.y, WALL_SIZE, WHITE);
   }
 
 
@@ -81,11 +81,19 @@ void Level::drawCellWalls(byte y, byte x) {
 
 bool Level::collides_with(Pos position, byte w, byte h) {
 
+  // find all the cells this shape overlaps with
+  // check each for a wall segment
+
+  Pos ul = position; // upper left
+  Pos lr = position + Pos(w, h); // lower right
+
+  Pos cell_ul = screen_to_cell(ul);
+  Pos cell_lr = screen_to_cell(lr);
+
   byte i, j;
-  bool collision = false;
-  for ( i = 0; i < h; i++ ) {
-    for ( j = 0; j < w; j++ ) {
-      if ( getData(position.x + j,position.y + i) ) {
+  for ( i = cell_ul.x; i <= cell_lr.x; i++ ) {
+    for ( j = cell_ul.y; j < cell_lr.y; j++ ) {
+      if ( getWall(i,j) ) {
         return true;
       }
     }

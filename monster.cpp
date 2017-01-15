@@ -49,13 +49,13 @@ Monster monsters[NUM_MONSTERS] = { Monster(13,7) };
 
 Monster::Monster() {}
 
-Monster::Monster(byte x, byte y) {
-  position = Pos(x, y);
+Monster::Monster(byte cell_x, byte cell_y) {
+  position = cell_to_screen(Pos(cell_x, cell_y));
   old_position = position;
 }
 
 void Monster::draw() {
-  arduboy.drawBitmap(position.x * CELL_SIZE, position.y * CELL_SIZE, mon, 8, 8, 1);
+  arduboy.drawBitmap(position.x, position.y, mon, MONSTER_WIDTH, MONSTER_HEIGHT, WHITE);
 }
 
 const byte MOVES_PER_SECOND = 3;
@@ -66,13 +66,12 @@ void Monster::move() {
   if ( arduboy.everyXFrames(FRAMES_PER_MOVE) ) {
     // move
 
-    Pos new_position = position + Pos(1, 0);
+    Pos new_position = position + cell_to_screen(Pos(1, 0));
 
-    if ( ! level.collides_with(position, 2, 2) ) {
+    if ( ! level.collides_with(position, MONSTER_WIDTH, MONSTER_HEIGHT) ) {
       old_position = position;
       position = new_position;
     }
-
   }
 }
 

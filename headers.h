@@ -1,9 +1,18 @@
 #include <stdbool.h>
 #include "Arduboy.h"
 
+
 extern Arduboy arduboy;
 
-const byte CELL_SIZE = 4;
+// A CELL is one square unit of wall, in the level bitmap.
+// Here we define how many pixels on cell is.
+//
+// Also swinging door segments are 2,1 cells.
+// And the player, and monsters are 2,2 cells.
+//
+// Some initializations and calculations are done in cell coordinates,
+// instead of screen coordinates, for convenience.
+const byte CELL = 4;
 
 typedef unsigned char byte;
 
@@ -14,29 +23,31 @@ class Pos;
 bool collision(Pos pa, byte wa, byte ha, Pos pb, byte wb, byte hb);
 bool enclosure(Pos pa, byte wa, byte ha, Pos pb, byte wb, byte hb);
 
+Pos cell_to_screen(Pos cell);
+Pos screen_to_cell(Pos position);
+
 class Pos {
   public:
-  char x, y;
+  // Pos can be negative. so byte won't cut it.
+  // Fortunately everything is within screen space so less than 128.
+  char x, y; 
   Pos();
-  Pos( char i, char j);
+  Pos( char x, char y);
   bool operator==(const Pos &other );
   Pos operator+(const Pos &other );
   Pos operator-(const Pos &other );
 };
 
-extern const byte LEVEL_WIDTH;
-extern const byte LEVEL_HEIGHT;
+extern const byte LEVEL_CELL_WIDTH;
+extern const byte LEVEL_CELL_HEIGHT;
 
 class Level {
   public:
-    byte width;
-    byte height;
-    void drawLevel();
-    Level(byte w, byte h);
+    void draw();
     bool collides_with(Pos position, byte w, byte h);
     Level();
-    void drawCellWalls(byte x, byte y);
-    bool getData(byte x, byte y);
+    void drawWallOutline(byte x, byte y);
+    bool getWall(byte cell_x, byte cell_y);
 };
 
 extern Level level;
@@ -45,13 +56,12 @@ class Door;
 
 class Player {
   public:
-  Pos position;
-  Pos old_position;
-  Player(byte i, byte j);
-  void drawPlayer();
-  void rotateAroundDoor(Pos center);
-  Player();
-  void move(Level level, Door doors[]);
+    Pos position;
+    Pos old_position;
+    Player(byte cell_x, byte cell_y);
+    void draw();
+    Player();
+    void move();
 };
 
 extern Player player;
@@ -68,18 +78,19 @@ class Door {
     Pos center;
     byte doors;
     byte collidedDoors;
-    Door(byte x, byte y, byte ds);
+    Door(byte cell_x, byte cell_y, byte doors);
     bool collides_with(Pos position, byte w, byte h);
     void draw();
-    void rotate(bool direction);
+    void swing(bool direction);
     void check_and_rotate();
+    Pos rotatePos(Pos position);
 };
 
 const byte NUM_DOORS = 2;
 extern Door doors[NUM_DOORS];
 
-const byte PLAYER_WIDTH = 2;
-const byte PLAYER_HEIGHT = 2;
+const byte PLAYER_WIDTH = 2 * CELL;
+const byte PLAYER_HEIGHT = 2 * CELL;
 
 
 class Monster {
@@ -88,17 +99,15 @@ class Monster {
     Pos old_position;
     byte direction;
     Monster();
-    Monster(byte x, byte y);
+    Monster(byte cell_x, byte cell_y);
     void move();
     void draw();
     bool collides_with(Pos position, byte w, byte h);
     void setup();
 };
 
-const byte MONSTER_WIDTH = 2;
-const byte MONSTER_HEIGHT = 2;
-
-
+const byte MONSTER_WIDTH = 2 * CELL;
+const byte MONSTER_HEIGHT = 2 * CELL;
 
 const byte NUM_MONSTERS = 1;
 extern Monster monsters[NUM_MONSTERS];

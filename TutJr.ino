@@ -8,23 +8,14 @@ void setup() {
   arduboy.begin();
   arduboy.setFrameRate(60);
   arduboy.display();
-
 }
 
-Level level = Level(LEVEL_WIDTH, LEVEL_HEIGHT);
-Player player = Player(10, 5);
-
-
-void loop() {
-
-  if (!(arduboy.nextFrame()))
-    return;
-    
+void draw() {
   arduboy.clear();
       
-  level.drawLevel();
+  level.draw();
 
-  player.drawPlayer();
+  player.draw();
 
   byte i;
   for ( i = 0; i < NUM_DOORS; i++ ) {
@@ -36,11 +27,26 @@ void loop() {
   }
 
   arduboy.display();
+}
 
-  player.move(level, doors);
+void move() {
 
+  player.move();
+
+  int i;
   for ( i = 0; i < NUM_MONSTERS; i++ ) {
     monsters[i].move();
   }
+}
+
+void loop() {
+
+  if ( ! arduboy.nextFrame() ) {
+    return;
+  }
+
+  draw();
+
+  move();
 }
 
