@@ -64,6 +64,7 @@ class Player {
     void draw();
     Player();
     void move();
+    void moveTo(Pos new_position);
 };
 
 extern Player player;

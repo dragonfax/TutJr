@@ -124,23 +124,31 @@ void Player::move() {
   if ( ! arduboy.everyXFrames(2) )
     return;
 
-  Pos player_position_new = position;
   if ( arduboy.pressed(LEFT_BUTTON) ) {
-    player_position_new.x -= 1;
+    moveTo(Pos(position.x - 1, position.y));
     player.direction = DIR_LEFT;
-  } else if ( arduboy.pressed(RIGHT_BUTTON) ) {
-    player_position_new.x += 1;
+  }
+  
+  if ( arduboy.pressed(RIGHT_BUTTON) ) {
+    moveTo(Pos(position.x + 1, position.y));
     player.direction = DIR_RIGHT;
-  } else if ( arduboy.pressed(UP_BUTTON) ) {
-    player_position_new.y -= 1;
+  }
+  
+  if ( arduboy.pressed(UP_BUTTON) ) {
+    moveTo(Pos(position.x, position.y - 1));
     player.direction = DIR_UP;
-  } else if ( arduboy.pressed(DOWN_BUTTON) ) {
-    player_position_new.y += 1;
+  }
+  
+  if ( arduboy.pressed(DOWN_BUTTON) ) {
+    moveTo(Pos(position.x, position.y + 1));
     player.direction = DIR_DOWN;
   }
+}
+
+void Player::moveTo(Pos player_position_new) {
 
   if ( ! ( player_position_new == position ) ) {
-  
+
     bool collides_with_level = level.collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT);
     bool collides_with_door = false;
     byte i;
