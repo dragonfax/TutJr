@@ -6,7 +6,7 @@ const byte PLAYER_ANIM_FRAMES = 4;
 const byte PLAYER_ANIM_FRAME_SIZE = 8;
 
 const byte PLAYER_ANIM_DOWN = 0;
-const byte PLAYER_ANIM_RIGHT = 4 * 8;
+const byte PLAYER_ANIM_RIGHT = PLAYER_ANIM_FRAMES * PLAYER_ANIM_FRAME_SIZE;
 
 
 static const byte PROGMEM hero[] = { 
@@ -107,7 +107,7 @@ void Player::draw() {
   } else {
     animation = PLAYER_ANIM_DOWN;
   }
-  arduboy.drawBitmap(position.x, position.y, &hero[PLAYER_ANIM_DOWN  + player.anim_frame * PLAYER_ANIM_FRAME_SIZE], PLAYER_WIDTH, PLAYER_HEIGHT, 1);
+  arduboy.drawBitmap(position.x, position.y, &hero[animation  + player.anim_frame * PLAYER_ANIM_FRAME_SIZE], PLAYER_WIDTH, PLAYER_HEIGHT, 1);
 }
 
 Player::Player(){}

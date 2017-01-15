@@ -1,6 +1,7 @@
 #include "headers.h"
 
 const byte MONSTER_ANIM_FRAMES = 4;
+const byte MONSTER_ANIM_FRAME_SIZE = 8;
 
 static const byte PROGMEM mon[] = { 
   B11100010,
@@ -55,10 +56,10 @@ Monster::Monster(byte cell_x, byte cell_y) {
 }
 
 void Monster::draw() {
-  arduboy.drawBitmap(position.x, position.y, mon, MONSTER_WIDTH, MONSTER_HEIGHT, WHITE);
+  arduboy.drawBitmap(position.x, position.y, &mon[anim_frame * MONSTER_ANIM_FRAME_SIZE], MONSTER_WIDTH, MONSTER_HEIGHT, WHITE);
 }
 
-const byte MOVES_PER_SECOND = 3;
+const byte MOVES_PER_SECOND = 10;
 const uint FRAMES_PER_MOVE = 60 / MOVES_PER_SECOND;
 
 void Monster::move() {
@@ -66,11 +67,12 @@ void Monster::move() {
   if ( arduboy.everyXFrames(FRAMES_PER_MOVE) ) {
     // move
 
-    Pos new_position = position + cell_to_screen(Pos(1, 0));
+    Pos new_position = position + Pos(1, 0);
 
     if ( ! level.collides_with(position, MONSTER_WIDTH, MONSTER_HEIGHT) ) {
       old_position = position;
       position = new_position;
+      anim_frame = ( anim_frame + 1 ) % MONSTER_ANIM_FRAMES;
     }
   }
 }

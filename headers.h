@@ -100,6 +100,7 @@ class Monster {
     Pos position;
     Pos old_position;
     byte direction;
+    byte anim_frame;
     Monster();
     Monster(byte cell_x, byte cell_y);
     void move();
