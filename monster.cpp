@@ -91,6 +91,11 @@ void Monster::move() {
         position = new_position;
         anim_frame = ( anim_frame + 1 ) % MONSTER_ANIM_FRAMES;
         last_direction = direction;
+
+        if ( collision(player.position, PLAYER_WIDTH, PLAYER_HEIGHT, position, MONSTER_WIDTH, MONSTER_HEIGHT) ) {
+          end("You Lose");
+        }
+        
         break;
       }
 

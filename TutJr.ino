@@ -52,3 +52,21 @@ void loop() {
   move();
 }
 
+
+void end(const char *str) {
+  arduboy.clear();
+  drawString(10, 10, str);
+  arduboy.display();
+  delay( 3 * 1000);
+  exit(0);
+}
+      
+void drawString(byte x, byte y, const char* str){
+  byte offset;
+  byte i;
+  for ( i = 0; i < strlen(str); i++ ) {
+    arduboy.drawChar(x + offset, y, str[i], WHITE, BLACK, 1);
+    offset += 8;
+  }
+}
+

@@ -4,6 +4,11 @@
 
 extern Arduboy arduboy;
 
+
+
+void drawString(byte x, byte y, const char* str);
+void end(const char *str) ;
+
 // A CELL is one square unit of wall, in the level bitmap.
 // Here we define how many pixels on cell is.
 //

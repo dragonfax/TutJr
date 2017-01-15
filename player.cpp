@@ -1,9 +1,6 @@
 #include "headers.h"
 
 
-void drawString(byte x, byte y, const char* str);
-void end(const char *str) ;
-
 
 Player player = Player(1, 1);
 
@@ -193,20 +190,5 @@ void Player::moveTo(Pos player_position_new) {
   }
 }
 
-void end(const char *str) {
-  arduboy.clear();
-  drawString(10, 10, str);
-  arduboy.display();
-  delay( 3 * 1000);
-  exit(0);
-}
-      
-void drawString(byte x, byte y, const char* str){
-  byte offset;
-  byte i;
-  for ( i = 0; i < strlen(str); i++ ) {
-    arduboy.drawChar(x + offset, y, str[i], WHITE, BLACK, 1);
-    offset += 8;
-  }
-}
+
 
