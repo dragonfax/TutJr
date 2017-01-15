@@ -62,17 +62,34 @@ void Monster::draw() {
 const byte MOVES_PER_SECOND = 10;
 const uint FRAMES_PER_MOVE = 60 / MOVES_PER_SECOND;
 
+const byte MONSTER_UP = 0;
+const byte MONSTER_LEFT = 1;
+const byte MONSTER_DOWN = 2;
+const byte MONSTER_RIGHT = 3;
+
+const Pos MONSTER_MOVES[] = { Pos(0,-1), Pos(-1,0), Pos(1,0), Pos(1,0) };
+
 void Monster::move() {
 
   if ( arduboy.everyXFrames(FRAMES_PER_MOVE) ) {
     // move
 
-    Pos new_position = position + Pos(1, 0);
+    byte direction = last_direction;
 
-    if ( ! level.collides_with(position, MONSTER_WIDTH, MONSTER_HEIGHT) ) {
-      old_position = position;
-      position = new_position;
-      anim_frame = ( anim_frame + 1 ) % MONSTER_ANIM_FRAMES;
+    byte tries;
+    for ( tries = 0 ; tries < 4; tries++) {
+
+      Pos new_position = position + MONSTER_MOVES[direction];
+  
+      if ( ! level.collides_with(new_position, MONSTER_WIDTH, MONSTER_HEIGHT) ) {
+        old_position = position;
+        position = new_position;
+        anim_frame = ( anim_frame + 1 ) % MONSTER_ANIM_FRAMES;
+        last_direction = direction;
+        break;
+      }
+
+      direction = random(0,5);
     }
   }
 }
