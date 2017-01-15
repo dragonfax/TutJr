@@ -1,5 +1,5 @@
 Small maze game for the Arduboy (Arduino Mobile Game Device).
 
-Unfinished but operable.
+Unfinished. Only one level, and lots of bugs. But its operable.
 
 ![screenshot](screenshot.png)
