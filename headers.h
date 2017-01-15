@@ -88,8 +88,8 @@ class Door {
     Pos rotatePos(Pos position);
 };
 
-const byte NUM_DOORS = 2;
-extern Door doors[NUM_DOORS];
+extern const byte NUM_DOORS;
+extern Door doors[];
 
 const byte PLAYER_WIDTH = 2 * CELL;
 const byte PLAYER_HEIGHT = 2 * CELL;

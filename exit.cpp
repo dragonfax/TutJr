@@ -1,7 +1,7 @@
 #include "headers.h"
 
 // and Exit is 2,2 sized, so the player can crawl into it.
-Exit exitSpace = Exit(10,10);
+Exit exitSpace = Exit(28,13);
 
     Exit::Exit() {}
     

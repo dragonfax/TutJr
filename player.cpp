@@ -5,7 +5,7 @@ void drawString(byte x, byte y, const char* str);
 void end(const char *str) ;
 
 
-Player player = Player(10, 5);
+Player player = Player(1, 1);
 
 const byte PLAYER_ANIM_FRAMES = 4;
 const byte PLAYER_ANIM_FRAME_SIZE = 8;

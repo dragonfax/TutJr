@@ -1,8 +1,12 @@
 #include "headers.h"
 
-Door doors[NUM_DOORS] = { 
-  Door(3, 12, 1) ,
-  Door(9, 9, 1)
+const byte NUM_DOORS = 5;
+Door doors[] = { 
+  Door(3, 12, DOOR_UP | DOOR_LEFT | DOOR_DOWN),
+  Door(9, 9, DOOR_UP | DOOR_DOWN),
+  Door(18, 12, DOOR_UP | DOOR_LEFT),
+  Door(27, 3, DOOR_UP | DOOR_DOWN),
+  Door(15, 3, DOOR_LEFT | DOOR_RIGHT)
 };
 
 Door::Door(byte cell_x, byte cell_y, byte ds) {
