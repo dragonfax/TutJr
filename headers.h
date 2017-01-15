@@ -58,6 +58,8 @@ class Player {
   public:
     Pos position;
     Pos old_position;
+    byte direction;
+    byte anim_frame;
     Player(byte cell_x, byte cell_y);
     void draw();
     Player();
