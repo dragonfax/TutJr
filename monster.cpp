@@ -46,7 +46,8 @@ static const byte PROGMEM mon[] = {
 
 };
 
-Monster monsters[NUM_MONSTERS] = { Monster(13,7) };
+const byte NUM_MONSTERS = 3;
+Monster monsters[] = { Monster(13,7), Monster(10, 1), Monster(16, 10) };
 
 Monster::Monster() {}
 

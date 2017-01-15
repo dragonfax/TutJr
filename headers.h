@@ -113,8 +113,8 @@ class Monster {
 const byte MONSTER_WIDTH = 2 * CELL;
 const byte MONSTER_HEIGHT = 2 * CELL;
 
-const byte NUM_MONSTERS = 1;
-extern Monster monsters[NUM_MONSTERS];
+extern const byte NUM_MONSTERS;
+extern Monster monsters[];
 
 
 class Exit {
