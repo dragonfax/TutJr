@@ -115,3 +115,16 @@ const byte MONSTER_HEIGHT = 2 * CELL;
 
 const byte NUM_MONSTERS = 1;
 extern Monster monsters[NUM_MONSTERS];
+
+
+class Exit {
+  public:
+    Pos position;
+    Exit();
+    Exit(byte cell_x, byte cell_y);
+    bool collides_with(Pos position, byte w, byte h);
+    void draw();
+};
+
+extern Exit exitSpace;
+

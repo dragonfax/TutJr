@@ -1,5 +1,8 @@
 #include "headers.h"
 
+
+void drawString(byte x, byte y, const char* str);
+
 Player player = Player(10, 5);
 
 const byte PLAYER_ANIM_FRAMES = 4;
@@ -135,38 +138,56 @@ void Player::move() {
   }
 
   if ( ! ( player_position_new == position ) ) {
-
-  bool collides_with_level = level.collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT);
-  bool collides_with_door = false;
-  byte i;
-  for ( i = 0; i < NUM_DOORS; i++ ) {
-    if ( doors[i].collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT) ) {
-      collides_with_door = true;
-    }
-  }
-
-  bool collides_with_monster = false;
-  for ( i = 0; i < NUM_MONSTERS; i++ ) {
-    if ( monsters[i].collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT) ) {
-      collides_with_monster = true;
-    }
-  }
-
-  if ( ! collides_with_level && ! collides_with_door && ! collides_with_monster) {
-    old_position = position;
-    position = player_position_new;
-
-    if ( arduboy.everyXFrames(10) ) {
-    player.anim_frame = ( player.anim_frame + 1 ) % PLAYER_ANIM_FRAMES;
-    }
-  }
-
-  if ( collides_with_door ) {
-    // give each door a chance to rotate.
+  
+    bool collides_with_level = level.collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT);
+    bool collides_with_door = false;
+    byte i;
     for ( i = 0; i < NUM_DOORS; i++ ) {
-      doors[i].check_and_rotate();
+      if ( doors[i].collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT) ) {
+        collides_with_door = true;
+      }
     }
-  }
+  
+    bool collides_with_monster = false;
+    for ( i = 0; i < NUM_MONSTERS; i++ ) {
+      if ( monsters[i].collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT) ) {
+        collides_with_monster = true;
+      }
+    }
+  
+    if ( ! collides_with_level && ! collides_with_door && ! collides_with_monster) {
+      old_position = position;
+      position = player_position_new;
+  
+      if ( arduboy.everyXFrames(10) ) {
+      player.anim_frame = ( player.anim_frame + 1 ) % PLAYER_ANIM_FRAMES;
+      }
+    }
+  
+    if ( collides_with_door ) {
+      // give each door a chance to rotate.
+      for ( i = 0; i < NUM_DOORS; i++ ) {
+        doors[i].check_and_rotate();
+      }
+    }
+
+    if ( exitSpace.collides_with(position, PLAYER_WIDTH, PLAYER_HEIGHT) ) {
+      arduboy.clear();
+      drawString(10, 10, "You Win!");
+      arduboy.display();
+      delay( 3 * 1000);
+      exit(0);
+    }
 
   }
 }
+
+void drawString(byte x, byte y, const char* str){
+  byte offset;
+  byte i;
+  for ( i = 0; i < strlen(str); i++ ) {
+    arduboy.drawChar(x + offset, y, str[i], WHITE, BLACK, 1);
+    offset += 8;
+  }
+}
+

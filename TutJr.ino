@@ -15,6 +15,8 @@ void draw() {
       
   level.draw();
 
+  exitSpace.draw();
+
   player.draw();
 
   byte i;
