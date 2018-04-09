@@ -13,6 +13,7 @@
     }
     
     void Exit::draw() {
-      arduboy.fillCircle(position.x + CELL, position.y + CELL, CELL, WHITE);
+      // arduboy.fillCircle(position.x + CELL, position.y + CELL, CELL, WHITE);
+      drawString(position.x + 1, position.y, "E");
     }
 

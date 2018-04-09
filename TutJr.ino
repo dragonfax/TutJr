@@ -62,7 +62,7 @@ void end(const char *str) {
 }
       
 void drawString(byte x, byte y, const char* str){
-  byte offset;
+  byte offset = 0;
   byte i;
   for ( i = 0; i < strlen(str); i++ ) {
     arduboy.drawChar(x + offset, y, str[i], WHITE, BLACK, 1);
