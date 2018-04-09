@@ -1,14 +1,5 @@
 #include "headers.h"
 
-const byte NUM_DOORS = 5;
-Door doors[] = { 
-  Door(3, 12, DOOR_UP | DOOR_LEFT | DOOR_DOWN),
-  Door(9, 9, DOOR_UP | DOOR_DOWN),
-  Door(18, 12, DOOR_UP | DOOR_LEFT),
-  Door(27, 3, DOOR_UP | DOOR_DOWN),
-  Door(15, 3, DOOR_LEFT | DOOR_RIGHT)
-};
-
 Door::Door(byte cell_x, byte cell_y, byte ds) {
   center = cell_to_screen(Pos(cell_x, cell_y));
   doors = ds;

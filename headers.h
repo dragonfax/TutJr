@@ -134,3 +134,4 @@ class Exit {
 
 extern Exit exitSpace;
 
+extern const byte data[];
