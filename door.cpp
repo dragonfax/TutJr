@@ -6,6 +6,13 @@ Door::Door(byte cell_x, byte cell_y, byte ds) {
   collidedDoors = 0;
 }
 
+bool Door::collides_with_pivot(Pos position, byte w, byte h) {
+  if ( collision(position, w, h, center, CELL, CELL) ) {
+    return true;
+  }
+  return false;
+}
+
 bool Door::collides_with(Pos position, byte w, byte h) {
 
   collidedDoors = 0;
@@ -181,4 +188,14 @@ Pos Door::rotatePos(Pos position) {
   }
 
   return center + cell_to_screen(newRelPos);
+}
+
+static bool Door::doors_collides_with_pivot(Pos position, byte w, byte h) {
+  byte i;
+  for ( i = 0; i < NUM_DOORS; i++ ) {
+    if ( level_doors[i].collides_with_pivot(position, w, h) ) {
+      return true;
+    }
+  }
+  return false;
 }

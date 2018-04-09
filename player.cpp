@@ -182,7 +182,7 @@ void Player::move() {
 }
 
 bool Player::canMoveTo(Pos player_position_new) {
-  return ! level.collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT);
+  return ! Door::doors_collides_with_pivot(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT) && ! level.collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT);
 }
 
 void Player::moveTo(Pos player_position_new) {
@@ -193,7 +193,7 @@ void Player::moveTo(Pos player_position_new) {
     bool collides_with_door = false;
     byte i;
     for ( i = 0; i < NUM_DOORS; i++ ) {
-      if ( doors[i].collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT) ) {
+      if ( level_doors[i].collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT) ) {
         collides_with_door = true;
       }
     }
@@ -221,7 +221,7 @@ void Player::moveTo(Pos player_position_new) {
     if ( collides_with_door ) {
       // give each door a chance to rotate.
       for ( i = 0; i < NUM_DOORS; i++ ) {
-        doors[i].check_and_rotate();
+        level_doors[i].check_and_rotate();
       }
     }
 

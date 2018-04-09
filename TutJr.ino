@@ -21,7 +21,7 @@ void draw() {
 
   byte i;
   for ( i = 0; i < NUM_DOORS; i++ ) {
-    doors[i].draw();
+    level_doors[i].draw();
   }
 
   for ( i = 0; i < NUM_MONSTERS; i++ ) {

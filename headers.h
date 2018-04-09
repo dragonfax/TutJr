@@ -91,6 +91,8 @@ class Door {
     byte collidedDoors;
     Door(byte cell_x, byte cell_y, byte doors);
     bool collides_with(Pos position, byte w, byte h);
+    bool collides_with_pivot(Pos position, byte w, byte h);
+    static bool doors_collides_with_pivot(Pos position, byte w, byte h);
     void draw();
     void swing(bool direction);
     void check_and_rotate();
@@ -98,7 +100,7 @@ class Door {
 };
 
 extern const byte NUM_DOORS;
-extern Door doors[];
+extern Door level_doors[];
 
 const byte PLAYER_WIDTH = 2 * CELL;
 const byte PLAYER_HEIGHT = 2 * CELL;

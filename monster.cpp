@@ -78,7 +78,7 @@ void Monster::move() {
       bool collides_with_door = false;
       byte i;
       for ( i = 0; i < NUM_DOORS; i++ ) {
-        if ( doors[i].collides_with(new_position, MONSTER_WIDTH, MONSTER_HEIGHT) ) {
+        if ( level_doors[i].collides_with(new_position, MONSTER_WIDTH, MONSTER_HEIGHT) ) {
           collides_with_door = true;
         }
       }
