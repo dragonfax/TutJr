@@ -205,7 +205,7 @@ void Player::moveTo(Pos player_position_new) {
       }
     }
   
-    if ( ! collides_with_level && ! collides_with_door && ! collides_with_monster) {
+    if ( ! collides_with_level && ! collides_with_monster) {
       old_position = position;
       position = player_position_new;
   
