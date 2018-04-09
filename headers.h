@@ -65,11 +65,14 @@ class Player {
     Pos old_position;
     byte direction;
     byte anim_frame;
+    byte moveSteps;
+
     Player(byte cell_x, byte cell_y);
     void draw();
     Player();
     void move();
     void moveTo(Pos new_position);
+    bool canMoveTo(Pos new_position);
 };
 
 extern Player player;
