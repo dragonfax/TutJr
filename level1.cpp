@@ -24,6 +24,8 @@ Monster monsters[] = { Monster(13,7), Monster(10, 1), Monster(16, 10), Monster(2
 
 Player player = Player(1, 1);
 
+SafeSpot safeSpot = SafeSpot(1, 1);
+
 const byte NUM_DOORS = 5;
 Door level_doors[] = { 
   Door(3, 12, DOOR_UP | DOOR_DOWN),

@@ -75,6 +75,8 @@ void Monster::move() {
 
       Pos new_position = position + MONSTER_MOVES[direction];
 
+      bool collides_with_safe_spot = safeSpot.collides_with(new_position, MONSTER_WIDTH, MONSTER_HEIGHT);
+
       bool collides_with_door = false;
       byte i;
       for ( i = 0; i < NUM_DOORS; i++ ) {
@@ -90,7 +92,7 @@ void Monster::move() {
         }
       }
     
-      if ( ! level.collides_with(new_position, MONSTER_WIDTH, MONSTER_HEIGHT) && ! collides_with_door && ! collides_with_monster ) {
+      if ( ! collides_with_safe_spot && ! level.collides_with(new_position, MONSTER_WIDTH, MONSTER_HEIGHT) && ! collides_with_door && ! collides_with_monster ) {
         old_position = position;
         position = new_position;
         anim_frame = ( anim_frame + 1 ) % MONSTER_ANIM_FRAMES;

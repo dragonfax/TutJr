@@ -140,4 +140,14 @@ class Exit {
 
 extern Exit exitSpace;
 
+class SafeSpot {
+  public:
+    Pos position;
+    SafeSpot();
+    SafeSpot(byte cell_x, byte cell_y);
+    bool collides_with(Pos position, byte w, byte h);
+};
+
+extern SafeSpot safeSpot;
+
 extern const byte data[];
