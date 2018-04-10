@@ -17,7 +17,8 @@ void end(const char *str) ;
 //
 // Some initializations and calculations are done in cell coordinates,
 // instead of screen coordinates, for convenience.
-const byte CELL = 4;
+const byte CELL = 8;
+const byte WALL = 1;
 
 typedef unsigned char byte;
 
@@ -42,9 +43,6 @@ class Pos {
   Pos operator+(const Pos &other );
   Pos operator-(const Pos &other );
 };
-
-extern const byte LEVEL_CELL_WIDTH;
-extern const byte LEVEL_CELL_HEIGHT;
 
 class Level {
   public:
@@ -102,8 +100,8 @@ class Door {
 extern const byte NUM_DOORS;
 extern Door level_doors[];
 
-const byte PLAYER_WIDTH = 2 * CELL;
-const byte PLAYER_HEIGHT = 2 * CELL;
+const byte PLAYER_WIDTH = CELL;
+const byte PLAYER_HEIGHT = CELL;
 
 
 class Monster {
@@ -122,8 +120,8 @@ class Monster {
     bool operator== ( Monster & rhs );
 };
 
-const byte MONSTER_WIDTH = 2 * CELL;
-const byte MONSTER_HEIGHT = 2 * CELL;
+const byte MONSTER_WIDTH = CELL;
+const byte MONSTER_HEIGHT = CELL;
 
 extern const byte NUM_MONSTERS;
 extern Monster monsters[];

@@ -7,5 +7,5 @@ SafeSpot::SafeSpot( byte cell_x, byte cell_y)  {
 }
 
 bool SafeSpot::collides_with(Pos p, byte w, byte h) {
-    return collision(position, 2 * CELL, 2 * CELL, p, w, h);
+    return collision(position, CELL, CELL, p, w, h);
 }

@@ -24,9 +24,9 @@ bool enclosure(Pos pa, byte wa, byte ha, Pos pb, byte wb, byte hb) {
 }
 
 Pos cell_to_screen(Pos cell) {
-  return Pos(cell.x * CELL, cell.y * CELL);
+  return Pos(cell.x * CELL + cell.x * WALL, cell.y * CELL + cell.y * WALL);
 }
 
 Pos screen_to_cell(Pos position) {
-  return Pos(position.x / CELL, position.y / CELL);
+  return Pos(position.x / ( CELL + WALL ), position.y / ( CELL + WALL ) );
 }

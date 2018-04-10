@@ -32,30 +32,28 @@ void Level::draw() {
   }
 }
 
-const byte WALL_SIZE = CELL;
-
 void Level::drawWallOutline(byte cell_x, byte cell_y) {
 
   Pos pos = cell_to_screen(Pos(cell_x, cell_y));
 
   // north wall
   if ( cell_y == 0 || !getWall(cell_x, cell_y - 1) ) {
-    arduboy.drawFastHLine(pos.x, pos.y, WALL_SIZE, WHITE);
+    arduboy.drawFastHLine(pos.x, pos.y, CELL, WHITE);
   }
 
   // west wall
   if ( cell_x == 0 || !getWall(cell_x - 1,cell_y) ) {
-    arduboy.drawFastVLine(pos.x, pos.y, WALL_SIZE, WHITE);
+    arduboy.drawFastVLine(pos.x, pos.y, CELL, WHITE);
   }
 
   // south wall
   if ( cell_y == 128 || !getWall(cell_x,cell_y + 1) ) {
-    arduboy.drawFastHLine( pos.x, pos.y + (WALL_SIZE - 1), WALL_SIZE, WHITE);
+    arduboy.drawFastHLine( pos.x, pos.y + (CELL - 1), CELL, WHITE);
   }
 
   // east wall
   if ( cell_x == 32 || !getWall(cell_x + 1,cell_y) ) {
-    arduboy.drawFastVLine( pos.x + (WALL_SIZE - 1), pos.y, WALL_SIZE, WHITE);
+    arduboy.drawFastVLine( pos.x + (CELL - 1), pos.y, CELL, WHITE);
   }
 
 

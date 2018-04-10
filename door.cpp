@@ -7,7 +7,7 @@ Door::Door(byte cell_x, byte cell_y, byte ds) {
 }
 
 bool Door::collides_with_pivot(Pos position, byte w, byte h) {
-  if ( collision(position, w, h, center, CELL, CELL) ) {
+  if ( collision(position, w, h, center, WALL, WALL) ) {
     return true;
   }
   return false;
@@ -17,7 +17,7 @@ bool Door::collides_with(Pos position, byte w, byte h) {
 
   collidedDoors = 0;
 
-  if ( collision(position, w, h, center, CELL, CELL) ) {
+  if ( collision(position, w, h, center, WALL, WALL) ) {
     return true;
   }
 
@@ -25,28 +25,28 @@ bool Door::collides_with(Pos position, byte w, byte h) {
 
   // how to check the other door segments. including rotation.
   if ( doors & DOOR_UP )  {
-    if ( collision(position, w, h, center + cell_to_screen(Pos(0, -2)), CELL, 2 * CELL) ) {
+    if ( collision(position, w, h, center + cell_to_screen(Pos(0, -2)), WALL, CELL) ) {
       collidedDoors |= DOOR_UP;
       return true;
     }
   }
 
   if ( doors & DOOR_DOWN )  {
-    if ( collision(position, w, h, center + cell_to_screen(Pos(0, 1)), CELL, 2 * CELL) ) {
+    if ( collision(position, w, h, center + cell_to_screen(Pos(0, 1)), WALL, CELL) ) {
       collidedDoors |= DOOR_DOWN;
       return true;
     }
   }
 
   if ( doors & DOOR_LEFT )  {
-    if ( collision(position, w, h, center + cell_to_screen(Pos(-2, 0)), 2 * CELL, CELL) ) {
+    if ( collision(position, w, h, center + cell_to_screen(Pos(-2, 0)), CELL, WALL) ) {
       collidedDoors |= DOOR_LEFT;
       return true;
     }
   }
    
   if ( doors & DOOR_RIGHT )  {
-    if ( collision(position, w, h, center + cell_to_screen(Pos(1, 0)), 2 * CELL, CELL) ) {
+    if ( collision(position, w, h, center + cell_to_screen(Pos(1, 0)), CELL, WALL) ) {
       collidedDoors |= DOOR_RIGHT;
       return true;
     }
@@ -57,7 +57,7 @@ bool Door::collides_with(Pos position, byte w, byte h) {
 
 void Door::draw() {
 
-    arduboy.fillRect(center.x + 1, center.y + 1, CELL - 2, CELL - 2, 1);
+    arduboy.fillRect(center.x + 1, center.y + 1, WALL, WALL, 1);
 
 
 
@@ -65,29 +65,29 @@ void Door::draw() {
 
   if ( doors & DOOR_UP ) {
 
-    arduboy.drawFastVLine( center.x + 1, center.y - 2 * CELL, CELL * 2, 1);
-    arduboy.drawFastVLine( center.x + 2, center.y - 2 * CELL, CELL * 2, 1);
+    arduboy.drawFastVLine( center.x + 1, center.y - CELL, CELL , 1);
+    arduboy.drawFastVLine( center.x + 2, center.y - CELL, CELL , 1);
 
   }
 
   if ( doors & DOOR_DOWN ) {
  
-    arduboy.drawFastVLine( center.x + 1, center.y + CELL, CELL * 2, 1);
-    arduboy.drawFastVLine( center.x + 2, center.y + CELL, CELL * 2, 1);
+    arduboy.drawFastVLine( center.x + 1, center.y + WALL, CELL, 1);
+    arduboy.drawFastVLine( center.x + 2, center.y + WALL, CELL, 1);
 
   }
 
   if ( doors & DOOR_LEFT ) {
 
-    arduboy.drawFastHLine( center.x - 2 * CELL, center.y + 1, CELL * 2, 1);
-    arduboy.drawFastHLine( center.x - 2 * CELL, center.y + 2, CELL * 2, 1);
+    arduboy.drawFastHLine( center.x - CELL, center.y + 1, CELL, 1);
+    arduboy.drawFastHLine( center.x - CELL, center.y + 2, CELL, 1);
 
   }
 
   if ( doors & DOOR_RIGHT ) {
 
-    arduboy.drawFastHLine( center.x + CELL, center.y + 1, CELL * 2, 1);
-    arduboy.drawFastHLine( center.x + CELL, center.y + 2, CELL * 2, 1);
+    arduboy.drawFastHLine( center.x + WALL, center.y + 1, CELL, 1);
+    arduboy.drawFastHLine( center.x + WALL, center.y + 2, CELL, 1);
 
   }
 }
@@ -119,38 +119,38 @@ void Door::check_and_rotate() {
     check if the player collides with any cell on the left or the right of the door.
     if so. thats where they collided from. and we rotate everything in the opposite direction.
     */
-    if ( enclosure(center + cell_to_screen(Pos(-1, -2)), CELL, 2 * CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+    if ( enclosure(center + cell_to_screen(Pos(-1, -2)), WALL,  CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
       // upper left
       rotateClockwise = true;
     }
-    else if ( enclosure(center + cell_to_screen(Pos(1, -2)), CELL, 2 * CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+    else if ( enclosure(center + cell_to_screen(Pos(1, -2)), WALL, CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
       rotateCounter = true;
     }
   }
 
   if ( collidedDoors & DOOR_DOWN ) {
-    if ( enclosure(center + cell_to_screen(Pos(1, 1)), CELL, 2 * CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+    if ( enclosure(center + cell_to_screen(Pos(1, 1)), WALL, CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
       rotateClockwise = true;
     }
-    else if ( enclosure(center + cell_to_screen(Pos(-1, 1)), CELL, 2 * CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+    else if ( enclosure(center + cell_to_screen(Pos(-1, 1)), WALL, CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
       rotateCounter = true;
     }
   }
 
   if ( collidedDoors & DOOR_LEFT ) {
-    if ( enclosure(center + cell_to_screen(Pos(-2, -1)), 2 * CELL, CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+    if ( enclosure(center + cell_to_screen(Pos(-2, -1)), CELL, WALL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
       rotateCounter = true;
     }
-    else if ( enclosure(center + cell_to_screen(Pos(-2, 1)), 2 * CELL, CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+    else if ( enclosure(center + cell_to_screen(Pos(-2, 1)), CELL, WALL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
       rotateClockwise = true;
     }
   }
 
   if ( collidedDoors & DOOR_RIGHT ) {
-    if ( enclosure(center + cell_to_screen(Pos(1, 1)), 2 * CELL, CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+    if ( enclosure(center + cell_to_screen(Pos(1, 1)), CELL, WALL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
       rotateCounter = true;
     }
-    else if ( enclosure(center + cell_to_screen(Pos(1, -1)), 2 * CELL, CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+    else if ( enclosure(center + cell_to_screen(Pos(1, -1)), CELL, WALL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
       rotateClockwise = true;
     }
   }
