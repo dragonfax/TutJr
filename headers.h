@@ -119,6 +119,7 @@ class Monster {
     void draw();
     bool collides_with(Pos position, byte w, byte h);
     void setup();
+    bool operator== ( Monster & rhs );
 };
 
 const byte MONSTER_WIDTH = 2 * CELL;

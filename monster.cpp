@@ -82,8 +82,15 @@ void Monster::move() {
           collides_with_door = true;
         }
       }
+
+      bool collides_with_monster = false;
+      for ( i = 0; i < NUM_MONSTERS; i++ ) {
+        if ( ! ( &monsters[i] == this ) && monsters[i].collides_with(new_position, MONSTER_WIDTH, MONSTER_HEIGHT) ) {
+          collides_with_monster = true;
+        }
+      }
     
-      if ( ! level.collides_with(new_position, MONSTER_WIDTH, MONSTER_HEIGHT) && ! collides_with_door  ) {
+      if ( ! level.collides_with(new_position, MONSTER_WIDTH, MONSTER_HEIGHT) && ! collides_with_door && ! collides_with_monster ) {
         old_position = position;
         position = new_position;
         anim_frame = ( anim_frame + 1 ) % MONSTER_ANIM_FRAMES;
@@ -103,4 +110,8 @@ void Monster::move() {
 
 bool Monster::collides_with(Pos p, byte w, byte h) {
   return collision(p, w, h, position, MONSTER_WIDTH, MONSTER_HEIGHT);
+}
+
+bool Monster::operator== ( Monster & rhs ) {
+  return this == &rhs;
 }
