@@ -124,11 +124,11 @@ class Monster {
 
 const byte MONSTER_WIDTH = 2 * CELL;
 const byte MONSTER_HEIGHT = 2 * CELL;
-
+    
 extern const byte NUM_MONSTERS;
 extern Monster monsters[];
 
-
+        
 class Exit {
   public:
     Pos position;
@@ -147,6 +147,9 @@ class SafeSpot {
     SafeSpot(byte cell_x, byte cell_y);
     bool collides_with(Pos position, byte w, byte h);
 };
+
+extern byte num_lives;
+void lives_draw();
 
 extern SafeSpot safeSpot;
 

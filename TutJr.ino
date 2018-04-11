@@ -28,6 +28,8 @@ void draw() {
     monsters[i].draw();
   }
 
+  lives_draw();
+
   arduboy.display();
 }
 
@@ -54,11 +56,16 @@ void loop() {
 
 
 void end(const char *str) {
-  arduboy.clear();
-  drawString(10, 10, str);
-  arduboy.display();
-  delay( 3 * 1000);
-  exit(0);
+  num_lives -= 1;
+  if ( num_lives == 0 ) {
+    arduboy.clear();
+    drawString(10, 10, str);
+    arduboy.display();
+    delay( 3 * 1000);
+    exit(0);
+  } else {
+    player.position = cell_to_screen(Pos(1,1));
+  }
 }
       
 void drawString(byte x, byte y, const char* str){
