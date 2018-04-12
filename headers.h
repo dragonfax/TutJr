@@ -23,24 +23,37 @@ typedef unsigned char byte;
 
 typedef unsigned int uint;
 
-class Pos;
+class MapPos;
+class ScreenPos;
 
 bool collision(Pos pa, byte wa, byte ha, Pos pb, byte wb, byte hb);
 bool enclosure(Pos pa, byte wa, byte ha, Pos pb, byte wb, byte hb);
 
-Pos cell_to_screen(Pos cell);
-Pos screen_to_cell(Pos position);
+ScreenPos cell_to_screen(MapPos cell);
+MapPos screen_to_cell(ScreenPos position);
 
-class Pos {
+class MapPos {
   public:
   // Pos can be negative. so byte won't cut it.
   // Fortunately everything is within screen space so less than 128.
   char x, y; 
-  Pos();
-  Pos( char x, char y);
-  bool operator==(const Pos &other );
-  Pos operator+(const Pos &other );
-  Pos operator-(const Pos &other );
+  MapPos();
+  MapPos( char x, char y);
+  bool operator==(const MapPos &other );
+  MapPos operator+(const MapPos &other );
+  MapPos operator-(const MapPos &other );
+};
+
+class ScreenPos {
+  public:
+  // Pos can be negative. so byte won't cut it.
+  // Fortunately everything is within screen space so less than 128.
+  char x, y; 
+  ScreenPos();
+  ScreenPos( char x, char y);
+  bool operator==(const ScreenPos &other );
+  ScreenPos operator+(const ScreenPos &other );
+  ScreenPos operator-(const ScreenPos &other );
 };
 
 extern const byte LEVEL_CELL_WIDTH;
@@ -61,8 +74,8 @@ class Door;
 
 class Player {
   public:
-    Pos position;
-    Pos old_position;
+    ScreenPos position;
+    ScreenPos old_position;
     byte direction;
     byte anim_frame;
     byte moveSteps;
@@ -71,8 +84,8 @@ class Player {
     void draw();
     Player();
     void move();
-    void moveTo(Pos new_position);
-    bool canMoveTo(Pos new_position);
+    void moveTo(ScreenPos new_position);
+    bool canMoveTo(ScreenPos new_position);
 };
 
 extern Player player;
@@ -108,8 +121,8 @@ const byte PLAYER_HEIGHT = 2 * CELL;
 
 class Monster {
   public:
-    Pos position;
-    Pos old_position;
+    ScreenPos position;
+    ScreenPos old_position;
     byte direction;
     byte anim_frame;
     byte last_direction;
