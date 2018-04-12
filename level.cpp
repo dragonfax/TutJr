@@ -2,9 +2,6 @@
 
 Level level = Level();
 
-const byte LEVEL_WIDTH = 32;
-const byte LEVEL_HEIGHT = 16;
-
 Level::Level(){}
 
 bool Level::getWall(byte cell_x, byte cell_y) {
@@ -20,68 +17,92 @@ bool Level::getWall(byte cell_x, byte cell_y) {
   return ( b & mask ) > 0;
 }
 
+bool isLocationWall(byte x, byte y) {
+  return x%2 == 1 || y%2 == 1;
+}
+
+bool isHorizontalWall(byte x, byte y) {
+  return y%2 == 1 && x%2 == 0;
+}
+
+bool isVerticalWall( byte x, byte y) {
+  return x%2 == 1 && y%2 == 1;
+}
+
 void Level::draw() {
-  byte i;
-  byte j;
-  for ( i = 0; i < LEVEL_WIDTH; i++ ) {
-    for ( j = 0; j < LEVEL_HEIGHT; j++ ) {
-      if ( getWall(i,j) ) {
-        drawWallOutline(i,j);
+  byte x;
+  byte y;
+  for ( x = 0; x < MAZE_MATRIX_WIDTH; x++ ) {
+    for ( y = 0; y < MAZE_MATRIX_HEIGHT; x++ ) {
+      if ( isLocationWall(x,y) && getWall(x,y) ) {
+        if ( isHorizontalWall(x,y) ) {
+          drawHorizontalWall(x,y);
+        } else if ( isVerticalWall(x,y) ) {
+          drawVerticalWall(x,y);
+        } else {
+          drawCornerWall(x,y);
+        }
       }
     }
   }
 }
 
-const byte WALL_SIZE = CELL;
-
-void Level::drawWallOutline(byte cell_x, byte cell_y) {
-
+void Level::drawHorizontalWall(byte cell_x, byte cell_y) {
   Pos pos = cell_to_screen(Pos(cell_x, cell_y));
-
-  // north wall
-  if ( cell_y == 0 || !getWall(cell_x, cell_y - 1) ) {
-    arduboy.drawFastHLine(pos.x, pos.y, WALL_SIZE, WHITE);
-  }
-
-  // west wall
-  if ( cell_x == 0 || !getWall(cell_x - 1,cell_y) ) {
-    arduboy.drawFastVLine(pos.x, pos.y, WALL_SIZE, WHITE);
-  }
-
-  // south wall
-  if ( cell_y == 128 || !getWall(cell_x,cell_y + 1) ) {
-    arduboy.drawFastHLine( pos.x, pos.y + (WALL_SIZE - 1), WALL_SIZE, WHITE);
-  }
-
-  // east wall
-  if ( cell_x == 32 || !getWall(cell_x + 1,cell_y) ) {
-    arduboy.drawFastVLine( pos.x + (WALL_SIZE - 1), pos.y, WALL_SIZE, WHITE);
-  }
-
-
+  arduboy.drawFastHLine(pos.x, pos.y, SPACE_SIZE, WHITE);
 }
 
-bool Level::collides_with(Pos position, byte w, byte h) {
+void Level::drawVerticalWall(byte cell_x, byte cell_y) {
+  Pos pos = cell_to_screen(Pos(cell_x, cell_y));
+  arduboy.drawFastVLine(pos.x, pos.y, SPACE_SIZE, WHITE);
+}
 
-  // find all the cells this shape overlaps with
-  // check each for a wall segment
+void Level::drawCornerWall(byte cell_x, byte cell_y) {
+  Pos pos = cell_to_screen(Pos(cell_x, cell_y));
+  arduboy.drawFastHLine(pos.x, pos.y, WALL_THICK, WHITE);
+}
 
-  Pos ul = position; // upper left
-  Pos lr = position + Pos(w - 1, h - 1); // lower right
+/*
 
-  Pos cell_ul = screen_to_cell(ul);
-  Pos cell_lr = screen_to_cell(lr);
+// an entity at a screen pos, could overlap with up to 4 different map locations.
+byte entity_screen_to_map_positions(ScreenPos position, *MapPositions mapPositions) {
+  MapPos mp = screen_to_map(position);
+  add to list.
+  byte num_positions = 1;
 
-  byte i, j;
-  for ( i = cell_ul.x; i <= cell_lr.x; i++ ) {
-    for ( j = cell_ul.y; j <= cell_lr.y; j++ ) {
-      if ( getWall(i,j) ) {
-        return true;
-      }
+  mp1 = position + ScreenPos(SPACE_SIZE,0)
+  if ( mp1 != mp ) {
+    add it to list
+  }
+
+  mp2 = position + ScreenPos(0, SPACE_SIZE)
+  if ( mp2 != mp ) { // have to check against hte other spaces too.
+    add it to list
+  }
+
+  mp3 = position + ScreenPos(0, SPACE_SIZE)
+  if ( mp3 != mp ) {
+    add it to list
+  }
+
+  return num_positions;
+}
+
+// Entity at position collides with a map wall
+bool Level::entity_collides_with(Pos position) {
+
+
+  [4]MapPos mapPositions;
+  num_positions = entity_screen_to_map_positions(position, &mapPositions);
+
+  for ( int i = 0; i < num_positions; i++ ) {
+    MapPos mp = mapPositions[i];
+    if ( isWall(mp) ) {
+      return true;
     }
   }
   return false;
 }
 
-
+*/
 

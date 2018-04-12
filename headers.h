@@ -17,7 +17,8 @@ void end(const char *str) ;
 //
 // Some initializations and calculations are done in cell coordinates,
 // instead of screen coordinates, for convenience.
-const byte CELL = 4;
+const byte SPACE_SIZE = 8;
+const byte WALL_THICK = 1;
 
 typedef unsigned char byte;
 
@@ -25,22 +26,30 @@ typedef unsigned int uint;
 
 class Pos;
 
+/*
 bool collision(Pos pa, byte wa, byte ha, Pos pb, byte wb, byte hb);
 bool enclosure(Pos pa, byte wa, byte ha, Pos pb, byte wb, byte hb);
+*/
 
-Pos cell_to_screen(Pos cell);
-Pos screen_to_cell(Pos position);
+Pos mapp_to_screen(Pos cell);
+Pos screen_to_mapp(Pos position);
 
-class Pos {
+class MapPos {
   public:
   // Pos can be negative. so byte won't cut it.
-  // Fortunately everything is within screen space so less than 128.
   char x, y; 
-  Pos();
-  Pos( char x, char y);
-  bool operator==(const Pos &other );
-  Pos operator+(const Pos &other );
-  Pos operator-(const Pos &other );
+  MapPos();
+  MapPos( char x, char y);
+  bool operator==(const MapPos &other );
+  MapPos operator+(const MapPos &other );
+  MapPos operator-(const MapPos &other );
+};
+
+class ScreenPos {
+  public:
+  char x, y; 
+  ScreenPos();
+  ScreenPos( char x, char y);
 };
 
 extern const byte LEVEL_CELL_WIDTH;

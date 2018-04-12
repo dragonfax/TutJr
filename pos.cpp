@@ -1,25 +1,41 @@
 #include "headers.h"
 
-Pos::Pos() {
+MapPos::MapPos() {
   x = 0;
   y = 0;
 }
 
-Pos::Pos(char i, char j) {
+MapPos::MapPos(char i, char j) {
   x = i;
   y = j;
 }
 
-bool Pos::operator==(const Pos &other ) {
+bool MapPos::operator==(const MapPos &other ) {
   return x == other.x && y == other.y ;
 }
 
-Pos Pos::operator+(const Pos &other ) {
-  return Pos(x + other.x, y + other.y);
+MapPos MapPos::operator+(const MapPos &other ) {
+  return MapPos(x + other.x, y + other.y);
 }
 
-Pos Pos::operator-(const Pos &other) {
-  return Pos(x - other.x, y - other.y);
+MapPos MapPos::operator-(const MapPos &other) {
+  return MapPos(x - other.x, y - other.y);
 }
 
+ScreenPos::ScreenPos() {
+  x = 0;
+  y = 0;
+}
 
+ScreenPos::ScreenPos(char i, char j) {
+  x = i;
+  y = j;
+}
+
+ScreenPos map_to_screen(MapPos cell) {
+  return ScreenPos(cell.x * CELL, cell.y * CELL);
+}
+
+MapPos screen_to_map(ScreenPos position) {
+  return MapPos(position.x / CELL, position.y / CELL);
+}
