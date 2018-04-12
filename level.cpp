@@ -20,45 +20,50 @@ bool Level::getWall(byte cell_x, byte cell_y) {
   return ( b & mask ) > 0;
 }
 
+bool isLocationWall(byte x, byte y) {
+  return x%3 == 0 || y%3 == 0;
+}
+
+bool isHorizontalWall(byte x, byte y) {
+  return y%3 != 0 && x%3 == 0;
+}
+
+bool isVerticalWall( byte x, byte y) {
+  return x%3 != 0 && y%3 == 0;
+}
+
+const byte SPACE_SIZE=4;
+const byte WALL_THICK=1;
+
+void drawHorizontalWall(byte cell_x, byte cell_y) {
+  Pos pos = cell_to_screen(Pos(cell_x, cell_y));
+  arduboy.drawFastHLine(pos.x, pos.y, SPACE_SIZE, WHITE);
+}
+ 
+void drawVerticalWall(byte cell_x, byte cell_y) {
+  Pos pos = cell_to_screen(Pos(cell_x, cell_y));
+  arduboy.drawFastVLine(pos.x, pos.y, SPACE_SIZE, WHITE);
+}
+ 
+void drawCornerWall(byte cell_x, byte cell_y) {
+  Pos pos = cell_to_screen(Pos(cell_x, cell_y));
+  arduboy.drawFastHLine(pos.x, pos.y, WALL_THICK, WHITE);
+}
+
 void Level::draw() {
-  byte i;
-  byte j;
-  for ( i = 0; i < LEVEL_WIDTH; i++ ) {
-    for ( j = 0; j < LEVEL_HEIGHT; j++ ) {
-      if ( getWall(i,j) ) {
-        drawWallOutline(i,j);
+  for ( byte x = 0; x < LEVEL_WIDTH; x++ ) {
+    for ( byte y = 0; y < LEVEL_HEIGHT; x++ ) {
+      if ( isLocationWall(x,y) && getWall(x,y) ) {
+        if ( isHorizontalWall(x,y) ) {
+          drawHorizontalWall(x,y);
+        } else if ( isVerticalWall(x,y) ) {
+          drawVerticalWall(x,y);
+        } else {
+          drawCornerWall(x,y);
+        }
       }
     }
   }
-}
-
-const byte WALL_SIZE = CELL;
-
-void Level::drawWallOutline(byte cell_x, byte cell_y) {
-
-  Pos pos = cell_to_screen(Pos(cell_x, cell_y));
-
-  // north wall
-  if ( cell_y == 0 || !getWall(cell_x, cell_y - 1) ) {
-    arduboy.drawFastHLine(pos.x, pos.y, WALL_SIZE, WHITE);
-  }
-
-  // west wall
-  if ( cell_x == 0 || !getWall(cell_x - 1,cell_y) ) {
-    arduboy.drawFastVLine(pos.x, pos.y, WALL_SIZE, WHITE);
-  }
-
-  // south wall
-  if ( cell_y == 128 || !getWall(cell_x,cell_y + 1) ) {
-    arduboy.drawFastHLine( pos.x, pos.y + (WALL_SIZE - 1), WALL_SIZE, WHITE);
-  }
-
-  // east wall
-  if ( cell_x == 32 || !getWall(cell_x + 1,cell_y) ) {
-    arduboy.drawFastVLine( pos.x + (WALL_SIZE - 1), pos.y, WALL_SIZE, WHITE);
-  }
-
-
 }
 
 bool Level::collides_with(Pos position, byte w, byte h) {
