@@ -2,10 +2,10 @@
 
 SafeSpot::SafeSpot() {}
 
-SafeSpot::SafeSpot( byte cell_x, byte cell_y)  {
-    position = cell_to_screen(Pos(cell_x, cell_y));
+SafeSpot::SafeSpot(MapPos cell) {
+    position = cell_to_screen(cell);
 }
 
-bool SafeSpot::collides_with(Pos p, byte w, byte h) {
-    return collision(position, 2 * CELL, 2 * CELL, p, w, h);
+bool SafeSpot::collides_with(ScreenPos p, ScreenPos size) {
+    return collision(position, ScreenPos(2 * CELL, 2 * CELL), p, size);
 }

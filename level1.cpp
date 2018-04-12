@@ -20,20 +20,20 @@ static const byte PROGMEM data[] = {
 };
 
 const byte NUM_MONSTERS = 5;
-Monster monsters[] = { Monster(13,7), Monster(10, 1), Monster(16, 10), Monster(22,13), Monster(10, 13) };
+Monster monsters[] = { Monster(MapPos(13,7)), Monster(MapPos(10, 1)), Monster(MapPos(16, 10)), Monster(MapPos(22,13)), Monster(MapPos(10, 13)) };
 
-Player player = Player(1, 1);
+Player player = Player(MapPos(1, 1));
 
-SafeSpot safeSpot = SafeSpot(1, 1);
+SafeSpot safeSpot = SafeSpot(MapPos(1, 1));
 
 const byte NUM_DOORS = 5;
 Door level_doors[] = { 
-  Door(3, 12, DOOR_UP | DOOR_DOWN),
-  Door(9, 9, DOOR_UP | DOOR_DOWN),
-  Door(18, 12, DOOR_UP | DOOR_DOWN),
-  Door(27, 3, DOOR_UP | DOOR_DOWN),
-  Door(15, 3, DOOR_LEFT | DOOR_RIGHT)
+  Door(MapPos(3, 12), DOOR_UP | DOOR_DOWN),
+  Door(MapPos(9, 9), DOOR_UP | DOOR_DOWN),
+  Door(MapPos(18, 12), DOOR_UP | DOOR_DOWN),
+  Door(MapPos(27, 3), DOOR_UP | DOOR_DOWN),
+  Door(MapPos(15, 3), DOOR_LEFT | DOOR_RIGHT)
 };
 
 
-Exit exitSpace = Exit(28,13);
+Exit exitSpace = Exit(MapPos(28,13));

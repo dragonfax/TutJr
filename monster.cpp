@@ -48,8 +48,8 @@ static const byte PROGMEM mon[] = {
 
 Monster::Monster() {}
 
-Monster::Monster(byte cell_x, byte cell_y) {
-  position = cell_to_screen(Pos(cell_x, cell_y));
+Monster::Monster(MapPos cell) {
+  position = cell_to_screen(cell);
   old_position = position;
 }
 
@@ -60,7 +60,7 @@ void Monster::draw() {
 const byte MOVES_PER_SECOND = 10;
 const uint FRAMES_PER_MOVE = 60 / MOVES_PER_SECOND;
 
-const Pos MONSTER_MOVES[] = { Pos(0,-1), Pos(-1,0), Pos(1,0), Pos(0,1) };
+const ScreenPos MONSTER_MOVES[] = { ScreenPos(0,-1), ScreenPos(-1,0), ScreenPos(1,0), ScreenPos(0,1) };
 
 void Monster::move() {
 
@@ -73,32 +73,32 @@ void Monster::move() {
     byte tries;
     for ( tries = 0 ; tries < 4; tries++) {
 
-      Pos new_position = position + MONSTER_MOVES[direction];
+      ScreenPos new_position = position + MONSTER_MOVES[direction];
 
-      bool collides_with_safe_spot = safeSpot.collides_with(new_position, MONSTER_WIDTH, MONSTER_HEIGHT);
+      bool collides_with_safe_spot = safeSpot.collides_with(new_position, ScreenPos(MONSTER_WIDTH, MONSTER_HEIGHT));
 
       bool collides_with_door = false;
       byte i;
       for ( i = 0; i < NUM_DOORS; i++ ) {
-        if ( level_doors[i].collides_with(new_position, MONSTER_WIDTH, MONSTER_HEIGHT) ) {
+        if ( level_doors[i].collides_with(new_position, ScreenPos(MONSTER_WIDTH, MONSTER_HEIGHT)) ) {
           collides_with_door = true;
         }
       }
 
       bool collides_with_monster = false;
       for ( i = 0; i < NUM_MONSTERS; i++ ) {
-        if ( ! ( &monsters[i] == this ) && monsters[i].collides_with(new_position, MONSTER_WIDTH, MONSTER_HEIGHT) ) {
+        if ( ! ( &monsters[i] == this ) && monsters[i].collides_with(new_position, ScreenPos(MONSTER_WIDTH, MONSTER_HEIGHT)) ) {
           collides_with_monster = true;
         }
       }
     
-      if ( ! collides_with_safe_spot && ! level.collides_with(new_position, MONSTER_WIDTH, MONSTER_HEIGHT) && ! collides_with_door && ! collides_with_monster ) {
+      if ( ! collides_with_safe_spot && ! level.collides_with(new_position, ScreenPos(MONSTER_WIDTH, MONSTER_HEIGHT)) && ! collides_with_door && ! collides_with_monster ) {
         old_position = position;
         position = new_position;
         anim_frame = ( anim_frame + 1 ) % MONSTER_ANIM_FRAMES;
         last_direction = direction;
 
-        if ( collision(player.position, PLAYER_WIDTH, PLAYER_HEIGHT, position, MONSTER_WIDTH, MONSTER_HEIGHT) ) {
+        if ( collision(player.position, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT), position, ScreenPos(MONSTER_WIDTH, MONSTER_HEIGHT)) ) {
           end("You Lose");
         }
         
@@ -110,8 +110,8 @@ void Monster::move() {
   }
 }
 
-bool Monster::collides_with(Pos p, byte w, byte h) {
-  return collision(p, w, h, position, MONSTER_WIDTH, MONSTER_HEIGHT);
+bool Monster::collides_with(ScreenPos p, ScreenPos size) {
+  return collision(p, size, position, ScreenPos(MONSTER_WIDTH, MONSTER_HEIGHT));
 }
 
 bool Monster::operator== ( Monster & rhs ) {

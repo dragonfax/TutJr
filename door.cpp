@@ -1,23 +1,23 @@
 #include "headers.h"
 
-Door::Door(byte cell_x, byte cell_y, byte ds) {
-  center = cell_to_screen(Pos(cell_x, cell_y));
+Door::Door(MapPos pos, byte ds) {
+  center = cell_to_screen(pos);
   doors = ds;
   collidedDoors = 0;
 }
 
-bool Door::collides_with_pivot(Pos position, byte w, byte h) {
-  if ( collision(position, w, h, center, CELL, CELL) ) {
+bool Door::collides_with_pivot(ScreenPos position, ScreenPos size) {
+  if ( collision(position, size, center, ScreenPos(CELL, CELL)) ) {
     return true;
   }
   return false;
 }
 
-bool Door::collides_with(Pos position, byte w, byte h) {
+bool Door::collides_with(ScreenPos position, ScreenPos size) {
 
   collidedDoors = 0;
 
-  if ( collision(position, w, h, center, CELL, CELL) ) {
+  if ( collision(position, size, center, ScreenPos(CELL, CELL)) ) {
     return true;
   }
 
@@ -25,28 +25,28 @@ bool Door::collides_with(Pos position, byte w, byte h) {
 
   // how to check the other door segments. including rotation.
   if ( doors & DOOR_UP )  {
-    if ( collision(position, w, h, center + cell_to_screen(Pos(0, -2)), CELL, 2 * CELL) ) {
+    if ( collision(position, size, center + cell_to_screen(MapPos(0, -2)), ScreenPos(CELL, 2 * CELL)) ) {
       collidedDoors |= DOOR_UP;
       return true;
     }
   }
 
   if ( doors & DOOR_DOWN )  {
-    if ( collision(position, w, h, center + cell_to_screen(Pos(0, 1)), CELL, 2 * CELL) ) {
+    if ( collision(position, size, center + cell_to_screen(MapPos(0, 1)), ScreenPos(CELL, 2 * CELL)) ) {
       collidedDoors |= DOOR_DOWN;
       return true;
     }
   }
 
   if ( doors & DOOR_LEFT )  {
-    if ( collision(position, w, h, center + cell_to_screen(Pos(-2, 0)), 2 * CELL, CELL) ) {
+    if ( collision(position, size, center + cell_to_screen(MapPos(-2, 0)), ScreenPos(2 * CELL, CELL)) ) {
       collidedDoors |= DOOR_LEFT;
       return true;
     }
   }
    
   if ( doors & DOOR_RIGHT )  {
-    if ( collision(position, w, h, center + cell_to_screen(Pos(1, 0)), 2 * CELL, CELL) ) {
+    if ( collision(position, size, center + cell_to_screen(MapPos(1, 0)), ScreenPos(2 * CELL, CELL)) ) {
       collidedDoors |= DOOR_RIGHT;
       return true;
     }
@@ -119,38 +119,38 @@ void Door::check_and_rotate() {
     check if the player collides with any cell on the left or the right of the door.
     if so. thats where they collided from. and we rotate everything in the opposite direction.
     */
-    if ( enclosure(center + cell_to_screen(Pos(-1, -2)), CELL, 2 * CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+    if ( enclosure(center + cell_to_screen(MapPos(-1, -2)), ScreenPos(CELL, 2 * CELL), player.position, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT) ) ) {
       // upper left
       rotateClockwise = true;
     }
-    else if ( enclosure(center + cell_to_screen(Pos(1, -2)), CELL, 2 * CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+    else if ( enclosure(center + cell_to_screen(MapPos(1, -2)), ScreenPos(CELL, 2 * CELL), player.position, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT) ) ) {
       rotateCounter = true;
     }
   }
 
   if ( collidedDoors & DOOR_DOWN ) {
-    if ( enclosure(center + cell_to_screen(Pos(1, 1)), CELL, 2 * CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+    if ( enclosure(center + cell_to_screen(MapPos(1, 1)), ScreenPos(CELL, 2 * CELL), player.position, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT) ) ) {
       rotateClockwise = true;
     }
-    else if ( enclosure(center + cell_to_screen(Pos(-1, 1)), CELL, 2 * CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+    else if ( enclosure(center + cell_to_screen(MapPos(-1, 1)), ScreenPos(CELL, 2 * CELL), player.position, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT) ) ) {
       rotateCounter = true;
     }
   }
 
   if ( collidedDoors & DOOR_LEFT ) {
-    if ( enclosure(center + cell_to_screen(Pos(-2, -1)), 2 * CELL, CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+    if ( enclosure(center + cell_to_screen(MapPos(-2, -1)), ScreenPos(2 * CELL, CELL), player.position, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT) ) ) {
       rotateCounter = true;
     }
-    else if ( enclosure(center + cell_to_screen(Pos(-2, 1)), 2 * CELL, CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+    else if ( enclosure(center + cell_to_screen(MapPos(-2, 1)), ScreenPos(2 * CELL, CELL), player.position, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT) ) ) {
       rotateClockwise = true;
     }
   }
 
   if ( collidedDoors & DOOR_RIGHT ) {
-    if ( enclosure(center + cell_to_screen(Pos(1, 1)), 2 * CELL, CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+    if ( enclosure(center + cell_to_screen(MapPos(1, 1)), ScreenPos(2 * CELL, CELL), player.position, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT) ) ) {
       rotateCounter = true;
     }
-    else if ( enclosure(center + cell_to_screen(Pos(1, -1)), 2 * CELL, CELL, player.position, PLAYER_WIDTH, PLAYER_HEIGHT ) ) {
+    else if ( enclosure(center + cell_to_screen(MapPos(1, -1)), ScreenPos(2 * CELL, CELL), player.position, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT) ) ) {
       rotateClockwise = true;
     }
   }
@@ -167,22 +167,22 @@ void Door::check_and_rotate() {
   }
 }
 
-Pos Door::rotatePos(Pos position) {
+ScreenPos Door::rotatePos(ScreenPos position) {
 
   // positions are normalized to cell coords. the rotation is done there.
 
-  Pos relPos = screen_to_cell(position) - screen_to_cell(center);
+  MapPos relPos = screen_to_cell(position) - screen_to_cell(center);
 
-  Pos newRelPos;
+  MapPos newRelPos;
 
-  if ( relPos == Pos(1,-2) ) {
-    newRelPos = Pos(1, 1);
-  } else if ( relPos == Pos(1, 1) ) {
-    newRelPos = Pos(-2, 1);
-  } else if ( relPos == Pos(-2, 1) ) {
-    newRelPos = Pos(-2, -2);
-  } else if ( relPos == Pos(-2, -2) ) {
-    newRelPos = Pos(1, -2);
+  if ( relPos == MapPos(1,-2) ) {
+    newRelPos = MapPos(1, 1);
+  } else if ( relPos == MapPos(1, 1) ) {
+    newRelPos = MapPos(-2, 1);
+  } else if ( relPos == MapPos(-2, 1) ) {
+    newRelPos = MapPos(-2, -2);
+  } else if ( relPos == MapPos(-2, -2) ) {
+    newRelPos = MapPos(1, -2);
   } else {
     // unknown situation. just ignore it.
   }
@@ -190,10 +190,10 @@ Pos Door::rotatePos(Pos position) {
   return center + cell_to_screen(newRelPos);
 }
 
-static bool Door::doors_collides_with_pivot(Pos position, byte w, byte h) {
+static bool Door::doors_collides_with_pivot(ScreenPos position, ScreenPos size) {
   byte i;
   for ( i = 0; i < NUM_DOORS; i++ ) {
-    if ( level_doors[i].collides_with_pivot(position, w, h) ) {
+    if ( level_doors[i].collides_with_pivot(position, size) ) {
       return true;
     }
   }

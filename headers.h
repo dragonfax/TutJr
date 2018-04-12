@@ -26,8 +26,8 @@ typedef unsigned int uint;
 class MapPos;
 class ScreenPos;
 
-bool collision(Pos pa, byte wa, byte ha, Pos pb, byte wb, byte hb);
-bool enclosure(Pos pa, byte wa, byte ha, Pos pb, byte wb, byte hb);
+bool collision(ScreenPos pa, ScreenPos sizea, ScreenPos pb, ScreenPos sizeb);
+bool enclosure(ScreenPos pa, ScreenPos sizea, ScreenPos pb, ScreenPos sizeb);
 
 ScreenPos cell_to_screen(MapPos cell);
 MapPos screen_to_cell(ScreenPos position);
@@ -62,10 +62,10 @@ extern const byte LEVEL_CELL_HEIGHT;
 class Level {
   public:
     void draw();
-    bool collides_with(Pos position, byte w, byte h);
+    bool collides_with(ScreenPos position, ScreenPos size);
     Level();
-    void drawWallOutline(byte x, byte y);
-    bool getWall(byte cell_x, byte cell_y);
+    void drawWallOutline(MapPos cell);
+    bool getWall(MapPos cell);
 };
 
 extern Level level;
@@ -80,7 +80,7 @@ class Player {
     byte anim_frame;
     byte moveSteps;
 
-    Player(byte cell_x, byte cell_y);
+    Player(MapPos cell);
     void draw();
     Player();
     void move();
@@ -99,17 +99,17 @@ const byte DOOR_LEFT = 8;
 
 class Door {
   public:
-    Pos center;
+    ScreenPos center;
     byte doors;
     byte collidedDoors;
-    Door(byte cell_x, byte cell_y, byte doors);
-    bool collides_with(Pos position, byte w, byte h);
-    bool collides_with_pivot(Pos position, byte w, byte h);
-    static bool doors_collides_with_pivot(Pos position, byte w, byte h);
+    Door(MapPos position, byte doors);
+    bool collides_with(ScreenPos position, ScreenPos size);
+    bool collides_with_pivot(ScreenPos position, ScreenPos size);
+    static bool doors_collides_with_pivot(ScreenPos position, ScreenPos size);
     void draw();
     void swing(bool direction);
     void check_and_rotate();
-    Pos rotatePos(Pos position);
+    ScreenPos rotatePos(ScreenPos position);
 };
 
 extern const byte NUM_DOORS;
@@ -127,10 +127,10 @@ class Monster {
     byte anim_frame;
     byte last_direction;
     Monster();
-    Monster(byte cell_x, byte cell_y);
+    Monster(MapPos position);
     void move();
     void draw();
-    bool collides_with(Pos position, byte w, byte h);
+    bool collides_with(ScreenPos position, ScreenPos size);
     void setup();
     bool operator== ( Monster & rhs );
 };
@@ -144,10 +144,10 @@ extern Monster monsters[];
         
 class Exit {
   public:
-    Pos position;
+    ScreenPos position;
     Exit();
-    Exit(byte cell_x, byte cell_y);
-    bool collides_with(Pos position, byte w, byte h);
+    Exit(MapPos position);
+    bool collides_with(ScreenPos position, ScreenPos size);
     void draw();
 };
 
@@ -155,10 +155,10 @@ extern Exit exitSpace;
 
 class SafeSpot {
   public:
-    Pos position;
+    ScreenPos position;
     SafeSpot();
-    SafeSpot(byte cell_x, byte cell_y);
-    bool collides_with(Pos position, byte w, byte h);
+    SafeSpot(MapPos position);
+    bool collides_with(ScreenPos position, ScreenPos size);
 };
 
 extern byte num_lives;

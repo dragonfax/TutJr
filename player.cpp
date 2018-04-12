@@ -92,8 +92,8 @@ static const byte PROGMEM hero[] = {
 
 };
 
-Player::Player(byte cell_x, byte cell_y) {
-  position = cell_to_screen(Pos(cell_x, cell_y));
+Player::Player(MapPos cell) {
+  position = cell_to_screen(cell);
   old_position = position;
   moveSteps = 0;
 }
@@ -127,28 +127,28 @@ void Player::move() {
     // not moving, take a new movement command
 
     if ( arduboy.pressed(LEFT_BUTTON) ) {
-      if ( canMoveTo(Pos(position.x - 1, position.y)) ) {
+      if ( canMoveTo(ScreenPos(position.x - 1, position.y)) ) {
         player.moveSteps = MOVE_STEPS;
         player.direction = DIR_LEFT;
       }
     }
 
     if ( arduboy.pressed(RIGHT_BUTTON) ) {
-      if ( canMoveTo(Pos(position.x + 1, position.y)) ) {
+      if ( canMoveTo(ScreenPos(position.x + 1, position.y)) ) {
         player.moveSteps = MOVE_STEPS;
         player.direction = DIR_RIGHT;
       }
     }
 
     if ( arduboy.pressed(UP_BUTTON) ) {
-      if ( canMoveTo(Pos(position.x, position.y - 1)) ) {
+      if ( canMoveTo(ScreenPos(position.x, position.y - 1)) ) {
         player.direction = DIR_UP;
         player.moveSteps = MOVE_STEPS;
       }
     }
 
     if ( arduboy.pressed(DOWN_BUTTON) ) {
-      if ( canMoveTo(Pos(position.x, position.y + 1)) ) {
+      if ( canMoveTo(ScreenPos(position.x, position.y + 1)) ) {
         player.direction = DIR_DOWN;
         player.moveSteps = MOVE_STEPS;
       }
@@ -160,47 +160,47 @@ void Player::move() {
     // move one step
 
     if ( direction == DIR_LEFT ) {
-      moveTo(Pos(position.x - 1, position.y));
+      moveTo(ScreenPos(position.x - 1, position.y));
       player.moveSteps -= 1;
     }
 
     if ( direction == DIR_RIGHT ) {
-      moveTo(Pos(position.x + 1, position.y));
+      moveTo(ScreenPos(position.x + 1, position.y));
       player.moveSteps -= 1;
     }
 
     if ( direction == DIR_UP ) {
-      moveTo(Pos(position.x, position.y - 1));
+      moveTo(ScreenPos(position.x, position.y - 1));
       player.moveSteps -= 1;
     }
 
     if ( direction == DIR_DOWN ) {
-      moveTo(Pos(position.x, position.y + 1));
+      moveTo(ScreenPos(position.x, position.y + 1));
       player.moveSteps -= 1;
     }
   }
 }
 
-bool Player::canMoveTo(Pos player_position_new) {
-  return ! Door::doors_collides_with_pivot(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT) && ! level.collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT);
+bool Player::canMoveTo(ScreenPos player_position_new) {
+  return ! Door::doors_collides_with_pivot(player_position_new, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT)) && ! level.collides_with(player_position_new, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT));
 }
 
-void Player::moveTo(Pos player_position_new) {
+void Player::moveTo(ScreenPos player_position_new) {
 
   if ( ! ( player_position_new == position ) ) {
 
-    bool collides_with_level = level.collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT);
+    bool collides_with_level = level.collides_with(player_position_new, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT));
     bool collides_with_door = false;
     byte i;
     for ( i = 0; i < NUM_DOORS; i++ ) {
-      if ( level_doors[i].collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT) ) {
+      if ( level_doors[i].collides_with(player_position_new, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT)) ) {
         collides_with_door = true;
       }
     }
   
     bool collides_with_monster = false;
     for ( i = 0; i < NUM_MONSTERS; i++ ) {
-      if ( monsters[i].collides_with(player_position_new, PLAYER_WIDTH, PLAYER_HEIGHT) ) {
+      if ( monsters[i].collides_with(player_position_new, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT)) ) {
         collides_with_monster = true;
       }
     }
@@ -225,7 +225,7 @@ void Player::moveTo(Pos player_position_new) {
       }
     }
 
-    if ( exitSpace.collides_with(position, PLAYER_WIDTH, PLAYER_HEIGHT) ) {
+    if ( exitSpace.collides_with(position, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT)) ) {
       end("You Win!");
 
     }

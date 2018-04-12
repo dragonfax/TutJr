@@ -3,22 +3,22 @@
 // simple AABB
 
 // does shapes collide at all?
-bool collision(Pos pa, byte wa, byte ha, Pos pb, byte wb, byte hb) {
+bool collision(ScreenPos pa, ScreenPos sizea, ScreenPos pb, ScreenPos sizeb) {
 
-  Pos la = pa + Pos(wa - 1, ha - 1);
-  Pos lb = pb + Pos(wb - 1, hb - 1);
+  ScreenPos la = pa + sizea - ScreenPos(1,1);
+  ScreenPos lb = pb + sizeb - ScreenPos(1,1);
 
   return ! ( pa.x > lb.x || pa.y > lb.y || pb.x > la.x || pb.y > la.y );
 }
 
 // does shape a completely lie within shape b.
-bool enclosure(Pos pa, byte wa, byte ha, Pos pb, byte wb, byte hb) {
+bool enclosure(ScreenPos pa, ScreenPos sizea, ScreenPos pb, ScreenPos sizeb) {
 
   // while pa is the upper left of the shape, 
   // we need the lower right (la).
   
-  Pos la = pa + Pos(wa - 1, ha - 1);
-  Pos lb = pb + Pos(wb - 1, hb - 1);
+  ScreenPos la = pa + sizea - ScreenPos(1,1);
+  ScreenPos lb = pb + sizeb - ScreenPos(1,1);
 
   return pa.x >= pb.x && pa.y >= pb.y && la.x <= lb.x && la.y <= lb.y;
 }

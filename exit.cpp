@@ -4,12 +4,12 @@
 
     Exit::Exit() {}
     
-    Exit::Exit(byte cell_x, byte cell_y) {
-      position = cell_to_screen(Pos(cell_x, cell_y));
+    Exit::Exit(MapPos pos) {
+      position = cell_to_screen(pos);
     }
     
-    bool Exit::collides_with(Pos p, byte w, byte h){
-      return collision(position, 2 * CELL, 2 * CELL, p, w, h);
+    bool Exit::collides_with(ScreenPos p, ScreenPos size){
+      return collision(position, ScreenPos(2 * CELL, 2 * CELL), p, size);
     }
     
     void Exit::draw() {

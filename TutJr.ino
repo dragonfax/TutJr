@@ -64,7 +64,7 @@ void end(const char *str) {
     delay( 3 * 1000);
     exit(0);
   } else {
-    player.position = cell_to_screen(Pos(1,1));
+    player.position = cell_to_screen(MapPos(1,1));
   }
 }
       
