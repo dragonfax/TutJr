@@ -7,7 +7,7 @@ Door::Door(MapPos pos, byte ds) {
 }
 
 bool Door::collides_with_pivot(ScreenPos position, ScreenPos size) {
-  if ( collision(position, size, center, ScreenPos(CELL, CELL)) ) {
+  if ( collision(position, size, center, ScreenPos(WALL_THICK, WALL_THICK)) ) {
     return true;
   }
   return false;
@@ -17,7 +17,7 @@ bool Door::collides_with(ScreenPos position, ScreenPos size) {
 
   collidedDoors = 0;
 
-  if ( collision(position, size, center, ScreenPos(CELL, CELL)) ) {
+  if ( collides_with_pivot(position, size) ) {
     return true;
   }
 
@@ -25,28 +25,28 @@ bool Door::collides_with(ScreenPos position, ScreenPos size) {
 
   // how to check the other door segments. including rotation.
   if ( doors & DOOR_UP )  {
-    if ( collision(position, size, center + cell_to_screen(MapPos(0, -2)), ScreenPos(CELL, 2 * CELL)) ) {
+    if ( collision(position, size, center + cell_to_screen(MapPos(0, -2)), ScreenPos(WALL_THICK, SPACE_SIZE)) ) {
       collidedDoors |= DOOR_UP;
       return true;
     }
   }
 
   if ( doors & DOOR_DOWN )  {
-    if ( collision(position, size, center + cell_to_screen(MapPos(0, 1)), ScreenPos(CELL, 2 * CELL)) ) {
+    if ( collision(position, size, center + cell_to_screen(MapPos(0, 1)), ScreenPos(WALL_THICK, SPACE_SIZE)) ) {
       collidedDoors |= DOOR_DOWN;
       return true;
     }
   }
 
   if ( doors & DOOR_LEFT )  {
-    if ( collision(position, size, center + cell_to_screen(MapPos(-2, 0)), ScreenPos(2 * CELL, CELL)) ) {
+    if ( collision(position, size, center + cell_to_screen(MapPos(-2, 0)), ScreenPos(SPACE_SIZE, WALL_THICK)) ) {
       collidedDoors |= DOOR_LEFT;
       return true;
     }
   }
    
   if ( doors & DOOR_RIGHT )  {
-    if ( collision(position, size, center + cell_to_screen(MapPos(1, 0)), ScreenPos(2 * CELL, CELL)) ) {
+    if ( collision(position, size, center + cell_to_screen(MapPos(1, 0)), ScreenPos(SPACE_SIZE, WALL_THICK)) ) {
       collidedDoors |= DOOR_RIGHT;
       return true;
     }
@@ -57,7 +57,7 @@ bool Door::collides_with(ScreenPos position, ScreenPos size) {
 
 void Door::draw() {
 
-    arduboy.fillRect(center.x + 1, center.y + 1, CELL - 2, CELL - 2, 1);
+    arduboy.fillRect(center.x, center.y, WALL_THICK + 1, WALL_THICK + 1, 1);
 
 
 
