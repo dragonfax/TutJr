@@ -32,9 +32,6 @@ bool isVerticalWall( MapPos cell) {
   return cell.y%3 != 0 && cell.x%3 == 0;
 }
 
-const byte SPACE_SIZE=4;
-const byte WALL_THICK=1;
-
 void drawHorizontalWall(MapPos cell) {
   ScreenPos pos = cell_to_screen(cell);
   arduboy.drawFastHLine(pos.x, pos.y, SPACE_SIZE, WHITE);

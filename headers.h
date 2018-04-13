@@ -90,6 +90,8 @@ class Player {
 
 extern Player player;
 
+const byte SPACE_SIZE=4;
+const byte WALL_THICK=1;
 
 
 const byte DOOR_UP = 1;
