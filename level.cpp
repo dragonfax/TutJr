@@ -20,6 +20,7 @@ bool Level::getWall(MapPos cell) {
   return ( b & mask ) > 0;
 }
 
+/*
 bool isLocationWall(MapPos cell) {
   return cell.x%3 == 0 || cell.y%3 == 0;
 }
@@ -31,10 +32,24 @@ bool isHorizontalWall(MapPos cell) {
 bool isVerticalWall( MapPos cell) {
   return cell.x%3 != 0 && cell.y%3 == 0;
 }
+*/
 
-const byte SPACE_SIZE=4;
-const byte WALL_THICK=1;
+void Level::draw() {
+  byte i;
+  byte j;
+  for ( i = 0; i < LEVEL_WIDTH; i++ ) {
+    for ( j = 0; j < LEVEL_HEIGHT; j++ ) {
+      MapPos mp = MapPos(i,j);
+      if ( getWall(mp) ) {
+        drawWallOutline(mp);
+      }
+    }
+  }
+}
 
+const byte WALL_SIZE = CELL;
+
+/*
 void drawHorizontalWall(MapPos cell) {
   ScreenPos pos = cell_to_screen(cell);
   arduboy.drawFastHLine(pos.x, pos.y, SPACE_SIZE, WHITE);
@@ -64,6 +79,29 @@ void Level::draw() {
         }
       }
     }
+*/
+
+void Level::drawWallOutline(MapPos cell) {
+  ScreenPos pos = cell_to_screen(cell);
+
+  // north wall
+  if ( cell.y == 0 || !getWall(cell - MapPos(0,1)) ) {
+    arduboy.drawFastHLine(pos.x, pos.y, WALL_SIZE, WHITE);
+  }
+
+  // west wall
+  if ( cell.x == 0 || !getWall(cell - MapPos(1, 0)) ) {
+    arduboy.drawFastVLine(pos.x, pos.y, WALL_SIZE, WHITE);
+  }
+
+  // south wall
+  if ( cell.y == 128 || !getWall(cell + MapPos(0,1)) ) {
+    arduboy.drawFastHLine( pos.x, pos.y + (WALL_SIZE - 1), WALL_SIZE, WHITE);
+  }
+
+  // east wall
+  if ( cell.x == 32 || !getWall(cell + MapPos(1,0)) ) {
+    arduboy.drawFastVLine( pos.x + (WALL_SIZE - 1), pos.y, WALL_SIZE, WHITE);
   }
 }
 
