@@ -111,7 +111,7 @@ bool Level::collides_with(ScreenPos position, ScreenPos size) {
   // check each for a wall segment
 
   ScreenPos ul = position; // upper left
-  ScreenPos lr = position + size - ScreenPos(- 1, - 1); // lower right
+  ScreenPos lr = position + size - ScreenPos(1, 1); // lower right
 
   MapPos cell_ul = screen_to_cell(ul);
   MapPos cell_lr = screen_to_cell(lr);
