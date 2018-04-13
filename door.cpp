@@ -162,29 +162,6 @@ void Door::check_and_rotate() {
   }
 }
 
-ScreenPos Door::rotatePos(ScreenPos position) {
-
-  // positions are normalized to cell coords. the rotation is done there.
-
-  MapPos relPos = screen_to_cell(position) - screen_to_cell(center);
-
-  MapPos newRelPos;
-
-  if ( relPos == MapPos(1,-2) ) {
-    newRelPos = MapPos(1, 1);
-  } else if ( relPos == MapPos(1, 1) ) {
-    newRelPos = MapPos(-2, 1);
-  } else if ( relPos == MapPos(-2, 1) ) {
-    newRelPos = MapPos(-2, -2);
-  } else if ( relPos == MapPos(-2, -2) ) {
-    newRelPos = MapPos(1, -2);
-  } else {
-    // unknown situation. just ignore it.
-  }
-
-  return center + cell_to_screen(newRelPos);
-}
-
 static bool Door::doors_collides_with_pivot(ScreenPos position, ScreenPos size) {
   byte i;
   for ( i = 0; i < NUM_DOORS; i++ ) {

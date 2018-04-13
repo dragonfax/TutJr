@@ -111,7 +111,6 @@ class Door {
     void draw();
     void swing(bool direction);
     void check_and_rotate();
-    ScreenPos rotatePos(ScreenPos position);
 };
 
 extern const byte NUM_DOORS;
