@@ -57,16 +57,16 @@ byte screen_to_cell1d(byte screen) {
   byte units = screen / UNIT_SIZE;
   byte remain = screen % UNIT_SIZE;
 
-  byte add = 0;
-  if ( remain == WALL_THICK ) {
-    add = 1;
-  } else if ( remain == WALL_THICK + SPACE_SIZE ) {
-    add = 2;
-  } else {
-    Serial.println("Error, bad size of cell1d");
+  byte extra = 0;
+  if (remain > 0 ) {
+    if ( remain >= WALL_THICK + SPACE_SIZE ) {
+      extra = 2;
+    } else if ( remain >= WALL_THICK ) {
+      extra = 1;
+    }
   }
 
-  return units * 3;
+  return units * 3 + extra;
 }
 
 ScreenPos cell_to_screen(MapPos cell) {
