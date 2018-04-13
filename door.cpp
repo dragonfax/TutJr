@@ -157,13 +157,8 @@ void Door::check_and_rotate() {
 
   if ( rotateClockwise) {
     swing(true);
-    // TODO rotate player only if necessary.
-    // player.position = rotatePos(player.position);
   } else if ( rotateCounter ) {
     swing(false);
-    // player.position = rotatePos(player.position);
-    // player.position = rotatePos(player.position);
-    // player.position = rotatePos(player.position);
   }
 }
 
