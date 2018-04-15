@@ -218,12 +218,14 @@ void Player::moveTo(ScreenPos player_position_new) {
       end("You Lose");
     }
   
+  /*
     if ( collides_with_door ) {
       // give each door a chance to rotate.
       for ( i = 0; i < NUM_DOORS; i++ ) {
         level_doors[i].check_and_rotate();
       }
     }
+    */
 
     if ( exitSpace.collides_with(position, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT)) ) {
       end("You Win!");

@@ -94,23 +94,22 @@ const byte SPACE_SIZE=4;
 const byte WALL_THICK=1;
 
 
-const byte DOOR_UP = 1;
-const byte DOOR_RIGHT = 2;
-const byte DOOR_DOWN = 4;
-const byte DOOR_LEFT = 8;
+enum Direction {
+  VERTICAL = 1,
+  HORIZONTAL
+};
 
 class Door {
   public:
+    Door(MapPos position, Direction direction);
     ScreenPos center;
-    byte doors;
-    byte collidedDoors;
-    Door(MapPos position, byte doors);
+    Direction direction;
     bool collides_with(ScreenPos position, ScreenPos size);
     bool collides_with_pivot(ScreenPos position, ScreenPos size);
     static bool doors_collides_with_pivot(ScreenPos position, ScreenPos size);
     void draw();
     void swing(bool direction);
-    void check_and_rotate();
+    // void check_and_rotate();
 };
 
 extern const byte NUM_DOORS;

@@ -28,11 +28,11 @@ SafeSpot safeSpot = SafeSpot(MapPos(1, 1));
 
 const byte NUM_DOORS = 5;
 Door level_doors[] = { 
-  Door(MapPos(3, 12), DOOR_UP | DOOR_DOWN),
-  Door(MapPos(9, 9), DOOR_UP | DOOR_DOWN),
-  Door(MapPos(18, 12), DOOR_UP | DOOR_DOWN),
-  Door(MapPos(27, 3), DOOR_UP | DOOR_DOWN),
-  Door(MapPos(15, 3), DOOR_LEFT | DOOR_RIGHT)
+  Door(MapPos(3, 12), VERTICAL),
+  Door(MapPos(9, 9), VERTICAL),
+  Door(MapPos(18, 12), VERTICAL),
+  Door(MapPos(27, 3), VERTICAL),
+  Door(MapPos(15, 3), HORIZONTAL)
 };
 
 
