@@ -2,15 +2,14 @@
 
 Level level = Level();
 
-const byte LEVEL_WIDTH = 32;
-const byte LEVEL_HEIGHT = 16;
-
 Level::Level(){}
+
+const byte LEVEL_ROW_WIDTH = 5;
 
 bool Level::getWall(MapPos cell) {
 
   // calculate bit that represents this wall.
-  byte by = cell.y * 4;
+  byte by = cell.y * LEVEL_ROW_WIDTH;
   byte xb = cell.x / 8;
   byte xm = 7 - cell.x % 8;
   

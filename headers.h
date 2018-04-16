@@ -57,8 +57,8 @@ class ScreenPos {
   ScreenPos operator-(const ScreenPos &other );
 };
 
-extern const byte LEVEL_CELL_WIDTH;
-extern const byte LEVEL_CELL_HEIGHT;
+extern const byte LEVEL_WIDTH;
+extern const byte LEVEL_HEIGHT;
 
 class Entity {
   public:
