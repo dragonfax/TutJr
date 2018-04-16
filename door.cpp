@@ -32,6 +32,7 @@ const ScreenPos PIXEL_SIZE = ScreenPos(1,1);
 bool Door::collides_with(ScreenPos position, ScreenPos size, void* entity) {
 
   if ( collides_with_pivot(position, size) ) {
+    Serial.println("collides with pivot");
     return true;
   }
 
@@ -107,6 +108,13 @@ bool Door::collides_with(ScreenPos position, ScreenPos size, void* entity) {
       return false;
     }
 
+    Serial.print("player not aligned perfectly with door. ");
+    Serial.print(position.to_string());
+    Serial.print(" ");
+    Serial.print(center.to_string());
+    Serial.print(" ");
+    Serial.print(QUADRANT_4_POS.to_string());
+    Serial.println("");
     return true;
   }
    

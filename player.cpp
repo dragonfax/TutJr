@@ -120,8 +120,8 @@ Player::Player(){}
 
 void Player::move() {
 
-  Serial.print("player ");
-  Serial.println(position.to_string());
+  // Serial.print("player ");
+  //Serial.println(position.to_string());
 
   if ( ! arduboy.everyXFrames(2) )
     return;
