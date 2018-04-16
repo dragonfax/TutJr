@@ -32,30 +32,23 @@ const ScreenPos PIXEL_SIZE = ScreenPos(1,1);
 bool Door::collides_with(ScreenPos new_position, ScreenPos size, Entity* entity) {
 
   if ( collides_with_pivot(new_position, size) ) {
-    Serial.println("collides with pivot");
     return true;
   }
 
   if ( direction == VERTICAL && collision(new_position, size, center + DOOR_VERTICAL_POS, DOOR_VERTICAL_SIZE) ) {
-
-    Serial.println("collision with vertical door");
 
     if ( collision(entity->get_position(), PIXEL_SIZE, center + QUADRANT_2_POS, QUADRANT_SIZE) || 
       collision(entity->get_position(), PIXEL_SIZE, center + QUADRANT_4_POS, QUADRANT_SIZE) 
     ) {
       // counter clockwise
 
-      Serial.println("counter clockwise");
-
       if ( Monster::collides_with_any(center + QUADRANT_1_POS, QUADRANT_SIZE, entity) ||
         Monster::collides_with_any(center + QUADRANT_3_POS, QUADRANT_SIZE, entity)
       ) {
         // monster blocking path, can't rotate
-        Serial.println("monster stops door");
         return true;
       }
 
-      Serial.println("swing door");
       swing();
       return false;
     } else if ( collision(entity->get_position(), PIXEL_SIZE, center + QUADRANT_1_POS, QUADRANT_SIZE) || 
@@ -63,27 +56,16 @@ bool Door::collides_with(ScreenPos new_position, ScreenPos size, Entity* entity)
     ) {
       // clockwise.
 
-      Serial.println("clockwise");
-
       if ( Monster::collides_with_any(center + QUADRANT_2_POS, QUADRANT_SIZE, entity) ||
         Monster::collides_with_any(center + QUADRANT_4_POS, QUADRANT_SIZE, entity)
       ) {
-        Serial.println("monster stops door");
         return true;
       }
 
-      Serial.println("swing door");
       swing();
       return false;
     }
 
-    Serial.print("player not aligned perfectly with door. ");
-    Serial.print(new_position.to_string());
-    Serial.print(" ");
-    Serial.print(center.to_string());
-    Serial.print(" ");
-    Serial.print(QUADRANT_4_POS.to_string());
-    Serial.println("");
     return true;
   } else if ( direction == HORIZONTAL && collision(new_position, size, center + DOOR_HORIZONTAL_POS, DOOR_HORIZONTAL_SIZE) ) {
     if ( collision(entity->get_position(), PIXEL_SIZE, center + QUADRANT_3_POS, QUADRANT_SIZE) || 
@@ -108,13 +90,6 @@ bool Door::collides_with(ScreenPos new_position, ScreenPos size, Entity* entity)
       return false;
     }
 
-    Serial.print("player not aligned perfectly with door. ");
-    Serial.print(new_position.to_string());
-    Serial.print(" ");
-    Serial.print(center.to_string());
-    Serial.print(" ");
-    Serial.print(QUADRANT_4_POS.to_string());
-    Serial.println("");
     return true;
   }
    
