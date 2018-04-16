@@ -9,7 +9,7 @@
     }
     
     bool Exit::collides_with(ScreenPos p, ScreenPos size){
-      return collision(position, ScreenPos(2 * CELL, 2 * CELL), p, size);
+      return collision(position, ScreenPos(SPACE_SIZE, SPACE_SIZE), p, size);
     }
 
     ScreenPos Exit::get_position() {
@@ -17,7 +17,6 @@
     }
     
     void Exit::draw() {
-      // arduboy.fillCircle(position.x + CELL, position.y + CELL, CELL, WHITE);
       drawString(position.x + 1, position.y, "E");
     }
 

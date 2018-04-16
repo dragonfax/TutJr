@@ -9,16 +9,6 @@ extern Arduboy arduboy;
 void drawString(byte x, byte y, const char* str);
 void end(const char *str) ;
 
-// A CELL is one square unit of wall, in the level bitmap.
-// Here we define how many pixels on cell is.
-//
-// Also swinging door segments are 2,1 cells.
-// And the player, and monsters are 2,2 cells.
-//
-// Some initializations and calculations are done in cell coordinates,
-// instead of screen coordinates, for convenience.
-const byte CELL = 4;
-
 typedef unsigned char byte;
 
 typedef unsigned int uint;
@@ -59,6 +49,7 @@ class ScreenPos {
 
 extern const byte LEVEL_WIDTH;
 extern const byte LEVEL_HEIGHT;
+extern const byte LEVEL_ROW_WIDTH;
 
 class Entity {
   public:
@@ -98,7 +89,7 @@ class Player : public Entity {
 
 extern Player player;
 
-const byte SPACE_SIZE=4;
+const byte SPACE_SIZE=8;
 const byte WALL_THICK=1;
 
 
@@ -124,8 +115,8 @@ class Door{
 extern const byte NUM_DOORS;
 extern Door level_doors[];
 
-const byte PLAYER_WIDTH = 2 * CELL;
-const byte PLAYER_HEIGHT = 2 * CELL;
+const byte PLAYER_WIDTH = SPACE_SIZE;
+const byte PLAYER_HEIGHT = SPACE_SIZE;
 const ScreenPos PLAYER_SIZE = ScreenPos(PLAYER_WIDTH,PLAYER_HEIGHT);
 
 
@@ -147,8 +138,8 @@ class Monster: public Entity {
     ScreenPos get_position();
 };
 
-const byte MONSTER_WIDTH = 2 * CELL;
-const byte MONSTER_HEIGHT = 2 * CELL;
+const byte MONSTER_WIDTH = SPACE_SIZE;
+const byte MONSTER_HEIGHT = SPACE_SIZE;
     
 extern const byte NUM_MONSTERS;
 extern Monster monsters[];

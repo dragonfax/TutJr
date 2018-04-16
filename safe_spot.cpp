@@ -7,7 +7,7 @@ SafeSpot::SafeSpot(MapPos cell) {
 }
 
 bool SafeSpot::collides_with(ScreenPos p, ScreenPos size) {
-    return collision(position, ScreenPos(2 * CELL, 2 * CELL), p, size);
+    return collision(position, ScreenPos(SPACE_SIZE, SPACE_SIZE), p, size);
 }
 
 ScreenPos SafeSpot::get_position() {

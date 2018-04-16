@@ -13,7 +13,7 @@ bool Door::collides_with_pivot(ScreenPos new_position, ScreenPos size) {
 }
 
 // TODO different constants for the visible door, vs the collision door.
-const byte DOOR_LENGTH = SPACE_SIZE * 2;
+const byte DOOR_LENGTH = SPACE_SIZE;
 const byte DOOR_WIDTH = WALL_THICK;
 
 const ScreenPos QUADRANT_SIZE = ScreenPos(DOOR_LENGTH,DOOR_LENGTH);

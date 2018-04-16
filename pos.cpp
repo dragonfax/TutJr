@@ -55,28 +55,24 @@ char* ScreenPos::to_string() {
   return buf1;
 }
 
-byte cell_to_screen1d(byte cell) {
-  byte spaces = ( cell / 3.0 ) * 2;
-  byte walls = (cell + 2) / 3; // div 3, but round up, not down.
+byte cell_to_screen1d(byte x) {
+  byte spaces = x / 2;
+  byte walls = (x + 1)/ 2;
   return spaces * SPACE_SIZE + walls * WALL_THICK;
 }
 
-const byte UNIT_SIZE = SPACE_SIZE * 2 + WALL_THICK;
+const byte UNIT_SIZE = SPACE_SIZE + WALL_THICK;
 
 byte screen_to_cell1d(byte screen) {
   byte units = screen / UNIT_SIZE;
   byte remain = screen % UNIT_SIZE;
 
   byte extra = 0;
-  if (remain > 0 ) {
-    if ( remain >= WALL_THICK + SPACE_SIZE ) {
-      extra = 2;
-    } else if ( remain >= WALL_THICK ) {
-      extra = 1;
-    }
+  if ( remain > 0 ) {
+    extra = 1;
   }
 
-  return units * 3 + extra;
+  return units * 2 + extra;
 }
 
 ScreenPos cell_to_screen(MapPos cell) {
@@ -84,6 +80,5 @@ ScreenPos cell_to_screen(MapPos cell) {
 }
 
 MapPos screen_to_cell(ScreenPos position) {
-  // return MapPos(position.x / CELL, position.y / CELL);
   return MapPos(screen_to_cell1d(position.x), screen_to_cell1d(position.y));
 }

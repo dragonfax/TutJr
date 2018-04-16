@@ -4,8 +4,6 @@ Level level = Level();
 
 Level::Level(){}
 
-const byte LEVEL_ROW_WIDTH = 5;
-
 bool Level::getWall(MapPos cell) {
 
   // calculate bit that represents this wall.
@@ -19,16 +17,24 @@ bool Level::getWall(MapPos cell) {
   return ( b & mask ) > 0;
 }
 
+bool isOdd(byte x) {
+  return x%2 == 1;
+}
+
+bool isEven(byte x) {
+  return x%2 == 0;
+}
+
 bool isLocationWall(MapPos cell) {
-  return cell.x%3 == 0 || cell.y%3 == 0;
+  return isEven(cell.x) || isEven(cell.y);
 }
 
 bool isHorizontalWall(MapPos cell) {
-  return cell.x%3 != 0 && cell.y%3 == 0;
+  return isOdd(cell.x) && isEven(cell.y);
 }
 
 bool isVerticalWall( MapPos cell) {
-  return cell.y%3 != 0 && cell.x%3 == 0;
+  return isOdd(cell.y) && isEven(cell.x);
 }
 
 void drawHorizontalWall(MapPos cell) {
