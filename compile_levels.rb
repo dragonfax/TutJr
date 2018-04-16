@@ -6,12 +6,9 @@ R = Ring (Treasure)
 
 =end
 
-def main
-    Dir.glob("levels/level*.txt").each do |level_filename|
-        level = parse_file(level_filename)
-        write_level(level)
-    end
-end
+require 'pp'
+
+WALL_CHARS = %w{ | - + . }
 
 def write_level(level)
     File.open("generated/level#{level[:number]}.cpp", 'w') do |file|
@@ -37,7 +34,7 @@ def parse_file(level_filename)
         spiders: [],
         keys: [],
         gates: [],
-        treasure: [],
+        rings: [],
         doors: [],
     }
 
@@ -48,9 +45,11 @@ def parse_file(level_filename)
     level[:number] = m[1].to_i
 
     content = File.read(level_filename)
+    raise unless content;
     lines = content.split("\n")
-    file_width = len(lines.first) - 1
-    file_height = len(lines)
+    raise unless lines.count > 1
+    file_width = lines.first.length - 1
+    file_height = lines.length
 
     # actual rooms (not walls)
     map_width = (file_width - 1 ) / 2
@@ -58,53 +57,43 @@ def parse_file(level_filename)
 
     (0..map_width-1).each do |x|
         (0..map_height-1).each do |y|
-            # which facing walls are open, for this room.
-            north = is_open(lines,x,y,:north)
-            south = is_open(lines,x,y,:south)
-            west = is_open(lines,x,y,:west)
-            east = is_open(lines,x,y,:east)
 
-            if y == 0 
-                north = false
-            elsif y == map_height - 1
-                south = false
-            end
-
-            if x == 0
-                west = false
-            elsif x == map_width - 1
-                east = false
-            end
-
-            level[:map][y] ||= []
-            level[:map][y][x] = directions_to_bitmask(north,south,west,east)
-
-            file_x, file_y = map_to_file_coord(x,y)
-            c = lines[file_y][file_x]
-            if c == 'H'
-                level[:hero] = [x,y]
-            elsif c == 'E'
-                level[:exit] = [x,y]
-            elsif c == 'S'
-                level[:spiders] << [x,y]
-            elsif c == 'K'
-                level[:keys] << [x, y]
-            elsif c == 'L'
-                level[:gates] << [x, y]
-            elsif c == 'T'
-                level[:treasure] << [x, y]
+            if WALL_CHARS.include?(lines[y][x]) 
+                level[:map][y] ||= [ '0' * file_width ]
+                level[:map][y][x] = 1
             else
-                raise
+                c = lines[y][x]
+                if c == 'H'
+                    level[:hero] = [x,y]
+                elsif c == 'E'
+                    level[:exit] = [x,y]
+                elsif c == 'S'
+                    level[:spiders] << [x,y]
+                elsif c == 'K'
+                    level[:keys] << [x, y]
+                elsif c == 'L'
+                    level[:gates] << [x, y]
+                elsif c == 'R'
+                    level[:rings] << [x, y]
+                elsif c == ' '
+                    # pass
+                elsif c == 'D' || c == 'P'
+                    # door segment, handled elsewhere
+                else
+                    raise "unknown map char '#{c}'"
+                end
             end
         end
     end
+
+    pp level
 
     # process door locations
     (0..file_width-1).each do |x|
         (0..file_height-1).each do |y|
             c = lines[y][x]
             if c == 'P'
-                level[:doors] << process_door(x,y)
+                level[:doors] << process_door(line,x,y)
             end
         end
     end
@@ -113,7 +102,7 @@ def parse_file(level_filename)
     return level
 end
 
-def process_doors(lines, x, y)
+def process_door(lines, x, y)
     north = false
     south = false
     west = false
@@ -194,6 +183,13 @@ end
 
 def is_wall_char(c)
     return %w"| - . +".include?(c)
+end
+
+def main
+    Dir.glob("levels/level*.txt").each do |level_filename|
+        level = parse_file(level_filename)
+        write_level(level)
+    end
 end
 
 main
