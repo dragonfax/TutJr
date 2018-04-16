@@ -60,6 +60,11 @@ class ScreenPos {
 extern const byte LEVEL_CELL_WIDTH;
 extern const byte LEVEL_CELL_HEIGHT;
 
+class Entity {
+  public:
+    virtual ScreenPos get_position() = 0;
+};
+
 class Level {
   public:
     void draw();
@@ -73,7 +78,7 @@ extern Level level;
 
 class Door;
 
-class Player {
+class Player : public Entity {
   public:
     ScreenPos position;
     ScreenPos old_position;
@@ -87,6 +92,8 @@ class Player {
     void move();
     void moveTo(ScreenPos new_position);
     bool canMoveTo(ScreenPos new_position);
+
+    ScreenPos get_position();
 };
 
 extern Player player;
@@ -100,18 +107,18 @@ enum Direction {
   HORIZONTAL
 };
 
-class Door {
+class Door{
   public:
     Door(MapPos position, Direction direction);
     ScreenPos center;
     Direction direction;
-    bool collides_with(ScreenPos position, ScreenPos size, void* entity);
+    bool collides_with(ScreenPos position, ScreenPos size, Entity* entity);
     bool collides_with_pivot(ScreenPos position, ScreenPos size);
     static bool doors_collides_with_pivot(ScreenPos position, ScreenPos size);
     void draw();
     void swing();
     // void check_and_rotate();
-    static bool doors_collides_with_door(ScreenPos position, ScreenPos size, void* entity);
+    static bool doors_collides_with_door(ScreenPos position, ScreenPos size, Entity* entity);
 };
 
 extern const byte NUM_DOORS;
@@ -122,7 +129,7 @@ const byte PLAYER_HEIGHT = 2 * CELL;
 const ScreenPos PLAYER_SIZE = ScreenPos(PLAYER_WIDTH,PLAYER_HEIGHT);
 
 
-class Monster {
+class Monster: public Entity {
   public:
     ScreenPos position;
     ScreenPos old_position;
@@ -133,10 +140,11 @@ class Monster {
     Monster(MapPos position);
     void move();
     void draw();
-    bool collides_with(ScreenPos position, ScreenPos size, void* entity);
+    bool collides_with(ScreenPos position, ScreenPos size, Entity* entity);
     void setup();
     bool operator== ( Monster & rhs );
-    static bool collides_with_any(ScreenPos position, ScreenPos size, void* entity);
+    static bool collides_with_any(ScreenPos position, ScreenPos size, Entity* entity);
+    ScreenPos get_position();
 };
 
 const byte MONSTER_WIDTH = 2 * CELL;
@@ -146,23 +154,26 @@ extern const byte NUM_MONSTERS;
 extern Monster monsters[];
 
         
-class Exit {
+class Exit: public Entity {
   public:
     ScreenPos position;
     Exit();
     Exit(MapPos position);
     bool collides_with(ScreenPos position, ScreenPos size);
     void draw();
+    ScreenPos get_position();
 };
 
 extern Exit exitSpace;
 
-class SafeSpot {
+class SafeSpot: public Entity {
   public:
     ScreenPos position;
     SafeSpot();
     SafeSpot(MapPos position);
+    ~SafeSpot() {};
     bool collides_with(ScreenPos position, ScreenPos size);
+    ScreenPos get_position();
 };
 
 extern byte num_lives;

@@ -5,8 +5,8 @@ Door::Door(MapPos pos, Direction d) {
   center = cell_to_screen(pos);
 }
 
-bool Door::collides_with_pivot(ScreenPos position, ScreenPos size) {
-  if ( collision(position, size, center, ScreenPos(WALL_THICK, WALL_THICK)) ) {
+bool Door::collides_with_pivot(ScreenPos new_position, ScreenPos size) {
+  if ( collision(new_position, size, center, ScreenPos(WALL_THICK, WALL_THICK)) ) {
     return true;
   }
   return false;
@@ -29,19 +29,19 @@ const ScreenPos DOOR_HORIZONTAL_SIZE = ScreenPos(DOOR_LENGTH * 2 + DOOR_WIDTH, D
 
 const ScreenPos PIXEL_SIZE = ScreenPos(1,1);
 
-bool Door::collides_with(ScreenPos position, ScreenPos size, void* entity) {
+bool Door::collides_with(ScreenPos new_position, ScreenPos size, Entity* entity) {
 
-  if ( collides_with_pivot(position, size) ) {
+  if ( collides_with_pivot(new_position, size) ) {
     Serial.println("collides with pivot");
     return true;
   }
 
-  if ( direction == VERTICAL && collision(position, size, center + DOOR_VERTICAL_POS, DOOR_VERTICAL_SIZE) ) {
+  if ( direction == VERTICAL && collision(new_position, size, center + DOOR_VERTICAL_POS, DOOR_VERTICAL_SIZE) ) {
 
     Serial.println("collision with vertical door");
 
-    if ( collision(position, PIXEL_SIZE, center + QUADRANT_2_POS, QUADRANT_SIZE) || 
-      collision(position, PIXEL_SIZE, center + QUADRANT_4_POS, QUADRANT_SIZE) 
+    if ( collision(entity->get_position(), PIXEL_SIZE, center + QUADRANT_2_POS, QUADRANT_SIZE) || 
+      collision(entity->get_position(), PIXEL_SIZE, center + QUADRANT_4_POS, QUADRANT_SIZE) 
     ) {
       // counter clockwise
 
@@ -58,8 +58,8 @@ bool Door::collides_with(ScreenPos position, ScreenPos size, void* entity) {
       Serial.println("swing door");
       swing();
       return false;
-    } else if ( collision(position, PIXEL_SIZE, center + QUADRANT_1_POS, QUADRANT_SIZE) || 
-      collision(position, PIXEL_SIZE,center + QUADRANT_3_POS, QUADRANT_SIZE) 
+    } else if ( collision(entity->get_position(), PIXEL_SIZE, center + QUADRANT_1_POS, QUADRANT_SIZE) || 
+      collision(entity->get_position(), PIXEL_SIZE,center + QUADRANT_3_POS, QUADRANT_SIZE) 
     ) {
       // clockwise.
 
@@ -78,16 +78,16 @@ bool Door::collides_with(ScreenPos position, ScreenPos size, void* entity) {
     }
 
     Serial.print("player not aligned perfectly with door. ");
-    Serial.print(position.to_string());
+    Serial.print(new_position.to_string());
     Serial.print(" ");
     Serial.print(center.to_string());
     Serial.print(" ");
     Serial.print(QUADRANT_4_POS.to_string());
     Serial.println("");
     return true;
-  } else if ( direction == HORIZONTAL && collision(position, size, center + DOOR_HORIZONTAL_POS, DOOR_HORIZONTAL_SIZE) ) {
-    if ( collision(position, PIXEL_SIZE, center + QUADRANT_3_POS, QUADRANT_SIZE) || 
-      collision(position, PIXEL_SIZE, center + QUADRANT_1_POS, QUADRANT_SIZE) 
+  } else if ( direction == HORIZONTAL && collision(new_position, size, center + DOOR_HORIZONTAL_POS, DOOR_HORIZONTAL_SIZE) ) {
+    if ( collision(entity->get_position(), PIXEL_SIZE, center + QUADRANT_3_POS, QUADRANT_SIZE) || 
+      collision(entity->get_position(), PIXEL_SIZE, center + QUADRANT_1_POS, QUADRANT_SIZE) 
     ) {
       if ( Monster::collides_with_any(center + QUADRANT_2_POS, QUADRANT_SIZE, entity) || 
         Monster::collides_with_any(center + QUADRANT_4_POS, QUADRANT_SIZE, entity) 
@@ -96,8 +96,8 @@ bool Door::collides_with(ScreenPos position, ScreenPos size, void* entity) {
       }
       swing();
       return false;
-    } else if ( collision(position, PIXEL_SIZE, center + QUADRANT_2_POS, QUADRANT_SIZE) || 
-      collision(position, PIXEL_SIZE, center + QUADRANT_4_POS, QUADRANT_SIZE) 
+    } else if ( collision(entity->get_position(), PIXEL_SIZE, center + QUADRANT_2_POS, QUADRANT_SIZE) || 
+      collision(entity->get_position(), PIXEL_SIZE, center + QUADRANT_4_POS, QUADRANT_SIZE) 
     ) {
       if ( Monster::collides_with_any(center + QUADRANT_1_POS, QUADRANT_SIZE, entity) ||
         Monster::collides_with_any(center + QUADRANT_3_POS, QUADRANT_SIZE, entity) 
@@ -109,7 +109,7 @@ bool Door::collides_with(ScreenPos position, ScreenPos size, void* entity) {
     }
 
     Serial.print("player not aligned perfectly with door. ");
-    Serial.print(position.to_string());
+    Serial.print(new_position.to_string());
     Serial.print(" ");
     Serial.print(center.to_string());
     Serial.print(" ");
@@ -146,19 +146,19 @@ void Door::swing() {
   }
 }
 
-static bool Door::doors_collides_with_door(ScreenPos position, ScreenPos size, void* entity) {
+static bool Door::doors_collides_with_door(ScreenPos new_position, ScreenPos size, Entity* entity) {
   for ( byte i = 0; i < NUM_DOORS; i++ ) {
-    if ( level_doors[i].collides_with(position, size, entity) ) {
+    if ( level_doors[i].collides_with(new_position, size, entity) ) {
       return true;
     }
   }
   return false;
 }
 
-static bool Door::doors_collides_with_pivot(ScreenPos position, ScreenPos size) {
+static bool Door::doors_collides_with_pivot(ScreenPos new_position, ScreenPos size) {
   byte i;
   for ( i = 0; i < NUM_DOORS; i++ ) {
-    if ( level_doors[i].collides_with_pivot(position, size) ) {
+    if ( level_doors[i].collides_with_pivot(new_position, size) ) {
       return true;
     }
   }

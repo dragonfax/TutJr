@@ -106,8 +106,12 @@ void Monster::move() {
   }
 }
 
-bool Monster::collides_with(ScreenPos p, ScreenPos size, void* entity) {
-  if ( entity == (void*)this ) {
+ScreenPos Monster::get_position() {
+  return position;
+}
+
+bool Monster::collides_with(ScreenPos p, ScreenPos size, Entity* entity) {
+  if ( entity == this ) {
     return false;
   }
   return collision(p, size, position, MONSTER_SIZE);
@@ -117,7 +121,7 @@ bool Monster::operator== ( Monster & rhs ) {
   return this == &rhs;
 }
 
-static bool Monster::collides_with_any(ScreenPos position, ScreenPos size, void* entity) {
+static bool Monster::collides_with_any(ScreenPos position, ScreenPos size, Entity* entity) {
   for ( byte i = 0; i < NUM_MONSTERS; i++ ) {
     if ( monsters[i].collides_with(position, size, entity) ) {
       return true;

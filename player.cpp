@@ -117,6 +117,9 @@ void Player::draw() {
 
 Player::Player(){}
 
+ScreenPos Player::get_position() {
+  return position;
+}
 
 void Player::move() {
 
