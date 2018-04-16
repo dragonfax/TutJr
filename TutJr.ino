@@ -4,12 +4,28 @@
 
 Arduboy arduboy;
 
+Player player = Player();
+
 void setup() {
   arduboy.beginNoLogo();
   arduboy.setFrameRate(60);
+  begin();
   arduboy.display();
   // Serial.begin(9600);
 }
+
+void begin() {
+  respawn();
+}
+
+void respawn() {
+  player.lives -= 1;
+  if player.lives < 0 ) {
+    end("You Lose");
+  }
+  player.position = level.entrance.position;
+}
+
 
 void draw() {
   arduboy.clear();
@@ -57,16 +73,19 @@ void loop() {
 
 
 void end(const char *str) {
-  num_lives -= 1;
-  if ( num_lives == 0 ) {
-    arduboy.clear();
-    drawString(10, 10, str);
-    arduboy.display();
-    delay( 3 * 1000);
-    exit(0);
-  } else {
-    player.position = cell_to_screen(MapPos(1,1));
-  }
+  arduboy.clear();
+  drawString(10, 10, str);
+  arduboy.display();
+  delay( 3 * 1000);
+  exit(0);
+}
+
+void win() {
+  arduboy.clear();
+  drawString(10, 10, "You Win");
+  arduboy.display();
+  delay( 3 * 1000);
+  exit(0);
 }
       
 void drawString(byte x, byte y, const char* str){

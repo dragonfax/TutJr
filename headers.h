@@ -47,10 +47,6 @@ class ScreenPos {
   ScreenPos operator-(const ScreenPos &other );
 };
 
-extern const byte LEVEL_WIDTH;
-extern const byte LEVEL_HEIGHT;
-extern const byte LEVEL_ROW_WIDTH;
-
 class Entity {
   public:
     virtual ScreenPos get_position() = 0;
@@ -58,11 +54,23 @@ class Entity {
 
 class Level {
   public:
+    Level( byte width, byte height, byte row_width, byte[] wall_data, byte num_monsters, Monster[] monsters, byte num_doors, Door[] doors, Exit exit, Entrance entrance);
     void draw();
     bool collides_with(ScreenPos position, ScreenPos size);
     Level();
     void drawWallOutline(MapPos cell);
     bool getWall(MapPos cell);
+
+    byte width ;
+    byte height ;
+    byte row_width ;
+    byte[] wall_data ;
+    byte num_monsters ;
+    Monster[] monsters ;
+    byte num_doors ;
+    Door[] doors ;
+    Exit exit ;
+    Entrance entrance;
 };
 
 extern Level level;
@@ -76,6 +84,7 @@ class Player : public Entity {
     byte direction;
     byte anim_frame;
     byte moveSteps;
+    byte lives;
 
     Player(MapPos cell);
     void draw();
@@ -112,9 +121,6 @@ class Door{
     static bool doors_collides_with_door(ScreenPos position, ScreenPos size, Entity* entity, bool canPivot);
 };
 
-extern const byte NUM_DOORS;
-extern Door level_doors[];
-
 const byte PLAYER_WIDTH = SPACE_SIZE;
 const byte PLAYER_HEIGHT = SPACE_SIZE;
 const ScreenPos PLAYER_SIZE = ScreenPos(PLAYER_WIDTH,PLAYER_HEIGHT);
@@ -141,10 +147,6 @@ class Monster: public Entity {
 const byte MONSTER_WIDTH = SPACE_SIZE;
 const byte MONSTER_HEIGHT = SPACE_SIZE;
     
-extern const byte NUM_MONSTERS;
-extern Monster monsters[];
-
-        
 class Exit: public Entity {
   public:
     ScreenPos position;
@@ -154,8 +156,6 @@ class Exit: public Entity {
     void draw();
     ScreenPos get_position();
 };
-
-extern Exit exitSpace;
 
 class SafeSpot: public Entity {
   public:
@@ -167,9 +167,10 @@ class SafeSpot: public Entity {
     ScreenPos get_position();
 };
 
-extern byte num_lives;
+class Entrance {
+  public:
+    ScreenPos position;
+    Entrance(MapPos position);
+}
+
 void lives_draw();
-
-extern SafeSpot safeSpot;
-
-extern const byte data[];

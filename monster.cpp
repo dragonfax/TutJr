@@ -89,7 +89,7 @@ void Monster::move() {
         last_direction = direction;
 
         if ( collision(player.position, PLAYER_SIZE, position, MONSTER_SIZE) ) {
-          end("You Lose");
+          respawn();
         }
         
         break;

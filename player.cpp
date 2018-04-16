@@ -96,6 +96,7 @@ Player::Player(MapPos cell) {
   position = cell_to_screen(cell);
   old_position = position;
   moveSteps = 0;
+  lives = 3;
 }
 
 
@@ -210,12 +211,11 @@ void Player::moveTo(ScreenPos player_position_new) {
     }
 
     if ( collides_with_monster ) {
-      end("You Lose");
+      respawn();
     }
  
     if ( exitSpace.collides_with(position, PLAYER_SIZE) ) {
-      end("You Win!");
-
+      win();
     }
 
   }

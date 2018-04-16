@@ -1,17 +1,26 @@
 #include "headers.h"
 
-Level level = Level();
-
-Level::Level(){}
+Level( byte width, byte height, byte row_width, byte[] wall_data, byte num_monsters, Monster[] monsters, Player player, byte num_doors, Door[] doors, Exit exit){
+  this.width = width;
+  this.height = height;
+  this.row_width = row_width;
+  this.wall_data = wall_data;
+  this.num_monsters = num_monsters;
+  this.monsters = monsters;
+  this.player = player;
+  this.num_doors = num_doors;
+  this.doors = doors;
+  this.exit = exit;
+}
 
 bool Level::getWall(MapPos cell) {
 
   // calculate bit that represents this wall.
-  byte by = cell.y * LEVEL_ROW_WIDTH;
+  byte by = cell.y * this.row_width;
   byte xb = cell.x / 8;
   byte xm = 7 - cell.x % 8;
   
-  byte b = pgm_read_byte_near(data + (by + xb));
+  byte b = data[by + xb];
   byte mask = 1 << xm;
   
   return ( b & mask ) > 0;
@@ -53,8 +62,8 @@ void drawCornerWall(MapPos cell) {
 }
 
 void Level::draw() {
-  for ( byte x = 0; x < LEVEL_WIDTH; x++ ) {
-    for ( byte y = 0; y < LEVEL_HEIGHT; y++ ) {
+  for ( byte x = 0; x < this.width; x++ ) {
+    for ( byte y = 0; y < this.height; y++ ) {
       MapPos cell = MapPos(x,y);
       if ( isLocationWall(cell) && getWall(cell) ) {
         if ( isHorizontalWall(cell) ) {
