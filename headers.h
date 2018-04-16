@@ -103,13 +103,13 @@ class Door{
     Door(MapPos position, Direction direction);
     ScreenPos center;
     Direction direction;
-    bool collides_with(ScreenPos position, ScreenPos size, Entity* entity);
+    bool collides_with(ScreenPos position, ScreenPos size, Entity* entity, bool canPivot);
     bool collides_with_pivot(ScreenPos position, ScreenPos size);
     static bool doors_collides_with_pivot(ScreenPos position, ScreenPos size);
     void draw();
     void swing();
     // void check_and_rotate();
-    static bool doors_collides_with_door(ScreenPos position, ScreenPos size, Entity* entity);
+    static bool doors_collides_with_door(ScreenPos position, ScreenPos size, Entity* entity, bool canPivot);
 };
 
 extern const byte NUM_DOORS;

@@ -198,7 +198,7 @@ void Player::moveTo(ScreenPos player_position_new) {
  
     // give each door a chance to say "no go" or to rotaate itself.
     // but we can't commit unless we're actually moving there.
-    bool collides_with_door = Door::doors_collides_with_door(player_position_new, PLAYER_SIZE, this);
+    bool collides_with_door = Door::doors_collides_with_door(player_position_new, PLAYER_SIZE, this, true);
 
     if ( ! collides_with_level && ! collides_with_monster && ! collides_with_door) {
       old_position = position;

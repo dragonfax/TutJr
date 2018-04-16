@@ -78,13 +78,7 @@ void Monster::move() {
 
       bool collides_with_safe_spot = safeSpot.collides_with(new_position, MONSTER_SIZE);
 
-      bool collides_with_door = false;
-      byte i;
-      for ( i = 0; i < NUM_DOORS; i++ ) {
-        if ( level_doors[i].collides_with(new_position, MONSTER_SIZE, this) ) {
-          collides_with_door = true;
-        }
-      }
+      bool collides_with_door = Door::doors_collides_with_door(new_position, MONSTER_SIZE, this, false);
 
       bool collides_with_monster = Monster::collides_with_any(new_position, MONSTER_SIZE, this);
 

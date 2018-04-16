@@ -29,13 +29,17 @@ const ScreenPos DOOR_HORIZONTAL_SIZE = ScreenPos(DOOR_LENGTH * 2 + DOOR_WIDTH, D
 
 const ScreenPos PIXEL_SIZE = ScreenPos(1,1);
 
-bool Door::collides_with(ScreenPos new_position, ScreenPos size, Entity* entity) {
+bool Door::collides_with(ScreenPos new_position, ScreenPos size, Entity* entity, bool canPivot) {
 
   if ( collides_with_pivot(new_position, size) ) {
     return true;
   }
 
   if ( direction == VERTICAL && collision(new_position, size, center + DOOR_VERTICAL_POS, DOOR_VERTICAL_SIZE) ) {
+
+    if ( ! canPivot ) {
+      return true;
+    }
 
     if ( collision(entity->get_position(), PIXEL_SIZE, center + QUADRANT_2_POS, QUADRANT_SIZE) || 
       collision(entity->get_position(), PIXEL_SIZE, center + QUADRANT_4_POS, QUADRANT_SIZE) 
@@ -68,6 +72,11 @@ bool Door::collides_with(ScreenPos new_position, ScreenPos size, Entity* entity)
 
     return true;
   } else if ( direction == HORIZONTAL && collision(new_position, size, center + DOOR_HORIZONTAL_POS, DOOR_HORIZONTAL_SIZE) ) {
+
+    if ( ! canPivot ) {
+      return true;
+    }
+
     if ( collision(entity->get_position(), PIXEL_SIZE, center + QUADRANT_3_POS, QUADRANT_SIZE) || 
       collision(entity->get_position(), PIXEL_SIZE, center + QUADRANT_1_POS, QUADRANT_SIZE) 
     ) {
@@ -121,9 +130,9 @@ void Door::swing() {
   }
 }
 
-static bool Door::doors_collides_with_door(ScreenPos new_position, ScreenPos size, Entity* entity) {
+static bool Door::doors_collides_with_door(ScreenPos new_position, ScreenPos size, Entity* entity, bool canPivot) {
   for ( byte i = 0; i < NUM_DOORS; i++ ) {
-    if ( level_doors[i].collides_with(new_position, size, entity) ) {
+    if ( level_doors[i].collides_with(new_position, size, entity, canPivot) ) {
       return true;
     }
   }
