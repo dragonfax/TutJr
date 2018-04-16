@@ -1,5 +1,11 @@
 #!/usr/bin/env ruby
 
+=begin
+
+R = Ring (Treasure)
+
+=end
+
 def main
     Dir.glob("levels/level*.txt").each do |level_filename|
         level = parse_file(level_filename)
