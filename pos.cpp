@@ -45,6 +45,16 @@ ScreenPos ScreenPos::operator-(const ScreenPos &other) {
   return ScreenPos(x - other.x, y - other.y);
 }
 
+char* ScreenPos::to_string() {
+  char buf1 [33];
+  char buf2 [33];
+  itoa(x, buf1, 10);
+  itoa(y, buf2, 10);
+  strcat(buf1,",");
+  strcat(buf1,buf2);
+  return buf1;
+}
+
 byte cell_to_screen1d(byte cell) {
   byte spaces = ( cell / 3.0 ) * 2;
   byte walls = (cell + 2) / 3; // div 3, but round up, not down.

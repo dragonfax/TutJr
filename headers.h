@@ -52,6 +52,7 @@ class ScreenPos {
   ScreenPos();
   ScreenPos( char x, char y);
   bool operator==(const ScreenPos &other );
+  char* to_string();
   ScreenPos operator+(const ScreenPos &other );
   ScreenPos operator-(const ScreenPos &other );
 };
@@ -104,12 +105,13 @@ class Door {
     Door(MapPos position, Direction direction);
     ScreenPos center;
     Direction direction;
-    bool collides_with(ScreenPos position, ScreenPos size);
+    bool collides_with(ScreenPos position, ScreenPos size, void* entity);
     bool collides_with_pivot(ScreenPos position, ScreenPos size);
     static bool doors_collides_with_pivot(ScreenPos position, ScreenPos size);
     void draw();
-    void swing(bool direction);
+    void swing();
     // void check_and_rotate();
+    static bool doors_collides_with_door(ScreenPos position, ScreenPos size, void* entity);
 };
 
 extern const byte NUM_DOORS;
@@ -117,6 +119,7 @@ extern Door level_doors[];
 
 const byte PLAYER_WIDTH = 2 * CELL;
 const byte PLAYER_HEIGHT = 2 * CELL;
+const ScreenPos PLAYER_SIZE = ScreenPos(PLAYER_WIDTH,PLAYER_HEIGHT);
 
 
 class Monster {
@@ -130,9 +133,10 @@ class Monster {
     Monster(MapPos position);
     void move();
     void draw();
-    bool collides_with(ScreenPos position, ScreenPos size);
+    bool collides_with(ScreenPos position, ScreenPos size, void* entity);
     void setup();
     bool operator== ( Monster & rhs );
+    static bool collides_with_any(ScreenPos position, ScreenPos size, void* entity);
 };
 
 const byte MONSTER_WIDTH = 2 * CELL;

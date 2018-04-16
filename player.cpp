@@ -9,7 +9,7 @@ const byte PLAYER_ANIM_FRAME_SIZE = 8;
 const byte PLAYER_ANIM_DOWN = 0;
 const byte PLAYER_ANIM_RIGHT = PLAYER_ANIM_FRAMES * PLAYER_ANIM_FRAME_SIZE;
 
-const byte MOVE_STEPS = 4;
+const byte MOVE_STEPS = 1;
 
 
 static const byte PROGMEM hero[] = { 
@@ -120,6 +120,9 @@ Player::Player(){}
 
 void Player::move() {
 
+  Serial.print("player ");
+  Serial.println(position.to_string());
+
   if ( ! arduboy.everyXFrames(2) )
     return;
 
@@ -182,30 +185,22 @@ void Player::move() {
 }
 
 bool Player::canMoveTo(ScreenPos player_position_new) {
-  return ! Door::doors_collides_with_pivot(player_position_new, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT)) && ! level.collides_with(player_position_new, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT));
+  return ! Door::doors_collides_with_pivot(player_position_new, PLAYER_SIZE) && ! level.collides_with(player_position_new, PLAYER_SIZE);
 }
 
 void Player::moveTo(ScreenPos player_position_new) {
 
   if ( ! ( player_position_new == position ) ) {
 
-    bool collides_with_level = level.collides_with(player_position_new, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT));
-    bool collides_with_door = false;
-    byte i;
-    for ( i = 0; i < NUM_DOORS; i++ ) {
-      if ( level_doors[i].collides_with(player_position_new, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT)) ) {
-        collides_with_door = true;
-      }
-    }
-  
-    bool collides_with_monster = false;
-    for ( i = 0; i < NUM_MONSTERS; i++ ) {
-      if ( monsters[i].collides_with(player_position_new, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT)) ) {
-        collides_with_monster = true;
-      }
-    }
-  
-    if ( ! collides_with_level && ! collides_with_monster) {
+    bool collides_with_level = level.collides_with(player_position_new, PLAYER_SIZE);
+ 
+    bool collides_with_monster = Monster::collides_with_any(player_position_new, PLAYER_SIZE, this);
+ 
+    // give each door a chance to say "no go" or to rotaate itself.
+    // but we can't commit unless we're actually moving there.
+    bool collides_with_door = Door::doors_collides_with_door(player_position_new, PLAYER_SIZE, this);
+
+    if ( ! collides_with_level && ! collides_with_monster && ! collides_with_door) {
       old_position = position;
       position = player_position_new;
   
@@ -217,17 +212,8 @@ void Player::moveTo(ScreenPos player_position_new) {
     if ( collides_with_monster ) {
       end("You Lose");
     }
-  
-  /*
-    if ( collides_with_door ) {
-      // give each door a chance to rotate.
-      for ( i = 0; i < NUM_DOORS; i++ ) {
-        level_doors[i].check_and_rotate();
-      }
-    }
-    */
-
-    if ( exitSpace.collides_with(position, ScreenPos(PLAYER_WIDTH, PLAYER_HEIGHT)) ) {
+ 
+    if ( exitSpace.collides_with(position, PLAYER_SIZE) ) {
       end("You Win!");
 
     }
