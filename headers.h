@@ -13,15 +13,6 @@ typedef unsigned char byte;
 
 typedef unsigned int uint;
 
-class MapPos;
-class ScreenPos;
-
-bool collision(ScreenPos pa, ScreenPos sizea, ScreenPos pb, ScreenPos sizeb);
-bool enclosure(ScreenPos pa, ScreenPos sizea, ScreenPos pb, ScreenPos sizeb);
-
-ScreenPos cell_to_screen(MapPos cell);
-MapPos screen_to_cell(ScreenPos position);
-
 class MapPos {
   public:
   // Pos can be negative. so byte won't cut it.
@@ -47,34 +38,19 @@ class ScreenPos {
   ScreenPos operator-(const ScreenPos &other );
 };
 
+bool collision(ScreenPos pa, ScreenPos sizea, ScreenPos pb, ScreenPos sizeb);
+bool enclosure(ScreenPos pa, ScreenPos sizea, ScreenPos pb, ScreenPos sizeb);
+
+ScreenPos cell_to_screen(MapPos cell);
+MapPos screen_to_cell(ScreenPos position);
+
+
 class Entity {
   public:
     virtual ScreenPos get_position() = 0;
 };
 
-class Level {
-  public:
-    Level( byte width, byte height, byte row_width, byte[] wall_data, byte num_monsters, Monster[] monsters, byte num_doors, Door[] doors, Exit exit, Entrance entrance);
-    void draw();
-    bool collides_with(ScreenPos position, ScreenPos size);
-    Level();
-    void drawWallOutline(MapPos cell);
-    bool getWall(MapPos cell);
-
-    byte width ;
-    byte height ;
-    byte row_width ;
-    byte[] wall_data ;
-    byte num_monsters ;
-    Monster[] monsters ;
-    byte num_doors ;
-    Door[] doors ;
-    Exit exit ;
-    Entrance entrance;
-};
-
-extern Level level;
-
+ 
 class Door;
 
 class Player : public Entity {
@@ -114,11 +90,9 @@ class Door{
     Direction direction;
     bool collides_with(ScreenPos position, ScreenPos size, Entity* entity, bool canPivot);
     bool collides_with_pivot(ScreenPos position, ScreenPos size);
-    static bool doors_collides_with_pivot(ScreenPos position, ScreenPos size);
     void draw();
     void swing();
     // void check_and_rotate();
-    static bool doors_collides_with_door(ScreenPos position, ScreenPos size, Entity* entity, bool canPivot);
 };
 
 const byte PLAYER_WIDTH = SPACE_SIZE;
@@ -170,7 +144,45 @@ class SafeSpot: public Entity {
 class Entrance {
   public:
     ScreenPos position;
+    Entrance();
     Entrance(MapPos position);
-}
+};
 
 void lives_draw();
+
+class Level {
+  public:
+    Level( 
+      byte width, 
+      byte height, 
+      byte row_width, 
+      byte wall_data [15 * 4], 
+      byte num_monsters, 
+      Monster monsters [10], 
+      byte num_doors, 
+      Door doors [10], 
+      Exit exit, 
+      Entrance entrance
+    );
+    void draw();
+    bool collides_with(ScreenPos position, ScreenPos size);
+    Level();
+    void drawWallOutline(MapPos cell);
+    bool getWall(MapPos cell);
+    bool doors_collides_with_pivot(ScreenPos position, ScreenPos size);
+    bool doors_collides_with_door(ScreenPos position, ScreenPos size, Entity* entity, bool canPivot);
+
+    byte width ;
+    byte height ;
+    byte row_width ;
+    byte wall_data [];
+    byte num_monsters ;
+    Monster monsters [];
+    byte num_doors ;
+    Door doors [];
+    Exit exit ;
+    Entrance entrance;
+};
+
+extern Level level;
+ 

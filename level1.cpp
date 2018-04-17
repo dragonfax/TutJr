@@ -4,7 +4,7 @@ Level level = Level(
   27, // width
   15, // height
   4, // row_width ( in bytes )
-  { // wall data
+  (byte[]) { // wall data
     B11111111,B11111111,B11111111,B11100000,
     B10100000,B00000010,B00001010,B10100000,
     B10101011,B10001111,B10001010,B10100000,
@@ -22,7 +22,7 @@ Level level = Level(
     B11111111,B11111111,B11111111,B11100000,
   },
   5, // num monsters
-  {  // monsters
+  (Monster[]){  // monsters
     Monster(MapPos(13,7)), 
     Monster(MapPos(10, 1)), 
     Monster(MapPos(16, 10)), 
@@ -30,7 +30,7 @@ Level level = Level(
     Monster(MapPos(10, 13)) 
   },
   5, // num doors
-  {  // door data
+  (Door[]){  // door data
     Door(MapPos(2, 8), VERTICAL),
     Door(MapPos(6, 6), VERTICAL),
     Door(MapPos(12, 8), VERTICAL),

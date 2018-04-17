@@ -130,19 +130,19 @@ void Door::swing() {
   }
 }
 
-static bool Door::doors_collides_with_door(ScreenPos new_position, ScreenPos size, Entity* entity, bool canPivot) {
-  for ( byte i = 0; i < NUM_DOORS; i++ ) {
-    if ( level_doors[i].collides_with(new_position, size, entity, canPivot) ) {
+bool Level::doors_collides_with_door(ScreenPos new_position, ScreenPos size, Entity* entity, bool canPivot) {
+  for ( byte i = 0; i < num_doors; i++ ) {
+    if ( doors[i].collides_with(new_position, size, entity, canPivot) ) {
       return true;
     }
   }
   return false;
 }
 
-static bool Door::doors_collides_with_pivot(ScreenPos new_position, ScreenPos size) {
+bool Level::doors_collides_with_pivot(ScreenPos new_position, ScreenPos size) {
   byte i;
-  for ( i = 0; i < NUM_DOORS; i++ ) {
-    if ( level_doors[i].collides_with_pivot(new_position, size) ) {
+  for ( i = 0; i < num_doors; i++ ) {
+    if ( doors[i].collides_with_pivot(new_position, size) ) {
       return true;
     }
   }

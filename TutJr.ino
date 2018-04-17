@@ -20,7 +20,7 @@ void begin() {
 
 void respawn() {
   player.lives -= 1;
-  if player.lives < 0 ) {
+  if ( player.lives < 0 ) {
     end("You Lose");
   }
   player.position = level.entrance.position;
@@ -32,17 +32,17 @@ void draw() {
       
   level.draw();
 
-  exitSpace.draw();
+  level.exit.draw();
 
   player.draw();
 
   byte i;
-  for ( i = 0; i < NUM_DOORS; i++ ) {
-    level_doors[i].draw();
+  for ( i = 0; i < level.num_doors; i++ ) {
+    level.doors[i].draw();
   }
 
-  for ( i = 0; i < NUM_MONSTERS; i++ ) {
-    monsters[i].draw();
+  for ( i = 0; i < level.num_monsters; i++ ) {
+    level.monsters[i].draw();
   }
 
   lives_draw();
@@ -55,8 +55,8 @@ void move() {
   player.move();
 
   int i;
-  for ( i = 0; i < NUM_MONSTERS; i++ ) {
-    monsters[i].move();
+  for ( i = 0; i < level.num_monsters; i++ ) {
+    level.monsters[i].move();
   }
 }
 
