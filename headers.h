@@ -151,6 +151,9 @@ class Entrance {
 
 void lives_draw();
 
+const byte MAX_DOORS = 20;
+const byte MAX_MONSTERS = 20;
+
 class Level {
   public:
     Level( 
@@ -178,9 +181,9 @@ class Level {
     byte row_width ;
     byte wall_data [15 * 4];
     byte num_monsters ;
-    Monster monsters [10];
+    Monster monsters [MAX_MONSTERS];
     byte num_doors ;
-    Door doors [10];
+    Door doors [MAX_DOORS];
     Exit exit ;
     Entrance entrance;
     SafeSpot safeSpot;

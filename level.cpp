@@ -1,5 +1,7 @@
 #include "headers.h"
 
+#include "generated/level1.cpp"
+
 Level::Level( 
   byte width, 
   byte height, 
@@ -17,9 +19,9 @@ Level::Level(
   this->row_width = row_width;
   memcpy(this->wall_data, wall_data, 15 * 4);
   this->num_monsters = num_monsters;
-  memcpy(this->monsters, monsters, sizeof(Monster) * 10);
+  memcpy(this->monsters, monsters, sizeof(Monster) * MAX_MONSTERS);
   this->num_doors = num_doors;
-  memcpy(this->doors, doors, sizeof(Door) * 10);
+  memcpy(this->doors, doors, sizeof(Door) * MAX_DOORS);
   this->exit = ex;
   this->entrance = entrance;
   this->safeSpot = SafeSpot(screen_to_cell(entrance.position));
