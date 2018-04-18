@@ -76,9 +76,9 @@ void Monster::move() {
 
       ScreenPos new_position = position + MONSTER_MOVES[direction];
 
-      bool collides_with_safe_spot = safeSpot.collides_with(new_position, MONSTER_SIZE);
+      bool collides_with_safe_spot = level.safeSpot.collides_with(new_position, MONSTER_SIZE);
 
-      bool collides_with_door = Door::doors_collides_with_door(new_position, MONSTER_SIZE, this, false);
+      bool collides_with_door = level.doors_collides_with_door(new_position, MONSTER_SIZE, this, false);
 
       bool collides_with_monster = Monster::collides_with_any(new_position, MONSTER_SIZE, this);
 
@@ -116,8 +116,8 @@ bool Monster::operator== ( Monster & rhs ) {
 }
 
 static bool Monster::collides_with_any(ScreenPos position, ScreenPos size, Entity* entity) {
-  for ( byte i = 0; i < NUM_MONSTERS; i++ ) {
-    if ( monsters[i].collides_with(position, size, entity) ) {
+  for ( byte i = 0; i < level.num_monsters; i++ ) {
+    if ( level.monsters[i].collides_with(position, size, entity) ) {
       return true;
     }
   }

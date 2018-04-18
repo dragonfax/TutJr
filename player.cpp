@@ -186,7 +186,7 @@ void Player::move() {
 }
 
 bool Player::canMoveTo(ScreenPos player_position_new) {
-  return ! Door::doors_collides_with_pivot(player_position_new, PLAYER_SIZE) && ! level.collides_with(player_position_new, PLAYER_SIZE);
+  return ! level.doors_collides_with_pivot(player_position_new, PLAYER_SIZE) && ! level.collides_with(player_position_new, PLAYER_SIZE);
 }
 
 void Player::moveTo(ScreenPos player_position_new) {
@@ -199,7 +199,7 @@ void Player::moveTo(ScreenPos player_position_new) {
  
     // give each door a chance to say "no go" or to rotaate itself.
     // but we can't commit unless we're actually moving there.
-    bool collides_with_door = Door::doors_collides_with_door(player_position_new, PLAYER_SIZE, this, true);
+    bool collides_with_door = level.doors_collides_with_door(player_position_new, PLAYER_SIZE, this, true);
 
     if ( ! collides_with_level && ! collides_with_monster && ! collides_with_door) {
       old_position = position;
@@ -214,7 +214,7 @@ void Player::moveTo(ScreenPos player_position_new) {
       respawn();
     }
  
-    if ( exitSpace.collides_with(position, PLAYER_SIZE) ) {
+    if ( level.exit.collides_with(position, PLAYER_SIZE) ) {
       win();
     }
 

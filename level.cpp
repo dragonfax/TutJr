@@ -4,24 +4,25 @@ Level::Level(
   byte width, 
   byte height, 
   byte row_width, 
-  byte wall_data [15 * 4], 
+  byte wall_data [], 
   byte num_monsters, 
-  Monster monsters [10], 
+  Monster monsters [], 
   byte num_doors, 
-  Door doors [10], 
+  Door doors [], 
   Exit ex,
   Entrance entrance
 ){
   this->width = width;
   this->height = height;
   this->row_width = row_width;
-  memcpy(&(this->wall_data), wall_data, 15 * 4);
+  memcpy(this->wall_data, wall_data, 15 * 4);
   this->num_monsters = num_monsters;
-  memcpy(&(this->monsters), monsters, 10 * sizeof(Monster));
+  memcpy(this->monsters, monsters, sizeof(Monster) * 10);
   this->num_doors = num_doors;
-  memcpy(&(this->doors), doors, 10 * sizeof(Door));
+  memcpy(this->doors, doors, sizeof(Door) * 10);
   this->exit = ex;
   this->entrance = entrance;
+  this->safeSpot = SafeSpot(screen_to_cell(entrance.position));
 }
 
 bool Level::getWall(MapPos cell) {
@@ -33,7 +34,7 @@ bool Level::getWall(MapPos cell) {
   
   byte b = wall_data[by + xb];
   byte mask = 1 << xm;
-  
+
   return ( b & mask ) > 0;
 }
 

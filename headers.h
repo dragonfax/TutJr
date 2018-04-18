@@ -86,6 +86,7 @@ enum Direction {
 class Door{
   public:
     Door(MapPos position, Direction direction);
+    Door(){};
     ScreenPos center;
     Direction direction;
     bool collides_with(ScreenPos position, ScreenPos size, Entity* entity, bool canPivot);
@@ -156,11 +157,11 @@ class Level {
       byte width, 
       byte height, 
       byte row_width, 
-      byte wall_data [15 * 4], 
+      byte wall_data [], 
       byte num_monsters, 
-      Monster monsters [10], 
+      Monster monsters [], 
       byte num_doors, 
-      Door doors [10], 
+      Door doors [], 
       Exit exit, 
       Entrance entrance
     );
@@ -175,14 +176,19 @@ class Level {
     byte width ;
     byte height ;
     byte row_width ;
-    byte wall_data [];
+    byte wall_data [15 * 4];
     byte num_monsters ;
-    Monster monsters [];
+    Monster monsters [10];
     byte num_doors ;
-    Door doors [];
+    Door doors [10];
     Exit exit ;
     Entrance entrance;
+    SafeSpot safeSpot;
 };
 
 extern Level level;
+
+void respawn();
+
+void win();
  

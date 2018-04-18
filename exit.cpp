@@ -1,5 +1,7 @@
 #include "headers.h"
 
+Exit::Exit() {}
+
 Exit::Exit(MapPos pos) {
   position = cell_to_screen(pos);
 }
