@@ -9,6 +9,7 @@ extern Arduboy arduboy;
 void drawString(byte x, byte y, const char* str);
 void end(const char *str) ;
 
+
 typedef unsigned char byte;
 
 typedef unsigned int uint;
@@ -25,6 +26,8 @@ class MapPos {
   MapPos operator-(const MapPos &other );
 };
 
+bool isLocationWall(MapPos pos);
+
 class ScreenPos {
   public:
   // Pos can be negative. so byte won't cut it.
@@ -36,6 +39,7 @@ class ScreenPos {
   char* to_string();
   ScreenPos operator+(const ScreenPos &other );
   ScreenPos operator-(const ScreenPos &other );
+  bool aligned();
 };
 
 bool collision(ScreenPos pa, ScreenPos sizea, ScreenPos pb, ScreenPos sizeb);
@@ -59,7 +63,7 @@ class Player : public Entity {
     ScreenPos old_position;
     byte direction;
     byte anim_frame;
-    byte moveSteps;
+    bool moving;
     byte lives;
 
     Player(MapPos cell);
@@ -70,6 +74,7 @@ class Player : public Entity {
     bool canMoveTo(ScreenPos new_position);
 
     ScreenPos get_position();
+    bool isSquare();
 };
 
 extern Player player;

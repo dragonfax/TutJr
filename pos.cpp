@@ -55,6 +55,12 @@ char* ScreenPos::to_string() {
   return buf1;
 }
 
+// Aligned with the very corner of a square.
+bool ScreenPos::aligned() {
+  MapPos mp = screen_to_cell(*this);
+  return !isLocationWall(mp) && *this == cell_to_screen(mp);
+}
+
 byte cell_to_screen1d(byte x) {
   byte spaces = x / 2;
   byte walls = (x + 1)/ 2;

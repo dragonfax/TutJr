@@ -9,7 +9,7 @@ const byte PLAYER_ANIM_FRAME_SIZE = 8;
 const byte PLAYER_ANIM_DOWN = 0;
 const byte PLAYER_ANIM_RIGHT = PLAYER_ANIM_FRAMES * PLAYER_ANIM_FRAME_SIZE;
 
-const byte MOVE_STEPS = 1;
+const byte FRAMES_PER_MOVE = 2; // How fast to move.
 
 
 static const byte PROGMEM hero[] = { 
@@ -95,7 +95,7 @@ static const byte PROGMEM hero[] = {
 Player::Player(MapPos cell) {
   position = cell_to_screen(cell);
   old_position = position;
-  moveSteps = 0;
+  moving = false;
   lives = 3;
 }
 
@@ -124,65 +124,64 @@ ScreenPos Player::get_position() {
 
 void Player::move() {
 
-  if ( ! arduboy.everyXFrames(2) )
+  if ( ! arduboy.everyXFrames(FRAMES_PER_MOVE) )
     return;
 
-  if ( moveSteps == 0 ) {
-    // not moving, take a new movement command
-
-    if ( arduboy.pressed(LEFT_BUTTON) ) {
-      if ( canMoveTo(ScreenPos(position.x - 1, position.y)) ) {
-        player.moveSteps = MOVE_STEPS;
-        player.direction = DIR_LEFT;
-      }
+  if ( arduboy.pressed(LEFT_BUTTON) ) {
+    if ( canMoveTo(ScreenPos(position.x - 1, position.y)) ) {
+      player.moving = true;
+      player.direction = DIR_LEFT;
     }
-
-    if ( arduboy.pressed(RIGHT_BUTTON) ) {
-      if ( canMoveTo(ScreenPos(position.x + 1, position.y)) ) {
-        player.moveSteps = MOVE_STEPS;
-        player.direction = DIR_RIGHT;
-      }
-    }
-
-    if ( arduboy.pressed(UP_BUTTON) ) {
-      if ( canMoveTo(ScreenPos(position.x, position.y - 1)) ) {
-        player.direction = DIR_UP;
-        player.moveSteps = MOVE_STEPS;
-      }
-    }
-
-    if ( arduboy.pressed(DOWN_BUTTON) ) {
-      if ( canMoveTo(ScreenPos(position.x, position.y + 1)) ) {
-        player.direction = DIR_DOWN;
-        player.moveSteps = MOVE_STEPS;
-      }
-    }
-      
   }
 
-  if ( moveSteps > 0 ) {
+  if ( arduboy.pressed(RIGHT_BUTTON) ) {
+    if ( canMoveTo(ScreenPos(position.x + 1, position.y)) ) {
+      player.moving = true;
+      player.direction = DIR_RIGHT;
+    }
+  }
+
+  if ( arduboy.pressed(UP_BUTTON) ) {
+    if ( canMoveTo(ScreenPos(position.x, position.y - 1)) ) {
+      player.moving = true;
+      player.direction = DIR_UP;
+    }
+  }
+
+  if ( arduboy.pressed(DOWN_BUTTON) ) {
+    if ( canMoveTo(ScreenPos(position.x, position.y + 1)) ) {
+      player.moving = true;
+      player.direction = DIR_DOWN;
+    }
+  }
+    
+  if ( moving ) {
     // move one step
 
     if ( direction == DIR_LEFT ) {
       moveTo(ScreenPos(position.x - 1, position.y));
-      player.moveSteps -= 1;
     }
 
     if ( direction == DIR_RIGHT ) {
       moveTo(ScreenPos(position.x + 1, position.y));
-      player.moveSteps -= 1;
     }
 
     if ( direction == DIR_UP ) {
       moveTo(ScreenPos(position.x, position.y - 1));
-      player.moveSteps -= 1;
     }
 
     if ( direction == DIR_DOWN ) {
       moveTo(ScreenPos(position.x, position.y + 1));
-      player.moveSteps -= 1;
+    }
+
+    if ( isSquare() ) {
+      moving = false;
     }
   }
+}
+
+bool Player::isSquare() {
+  return position.aligned();
 }
 
 bool Player::canMoveTo(ScreenPos player_position_new) {
