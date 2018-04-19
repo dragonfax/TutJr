@@ -1,10 +1,7 @@
 #include <stdbool.h>
-#include "Arduboy.h"
+#include <Arduboy2.h>
 
-
-extern Arduboy arduboy;
-
-
+extern Arduboy2 arduboy;
 
 void drawString(byte x, byte y, const char* str);
 void end(const char *str) ;

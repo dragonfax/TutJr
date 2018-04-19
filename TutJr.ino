@@ -2,12 +2,12 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-Arduboy arduboy;
+Arduboy2 arduboy;
 
 Player player = Player();
 
 void setup() {
-  arduboy.beginNoLogo();
+  arduboy.begin();
   arduboy.setFrameRate(60);
   begin();
   arduboy.display();
