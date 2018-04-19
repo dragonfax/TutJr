@@ -1,7 +1,5 @@
 #include "headers.h"
 
-#include "generated/level1.cpp"
-
 Level::Level( 
   byte width, 
   byte height, 
