@@ -9,6 +9,7 @@ extern Arduboy arduboy;
 void drawString(byte x, byte y, const char* str);
 void end(const char *str) ;
 
+bool isOdd(byte x);
 
 typedef unsigned char byte;
 

@@ -107,18 +107,17 @@ bool Door::collides_with(ScreenPos new_position, ScreenPos size, Entity* entity,
 
 void Door::draw() {
 
-  arduboy.fillRect(center.x, center.y, WALL_THICK + 1, WALL_THICK + 1, 1);
+  arduboy.drawRect(center.x - 1, center.y - 1, 3, 3, 1);
 
-  if ( direction == VERTICAL ) {
-    arduboy.drawFastVLine( center.x, center.y - DOOR_LENGTH, DOOR_LENGTH * 2 + DOOR_WIDTH, WHITE);
-    arduboy.drawFastVLine( center.x+1, center.y - DOOR_LENGTH, DOOR_LENGTH * 2 + DOOR_WIDTH, WHITE);
+  for ( byte i = 2*DOOR_LENGTH; i > 0; i-- ) {
+    if ( isOdd(i) ) {
+      if ( direction == VERTICAL ) {
+        arduboy.drawPixel( center.x, center.y - DOOR_LENGTH + i, WHITE);
+      } else if ( direction == HORIZONTAL ) {
+        arduboy.drawPixel( center.x - DOOR_LENGTH + i, center.y, WHITE);
+      }
+    }
   }
-
-  if ( direction == HORIZONTAL ) {
-    arduboy.drawFastHLine( center.x - DOOR_LENGTH, center.y, DOOR_LENGTH * 2 + DOOR_WIDTH, WHITE);
-    arduboy.drawFastHLine( center.x - DOOR_LENGTH, center.y+1, DOOR_LENGTH * 2 + DOOR_WIDTH, WHITE);
-  }
-
 }
 
 // true for clockwise, false for counterclockwise
