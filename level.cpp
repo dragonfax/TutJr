@@ -13,6 +13,8 @@ Level::Level(
   Door doors [], 
   byte num_keys,
   Key keys [],
+  byte num_gates,
+  Gate gates [],
   Exit ex,
   Entrance entrance
 ){
@@ -26,6 +28,8 @@ Level::Level(
   memcpy(this->doors, doors, sizeof(Door) * MAX_DOORS);
   this->num_keys = num_keys;
   memcpy(this->keys, keys, sizeof(Key) * MAX_KEYS);
+  this->num_gates = num_gates;
+  memcpy(this->gates, gates, sizeof(Gate) * MAX_GATES);
   this->exit = ex;
   this->entrance = entrance;
   this->safeSpot = SafeSpot(screen_to_cell(entrance.position));

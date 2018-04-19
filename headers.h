@@ -165,6 +165,19 @@ class Key {
     bool taken = false;
     Key(){};
     Key(MapPos position) { this->position = cell_to_screen(position); };
+    static void check_any_collides(ScreenPos pos, ScreenPos size);
+    bool collides_with(ScreenPos position, ScreenPos size) ;
+    void draw();
+};
+
+void gates_draw();
+
+class Gate {
+  public:
+    ScreenPos position;
+    bool opened = false;
+    Gate() {};
+    Gate(MapPos position) { this->position = cell_to_screen(position); };
     static bool check_any_collides(ScreenPos pos, ScreenPos size);
     bool collides_with(ScreenPos position, ScreenPos size) ;
     void draw();
@@ -173,6 +186,7 @@ class Key {
 const byte MAX_DOORS = 20;
 const byte MAX_MONSTERS = 20;
 const byte MAX_KEYS = 5;
+const byte MAX_GATES = 5;
 
 class Level {
   public:
@@ -187,6 +201,8 @@ class Level {
       Door doors [], 
       byte num_keys,
       Key keys [],
+      byte num_gates,
+      Gate gates [],
       Exit exit, 
       Entrance entrance
     );
@@ -208,6 +224,8 @@ class Level {
     Door doors [MAX_DOORS];
     byte num_keys;
     Key keys [MAX_KEYS];
+    byte num_gates;
+    Gate gates [MAX_GATES];
     Exit exit ;
     Entrance entrance;
     SafeSpot safeSpot;

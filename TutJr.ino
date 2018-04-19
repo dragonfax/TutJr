@@ -48,6 +48,7 @@ void draw() {
 
   lives_draw();
   keys_draw();
+  gates_draw();
 
   arduboy.display();
 }

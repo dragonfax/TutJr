@@ -265,6 +265,12 @@ const Key level1_keys [] = {
 
 };
 
+const Gate level1_gates [] = {
+
+    Gate(MapPos(2, 13)),
+
+};
+
 Level level = Level(
   27, // width
   15, // height
@@ -276,6 +282,8 @@ Level level = Level(
   level1_doors,
   1,
   level1_keys,
+  1,
+  level1_gates,
   Exit(MapPos(1,13)),
   Entrance(MapPos(11,1))
 );

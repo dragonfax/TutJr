@@ -26,6 +26,12 @@ const Key level1_keys [] = {
 <% end %>
 };
 
+const Gate level1_gates [] = {
+<% gates.each do |gate| %>
+    Gate(MapPos(<%= gate[0] %>, <%= gate[1] %>)),
+<% end %>
+};
+
 Level level = Level(
   27, // width
   15, // height
@@ -37,6 +43,8 @@ Level level = Level(
   level1_doors,
   <%= keys.length %>,
   level1_keys,
+  <%= gates.length %>,
+  level1_gates,
   Exit(MapPos(<%= exit[0] %>,<%= exit[1] %>)),
   Entrance(MapPos(<%= hero[0] %>,<%= hero[1] %>))
 );

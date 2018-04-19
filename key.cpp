@@ -37,7 +37,7 @@ bool Key::collides_with(ScreenPos position, ScreenPos size) {
     return collision(position, size, this->position, KEY_SIZE);
 }
 
-static bool Key::check_any_collides(ScreenPos pos, ScreenPos size) {
+static void Key::check_any_collides(ScreenPos pos, ScreenPos size) {
     for ( byte i = 0; i < level.num_keys; i++ ) {
         if ( ! level.keys[i].taken && level.keys[i].collides_with(pos,size) ) {
             level.keys[i].taken = true;
