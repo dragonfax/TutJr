@@ -65,7 +65,8 @@ class Player : public Entity {
     byte direction;
     byte anim_frame;
     bool moving;
-    byte lives;
+    byte lives = 4;
+    byte keys;
 
     Player(MapPos cell);
     void draw();
@@ -156,9 +157,22 @@ class Entrance {
 };
 
 void lives_draw();
+void keys_draw();
+
+class Key {
+  public:
+    ScreenPos position;
+    bool taken = false;
+    Key(){};
+    Key(MapPos position) { this->position = cell_to_screen(position); };
+    static bool check_any_collides(ScreenPos pos, ScreenPos size);
+    bool collides_with(ScreenPos position, ScreenPos size) ;
+    void draw();
+};
 
 const byte MAX_DOORS = 20;
 const byte MAX_MONSTERS = 20;
+const byte MAX_KEYS = 5;
 
 class Level {
   public:
@@ -171,6 +185,8 @@ class Level {
       Monster monsters [], 
       byte num_doors, 
       Door doors [], 
+      byte num_keys,
+      Key keys [],
       Exit exit, 
       Entrance entrance
     );
@@ -190,6 +206,8 @@ class Level {
     Monster monsters [MAX_MONSTERS];
     byte num_doors ;
     Door doors [MAX_DOORS];
+    byte num_keys;
+    Key keys [MAX_KEYS];
     Exit exit ;
     Entrance entrance;
     SafeSpot safeSpot;

@@ -97,6 +97,7 @@ Player::Player(MapPos cell) {
   old_position = position;
   moving = false;
   lives = 3;
+  keys = 0;
 }
 
 
@@ -216,6 +217,8 @@ void Player::moveTo(ScreenPos player_position_new) {
     if ( level.exit.collides_with(position, PLAYER_SIZE) ) {
       win();
     }
+
+    Key::check_any_collides(position, PLAYER_SIZE);
 
   }
 }

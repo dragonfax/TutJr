@@ -20,6 +20,12 @@ const Door level1_doors [] = {
 <% end %>
 };
 
+const Key level1_keys [] = {
+<% keys.each do |key| %>
+    Key(MapPos(<%= key[0] %>, <%= key[1] %>)),
+<% end %>
+};
+
 Level level = Level(
   27, // width
   15, // height
@@ -29,6 +35,8 @@ Level level = Level(
   level1_monsters,
   <%= doors.length %>, // num doors
   level1_doors,
+  <%= keys.length %>,
+  level1_keys,
   Exit(MapPos(<%= exit[0] %>,<%= exit[1] %>)),
   Entrance(MapPos(<%= hero[0] %>,<%= hero[1] %>))
 );

@@ -19,11 +19,12 @@ void begin() {
 }
 
 void respawn() {
-  player.lives -= 1;
-  if ( player.lives < 0 ) {
+  if ( player.lives == 0 ) {
     end("You Lose");
+  } else {
+    player.lives -= 1;
+    player.position = level.entrance.position;
   }
-  player.position = level.entrance.position;
 }
 
 
@@ -46,6 +47,7 @@ void draw() {
   }
 
   lives_draw();
+  keys_draw();
 
   arduboy.display();
 }

@@ -261,6 +261,12 @@ const Door level1_doors [] = {
 
 };
 
+const Key level1_keys [] = {
+
+    Key(MapPos(21, 9)),
+
+};
+
 Level level = Level(
   27, // width
   15, // height
@@ -270,6 +276,8 @@ Level level = Level(
   level1_monsters,
   12, // num doors
   level1_doors,
+  1,
+  level1_keys,
   Exit(MapPos(1,13)),
   Entrance(MapPos(11,1))
 );

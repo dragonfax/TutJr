@@ -11,6 +11,8 @@ Level::Level(
   Monster monsters [], 
   byte num_doors, 
   Door doors [], 
+  byte num_keys,
+  Key keys [],
   Exit ex,
   Entrance entrance
 ){
@@ -22,6 +24,8 @@ Level::Level(
   memcpy(this->monsters, monsters, sizeof(Monster) * MAX_MONSTERS);
   this->num_doors = num_doors;
   memcpy(this->doors, doors, sizeof(Door) * MAX_DOORS);
+  this->num_keys = num_keys;
+  memcpy(this->keys, keys, sizeof(Key) * MAX_KEYS);
   this->exit = ex;
   this->entrance = entrance;
   this->safeSpot = SafeSpot(screen_to_cell(entrance.position));

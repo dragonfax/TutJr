@@ -14,13 +14,11 @@ static const byte PROGMEM heart_frame[] = {
 };
 
 static const char LIVES_X = 122;
-static const char LIVES_Y = 10;
-
-byte num_lives = 3;
+static const char LIVES_Y = 5;
 
 void lives_draw() {
 
-  for ( byte i = 0; i < num_lives; i++ ) {
+  for ( byte i = 0; i < player.lives; i++ ) {
     arduboy.drawBitmap(LIVES_X, LIVES_Y + 10 * i, heart_frame, MONSTER_WIDTH, MONSTER_HEIGHT, WHITE);
   }
 }
