@@ -92,7 +92,7 @@ def main
 end
 
 def write_level(level)
-    File.open("generated/level#{level[:number]}.cpp", 'w') do |file|
+    File.open("TutJr/level#{level[:number]}.cpp", 'w') do |file|
         template = ERB.new File.read('levelX.cpp.erb')
         file.puts template.result_with_hash(level)
     end
