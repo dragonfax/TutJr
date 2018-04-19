@@ -221,8 +221,6 @@ const Monster level1_monsters [] = {
 
     Monster(MapPos(7,3)), 
 
-    Monster(MapPos(5,5)), 
-
     Monster(MapPos(17,5)), 
 
     Monster(MapPos(5,11)), 
@@ -272,7 +270,7 @@ Level level = Level(
   15, // height
   4, // row_width ( in bytes )
   level1_wall_data,
-  8, // num monsters
+  7, // num monsters
   level1_monsters,
   12, // num doors
   level1_doors,

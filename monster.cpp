@@ -1,7 +1,7 @@
 #include "headers.h"
 
 
-const byte FRAMES_PER_MOVE = 2; // how fast the monster moves.
+const byte FRAMES_PER_MOVE = 4; // how fast the monster moves.
 const byte MOVES_PER_ANIM_FRAME = 3; // how fast the monster animates.
 
 const byte MONSTER_ANIM_FRAMES = 4;
