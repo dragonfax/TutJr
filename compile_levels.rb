@@ -2,14 +2,20 @@
 
 =begin
 
+|-+. = Walls (all mean the same)
 R = Ring (Treasure)
+K = Key
+E = Exit
+H = Hero (Entrance, an SafeSpot)
+L = Locked Gate (needs Key)
+P = Pivot (center) of a door. 
+D = Door Segment
+N = Snake
 
 =end
 
 require 'pp'
 require 'erb'
-
-WALL_CHARS = %w{ | - + . }
 
 def parse_file(level_filename)
     level = { 
@@ -41,25 +47,26 @@ def parse_file(level_filename)
         (0..file_width-1).each do |x|
 
             c = lines[y][x]
-            if WALL_CHARS.include?(c) 
+            case c
+            when '|','-','+','.' then
                 level[:map][y][x] = 1
-            elsif c == 'H'
+            when 'H' then
                 level[:hero] = [x,y]
-            elsif c == 'E'
+            when 'E' then
                 level[:exit] = [x,y]
-            elsif c == 'S'
+            when 'S','N' then
                 level[:spiders] << [x,y]
-            elsif c == 'K'
+            when 'K' then
                 level[:keys] << [x, y]
-            elsif c == 'L'
+            when 'L' then
                 level[:gates] << [x, y]
-            elsif c == 'R'
+            when 'R' then
                 level[:rings] << [x, y]
-            elsif c == ' '
+            when ' ' then
                 # empty space
-            elsif c == 'D' 
+            when 'D' then
                 # ignore door segment
-            elsif c == 'P'
+            when 'P' then
                 level[:doors] << process_door(lines,x, y)
             else
                 raise "unknown map char '#{c}'"

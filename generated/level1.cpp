@@ -215,6 +215,22 @@ const byte level1_wall_data [] = {
 
 const Monster level1_monsters [] = {
 
+    Monster(MapPos(17,1)), 
+
+    Monster(MapPos(18,1)), 
+
+    Monster(MapPos(7,3)), 
+
+    Monster(MapPos(5,5)), 
+
+    Monster(MapPos(17,5)), 
+
+    Monster(MapPos(5,11)), 
+
+    Monster(MapPos(21,11)), 
+
+    Monster(MapPos(11,13)), 
+
 };
 
 const Door level1_doors [] = {
@@ -250,7 +266,7 @@ Level level = Level(
   15, // height
   4, // row_width ( in bytes )
   level1_wall_data,
-  0, // num monsters
+  8, // num monsters
   level1_monsters,
   12, // num doors
   level1_doors,

@@ -1,8 +1,11 @@
 #include "headers.h"
 
+
+const byte FRAMES_PER_MOVE = 2; // how fast the monster moves.
+const byte MOVES_PER_ANIM_FRAME = 3; // how fast the monster animates.
+
 const byte MONSTER_ANIM_FRAMES = 4;
 const byte MONSTER_ANIM_FRAME_SIZE = 8;
-
 static const byte PROGMEM mon[] = { 
   B11100010,
   B10001110,
@@ -57,8 +60,6 @@ void Monster::draw() {
   arduboy.drawBitmap(position.x, position.y, &mon[anim_frame * MONSTER_ANIM_FRAME_SIZE], MONSTER_WIDTH, MONSTER_HEIGHT, WHITE);
 }
 
-const byte MOVES_PER_SECOND = 10;
-const uint FRAMES_PER_MOVE = 60 / MOVES_PER_SECOND;
 
 const ScreenPos MONSTER_MOVES[] = { ScreenPos(0,-1), ScreenPos(-1,0), ScreenPos(1,0), ScreenPos(0,1) };
 const ScreenPos MONSTER_SIZE = ScreenPos(MONSTER_WIDTH,MONSTER_HEIGHT);
@@ -85,7 +86,10 @@ void Monster::move() {
       if ( ! collides_with_safe_spot && ! level.collides_with(new_position, MONSTER_SIZE) && ! collides_with_door && ! collides_with_monster ) {
         old_position = position;
         position = new_position;
-        anim_frame = ( anim_frame + 1 ) % MONSTER_ANIM_FRAMES;
+
+        if ( arduboy.everyXFrames(MOVES_PER_ANIM_FRAME * FRAMES_PER_MOVE) ) {
+          anim_frame = ( anim_frame + 1 ) % MONSTER_ANIM_FRAMES;
+        }
         last_direction = direction;
 
         if ( collision(player.position, PLAYER_SIZE, position, MONSTER_SIZE) ) {
